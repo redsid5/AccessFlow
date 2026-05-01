@@ -3,6 +3,8 @@ import { extractPDF, analyzeFilename } from '@/lib/pdf-extractor'
 import { classifyContent } from '@/lib/classifier'
 import { Role } from '@/lib/types'
 
+export const maxDuration = 60
+
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData()
@@ -10,6 +12,10 @@ export async function POST(req: NextRequest) {
     const role = (formData.get('role') as Role) || 'staff'
 
     if (!file) return NextResponse.json({ error: 'No file provided' }, { status: 400 })
+
+    if (!process.env.GEMINI_API_KEY) {
+      return NextResponse.json({ error: 'GEMINI_API_KEY is not configured on this deployment' }, { status: 500 })
+    }
 
     const buffer = Buffer.from(await file.arrayBuffer())
     const { text, pageCount, metadata } = await extractPDF(buffer)
@@ -32,6 +38,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(result)
   } catch (err) {
     console.error('PDF analysis error:', err)
-    return NextResponse.json({ error: 'Failed to analyze PDF' }, { status: 500 })
+    const msg = err instanceof Error ? err.message : 'Unknown error'
+    return NextResponse.json({ error: msg }, { status: 500 })
   }
 }

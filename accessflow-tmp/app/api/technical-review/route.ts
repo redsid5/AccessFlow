@@ -4,8 +4,13 @@ import { TechnicalReview } from '@/lib/types'
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!)
 
+export const maxDuration = 60
+
 export async function POST(req: NextRequest) {
   try {
+    if (!process.env.GEMINI_API_KEY) {
+      return NextResponse.json({ error: 'GEMINI_API_KEY is not configured on this deployment' }, { status: 500 })
+    }
     const { label, contentType, textSample, wcagContext } = await req.json() as {
       label: string
       contentType: 'url' | 'pdf'
@@ -67,6 +72,7 @@ Return 3-6 issues maximum. Focus on the most impactful ones. No markdown fences.
     return NextResponse.json(review)
   } catch (err) {
     console.error('Technical review error:', err)
-    return NextResponse.json({ error: 'Technical review failed' }, { status: 500 })
+    const msg = err instanceof Error ? err.message : 'Unknown error'
+    return NextResponse.json({ error: msg }, { status: 500 })
   }
 }

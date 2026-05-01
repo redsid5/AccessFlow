@@ -5,10 +5,10 @@ import { TechnicalReview as TReview, TechnicalIssue, IssueSeverity } from '@/lib
 import { isExpertUnlocked, unlockExpert } from '@/lib/expert-gate'
 
 const SEVERITY_STYLE: Record<IssueSeverity, string> = {
-  Critical: 'border-[#111] text-[#111]',
-  High: 'border-[#555] text-[#555]',
-  Medium: 'border-[#888] text-[#888]',
-  Low: 'border-[#ccc] text-[#aaa]',
+  Critical: 'border-[#111] dark:border-[#ededea] text-[#111] dark:text-[#ededea]',
+  High: 'border-[#555] dark:border-[#9e9e98] text-[#555] dark:text-[#9e9e98]',
+  Medium: 'border-[#888] dark:border-[#666660] text-[#888] dark:text-[#666660]',
+  Low: 'border-[#ccc] dark:border-[#444440] text-[#aaa] dark:text-[#444440]',
 }
 
 type FixTab = 'quick' | 'technical' | 'owner'
@@ -18,48 +18,48 @@ function IssueRow({ issue }: { issue: TechnicalIssue }) {
   const [tab, setTab] = useState<FixTab>('quick')
 
   return (
-    <div className="border-b border-[#e5e5e5] last:border-b-0">
+    <div className="border-b border-[#e5e4df] dark:border-[#2c2c2a] last:border-b-0">
       <button
-        className="w-full text-left px-4 py-3 flex items-start justify-between gap-3 hover:bg-[#fafafa] transition-colors"
+        className="w-full text-left px-4 py-3 flex items-start justify-between gap-3 hover:bg-[#f7f6f0] dark:hover:bg-[#252523] transition-colors"
         onClick={() => setOpen(o => !o)}
       >
         <div className="min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
-            <span className={`text-[10px] font-mono px-1.5 py-0.5 border ${SEVERITY_STYLE[issue.severity]}`}>
+            <span className={`text-xs font-mono px-1.5 py-0.5 border ${SEVERITY_STYLE[issue.severity]}`}>
               {issue.severity}
             </span>
-            <span className="text-xs font-medium text-[#111]">{issue.title}</span>
+            <span className="text-sm font-medium text-[#111] dark:text-[#ededea]">{issue.title}</span>
           </div>
-          <p className="text-[10px] font-mono text-[#888] mt-1">{issue.wcag}</p>
+          <p className="text-xs font-mono text-[#888] dark:text-[#666660] mt-1">{issue.wcag}</p>
           {issue.location && (
-            <p className="text-[10px] font-mono text-[#aaa]">{issue.location}</p>
+            <p className="text-xs font-mono text-[#aaa] dark:text-[#444440]">{issue.location}</p>
           )}
         </div>
-        <span className="text-[10px] font-mono text-[#aaa] shrink-0 mt-0.5">{open ? '▲' : '▼'}</span>
+        <span className="text-xs font-mono text-[#aaa] dark:text-[#444440] shrink-0 mt-0.5">{open ? '▲' : '▼'}</span>
       </button>
 
       {open && (
         <div className="px-4 pb-4 space-y-3">
-          <p className="text-sm text-[#333] leading-relaxed">{issue.problem}</p>
+          <p className="text-base text-[#333] dark:text-[#c8c8c2] leading-relaxed">{issue.problem}</p>
 
           {issue.detailedReason && (
-            <div className="border-l-2 border-[#e5e5e5] pl-3">
-              <p className="text-[10px] font-mono uppercase tracking-wider text-[#aaa] mb-1">Why this fails</p>
-              <p className="text-sm text-[#555] leading-relaxed">{issue.detailedReason}</p>
+            <div className="border-l-2 border-[#e5e4df] dark:border-[#2c2c2a] pl-3">
+              <p className="text-xs font-mono uppercase tracking-wider text-[#aaa] dark:text-[#444440] mb-1">Why this fails</p>
+              <p className="text-base text-[#555] dark:text-[#9e9e98] leading-relaxed">{issue.detailedReason}</p>
             </div>
           )}
 
           {/* Fix tabs */}
           <div>
-            <div className="flex gap-1 mb-3 border-b border-[#e5e5e5]">
+            <div className="flex gap-1 mb-3 border-b border-[#e5e4df] dark:border-[#2c2c2a]">
               {(['quick', 'technical', 'owner'] as FixTab[]).map(t => (
                 <button
                   key={t}
                   onClick={() => setTab(t)}
-                  className={`text-[10px] font-mono uppercase tracking-wider px-3 py-2 transition-colors ${
+                  className={`text-xs font-mono uppercase tracking-wider px-3 py-2 transition-colors ${
                     tab === t
-                      ? 'text-[#111] border-b-2 border-[#111] -mb-px'
-                      : 'text-[#888] hover:text-[#111]'
+                      ? 'text-[#111] dark:text-[#ededea] border-b-2 border-[#111] dark:border-[#ededea] -mb-px'
+                      : 'text-[#888] dark:text-[#666660] hover:text-[#111] dark:hover:text-[#ededea]'
                   }`}
                 >
                   {t === 'quick' ? 'Quick fix' : t === 'technical' ? 'Technical fix' : 'Owner'}
@@ -68,14 +68,14 @@ function IssueRow({ issue }: { issue: TechnicalIssue }) {
             </div>
 
             {tab === 'quick' && (
-              <p className="text-sm text-[#333] leading-relaxed">{issue.quickFix}</p>
+              <p className="text-base text-[#333] dark:text-[#c8c8c2] leading-relaxed">{issue.quickFix}</p>
             )}
 
             {tab === 'technical' && (
               <div className="space-y-2">
-                <p className="text-sm text-[#333] leading-relaxed">{issue.technicalFix}</p>
+                <p className="text-base text-[#333] dark:text-[#c8c8c2] leading-relaxed">{issue.technicalFix}</p>
                 {issue.codeExample && (
-                  <pre className="text-[10px] font-mono bg-[#f5f5f5] border border-[#e5e5e5] px-3 py-2 overflow-x-auto leading-relaxed whitespace-pre-wrap">
+                  <pre className="text-xs font-mono bg-[#f0efe9] dark:bg-[#252523] border border-[#e5e4df] dark:border-[#2c2c2a] px-3 py-2 overflow-x-auto leading-relaxed whitespace-pre-wrap text-[#333] dark:text-[#c8c8c2]">
                     {issue.codeExample}
                   </pre>
                 )}
@@ -84,7 +84,7 @@ function IssueRow({ issue }: { issue: TechnicalIssue }) {
 
             {tab === 'owner' && (
               <div className="flex items-center gap-2">
-                <span className="border border-[#111] text-[#111] text-xs font-mono px-3 py-1">
+                <span className="border border-[#111] dark:border-[#ededea] text-[#111] dark:text-[#ededea] text-sm font-mono px-3 py-1">
                   {issue.ownerSuggestion}
                 </span>
               </div>
@@ -152,26 +152,26 @@ export function TechnicalReview({ label, contentType, textSample, wcagContext }:
 
   if (state === 'idle') {
     return (
-      <div className="border border-[#e5e5e5] px-5 py-4">
+      <div className="border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a] px-4 sm:px-5 py-4">
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div>
-            <p className="text-xs font-mono uppercase tracking-wider text-[#888]">Technical Review</p>
-            <p className="text-sm text-[#555] mt-1">
+            <p className="text-xs font-mono uppercase tracking-wider text-[#888] dark:text-[#666660]">Technical Review</p>
+            <p className="text-base text-[#555] dark:text-[#9e9e98] mt-1">
               WCAG issue list, severity, fix recommendations, and code examples.
-              {!unlocked && <span className="font-mono text-[#aaa]"> · Expert access required.</span>}
+              {!unlocked && <span className="font-mono text-[#aaa] dark:text-[#444440]"> · Expert access required.</span>}
             </p>
           </div>
           {unlocked ? (
             <button
               onClick={runReview}
-              className="shrink-0 text-[10px] font-mono uppercase tracking-wider bg-[#111] text-white px-4 py-2 hover:bg-[#333] transition-colors"
+              className="shrink-0 text-xs font-mono uppercase tracking-wider bg-[#111] dark:bg-[#ededea] text-white dark:text-[#111] px-4 py-2 hover:bg-[#333] dark:hover:bg-white transition-colors"
             >
               Open Technical Review
             </button>
           ) : (
             <button
               onClick={() => { setShowPasscode(true); setTimeout(() => passcodeRef.current?.focus(), 50) }}
-              className="shrink-0 text-[10px] font-mono uppercase tracking-wider border border-[#e5e5e5] text-[#888] px-4 py-2 hover:border-[#111] hover:text-[#111] transition-colors"
+              className="shrink-0 text-xs font-mono uppercase tracking-wider border border-[#e5e4df] dark:border-[#2c2c2a] text-[#888] dark:text-[#666660] px-4 py-2 hover:border-[#111] dark:hover:border-[#ededea] hover:text-[#111] dark:hover:text-[#ededea] transition-colors"
             >
               Unlock
             </button>
@@ -186,18 +186,20 @@ export function TechnicalReview({ label, contentType, textSample, wcagContext }:
               value={passcode}
               onChange={e => { setPasscode(e.target.value); setPasscodeError(false) }}
               placeholder="Access code"
-              className={`text-xs font-mono border px-3 py-2 w-32 focus:outline-none focus:border-[#111] transition-colors ${
-                passcodeError ? 'border-[#111]' : 'border-[#e5e5e5]'
+              className={`text-sm font-mono border px-3 py-2 w-32 bg-white dark:bg-[#111110] text-[#111] dark:text-[#ededea] focus:outline-none transition-colors ${
+                passcodeError
+                  ? 'border-[#111] dark:border-[#ededea]'
+                  : 'border-[#e5e4df] dark:border-[#2c2c2a] focus:border-[#111] dark:focus:border-[#ededea]'
               }`}
             />
             <button
               type="submit"
-              className="text-[10px] font-mono uppercase tracking-wider bg-[#111] text-white px-3 py-2 hover:bg-[#333] transition-colors"
+              className="text-xs font-mono uppercase tracking-wider bg-[#111] dark:bg-[#ededea] text-white dark:text-[#111] px-3 py-2 hover:bg-[#333] dark:hover:bg-white transition-colors"
             >
               Enter
             </button>
             {passcodeError && (
-              <span className="text-[10px] font-mono text-[#888]">Incorrect code.</span>
+              <span className="text-xs font-mono text-[#888] dark:text-[#666660]">Incorrect code.</span>
             )}
           </form>
         )}
@@ -207,17 +209,17 @@ export function TechnicalReview({ label, contentType, textSample, wcagContext }:
 
   if (state === 'loading') {
     return (
-      <div className="border border-[#e5e5e5] px-5 py-4">
-        <p className="text-xs font-mono text-[#888]">Running technical review...</p>
+      <div className="border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a] px-4 sm:px-5 py-4">
+        <p className="text-sm font-mono text-[#888] dark:text-[#666660]">Running technical review...</p>
       </div>
     )
   }
 
   if (state === 'error') {
     return (
-      <div className="border border-[#e5e5e5] px-5 py-4">
-        <p className="text-xs font-mono text-[#888]">Technical review failed: {errorMsg}</p>
-        <button onClick={runReview} className="text-[10px] font-mono underline text-[#555] mt-2">Retry</button>
+      <div className="border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a] px-4 sm:px-5 py-4">
+        <p className="text-sm font-mono text-[#888] dark:text-[#666660]">Technical review failed: {errorMsg}</p>
+        <button onClick={runReview} className="text-sm font-mono underline text-[#555] dark:text-[#9e9e98] mt-2">Retry</button>
       </div>
     )
   }
@@ -225,15 +227,15 @@ export function TechnicalReview({ label, contentType, textSample, wcagContext }:
   if (!review) return null
 
   return (
-    <div className="border border-[#e5e5e5] animate-fade-in">
-      <div className="px-5 py-4 border-b border-[#e5e5e5] flex items-start justify-between gap-3">
+    <div className="border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a] animate-fade-in">
+      <div className="px-4 sm:px-5 py-4 border-b border-[#e5e4df] dark:border-[#2c2c2a] flex items-start justify-between gap-3">
         <div>
-          <p className="text-[10px] font-mono uppercase tracking-wider text-[#888] mb-1">
+          <p className="text-xs font-mono uppercase tracking-wider text-[#888] dark:text-[#666660] mb-1">
             Technical Review · {review.scanConfidence}% scan confidence
           </p>
-          <p className="text-sm text-[#333] leading-relaxed">{review.summary}</p>
+          <p className="text-base text-[#333] dark:text-[#c8c8c2] leading-relaxed">{review.summary}</p>
         </div>
-        <span className="text-[10px] font-mono border border-[#e5e5e5] px-2 py-1 text-[#888] shrink-0">
+        <span className="text-xs font-mono border border-[#e5e4df] dark:border-[#2c2c2a] px-2 py-1 text-[#888] dark:text-[#666660] shrink-0">
           {review.issues.length} issue{review.issues.length !== 1 ? 's' : ''}
         </span>
       </div>

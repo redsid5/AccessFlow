@@ -8,11 +8,14 @@ import { getQueue } from '@/lib/queue-store'
 export function Nav() {
   const pathname = usePathname()
   const [queueCount, setQueueCount] = useState(0)
+  const [dark, setDark] = useState(false)
 
   useEffect(() => {
+    setDark(document.documentElement.classList.contains('dark'))
+
     function update() {
       const items = getQueue()
-      setQueueCount(items.filter(i => i.status === 'new' || i.status === 'assigned' || i.status === 'in-progress').length)
+      setQueueCount(items.filter(i => ['new', 'assigned', 'in-progress'].includes(i.status)).length)
     }
     update()
     window.addEventListener('storage', update)
@@ -23,6 +26,12 @@ export function Nav() {
     }
   }, [])
 
+  function toggleDark() {
+    const isDark = document.documentElement.classList.toggle('dark')
+    setDark(isDark)
+    try { localStorage.setItem('accessflow_theme', isDark ? 'dark' : 'light') } catch {}
+  }
+
   const links = [
     { href: '/', label: 'Analyze' },
     { href: '/queue', label: queueCount > 0 ? `Queue (${queueCount})` : 'Queue' },
@@ -30,21 +39,30 @@ export function Nav() {
   ]
 
   return (
-    <nav className="border-b border-[#e5e5e5] mb-10">
-      <div className="max-w-[680px] mx-auto px-5 flex items-center gap-1">
-        {links.map(link => (
-          <Link
-            key={link.href}
-            href={link.href}
-            className={`px-3 py-3 text-xs font-mono uppercase tracking-wider transition-colors ${
-              pathname === link.href
-                ? 'text-[#111] border-b-2 border-[#111] -mb-px'
-                : 'text-[#888] hover:text-[#111]'
-            }`}
-          >
-            {link.label}
-          </Link>
-        ))}
+    <nav className="border-b border-[#e5e4df] dark:border-[#2c2c2a] mb-8 sm:mb-10">
+      <div className="max-w-[860px] mx-auto px-4 sm:px-5 flex items-center justify-between">
+        <div className="flex items-center gap-0.5">
+          {links.map(link => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={`px-3 py-3 text-xs font-mono uppercase tracking-wider transition-colors ${
+                pathname === link.href
+                  ? 'text-[#111] dark:text-[#ededea] border-b-2 border-[#111] dark:border-[#ededea] -mb-px'
+                  : 'text-[#888] dark:text-[#666660] hover:text-[#111] dark:hover:text-[#ededea]'
+              }`}
+            >
+              {link.label}
+            </Link>
+          ))}
+        </div>
+        <button
+          onClick={toggleDark}
+          aria-label="Toggle dark mode"
+          className="text-base text-[#888] dark:text-[#666660] hover:text-[#111] dark:hover:text-[#ededea] transition-colors px-2 py-3 leading-none"
+        >
+          {dark ? '☀' : '☾'}
+        </button>
       </div>
     </nav>
   )

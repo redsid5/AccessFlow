@@ -3,11 +3,17 @@ import { scrapeURL } from '@/lib/url-scraper'
 import { classifyContent } from '@/lib/classifier'
 import { Role } from '@/lib/types'
 
+export const maxDuration = 60
+
 export async function POST(req: NextRequest) {
   try {
     const { url, role } = await req.json() as { url: string; role: Role }
 
     if (!url) return NextResponse.json({ error: 'No URL provided' }, { status: 400 })
+
+    if (!process.env.GEMINI_API_KEY) {
+      return NextResponse.json({ error: 'GEMINI_API_KEY is not configured on this deployment' }, { status: 500 })
+    }
 
     const scraped = await scrapeURL(url)
 
@@ -26,6 +32,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(result)
   } catch (err) {
     console.error('URL analysis error:', err)
-    return NextResponse.json({ error: 'Failed to analyze URL' }, { status: 500 })
+    const msg = err instanceof Error ? err.message : 'Unknown error'
+    return NextResponse.json({ error: msg }, { status: 500 })
   }
 }

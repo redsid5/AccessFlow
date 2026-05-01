@@ -17,22 +17,24 @@ interface RoleSelectorProps {
 export function RoleSelector({ value, onChange }: RoleSelectorProps) {
   return (
     <div className="mb-6">
-      <p className="text-xs font-mono uppercase tracking-wider text-[#888] mb-2">
+      <p className="text-xs font-mono uppercase tracking-wider text-[#888] dark:text-[#666660] mb-2">
         Who are you?
       </p>
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
         {ROLES.map(role => (
           <button
             key={role.value}
             onClick={() => onChange(role.value)}
-            className={`text-left px-3 py-2.5 border text-sm transition-colors ${
+            className={`text-left px-3 py-3 border transition-colors ${
               value === role.value
-                ? 'border-black bg-black text-white'
-                : 'border-[#e5e5e5] text-[#111] hover:border-black'
+                ? 'border-[#111] dark:border-[#ededea] bg-[#111] dark:bg-[#ededea] text-white dark:text-[#111]'
+                : 'border-[#e5e4df] dark:border-[#2c2c2a] text-[#111] dark:text-[#ededea] hover:border-[#111] dark:hover:border-[#ededea]'
             }`}
           >
-            <span className="block font-medium text-xs leading-tight">{role.label}</span>
-            <span className={`block font-mono text-[10px] mt-0.5 ${value === role.value ? 'text-[#aaa]' : 'text-[#888]'}`}>
+            <span className="block font-medium text-sm leading-tight">{role.label}</span>
+            <span className={`block font-mono text-xs mt-1 ${
+              value === role.value ? 'text-[#aaa] dark:text-[#666660]' : 'text-[#888] dark:text-[#555550]'
+            }`}>
               {role.note}
             </span>
           </button>

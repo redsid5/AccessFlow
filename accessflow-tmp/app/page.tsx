@@ -83,29 +83,29 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen px-5 pb-16">
+    <main className="min-h-screen px-4 sm:px-5 pb-16">
       <div className="max-w-[680px] mx-auto">
         <Header />
         <RoleSelector value={role} onChange={setRole} />
         <InputCard onSubmitURL={handleURL} onSubmitPDF={handlePDF} loading={loading} />
 
         {loading && (
-          <p className="mt-6 text-sm font-mono text-[#888]">Analyzing...</p>
+          <p className="mt-6 text-base font-mono text-[#888] dark:text-[#666660]">Analyzing...</p>
         )}
 
         {error && (
-          <div className="mt-6 border border-[#e5e5e5] px-4 py-3">
-            <p className="text-xs font-mono text-[#888]">Error</p>
-            <p className="text-sm text-[#111] mt-1">{error}</p>
+          <div className="mt-6 border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a] px-4 py-3">
+            <p className="text-xs font-mono text-[#888] dark:text-[#666660]">Error</p>
+            <p className="text-base text-[#111] dark:text-[#ededea] mt-1">{error}</p>
           </div>
         )}
 
         {resultState && !loading && (
           <div className="mt-8">
             {addedToQueue && (
-              <p className="text-[10px] font-mono text-[#888] mb-3">
+              <p className="text-xs font-mono text-[#888] dark:text-[#666660] mb-3">
                 Added to queue →{' '}
-                <a href="/queue" className="underline text-[#111]">view queue</a>
+                <a href="/queue" className="underline text-[#111] dark:text-[#ededea]">view queue</a>
               </p>
             )}
             <ResultCard result={resultState.result} label={resultState.label} role={role} />
@@ -124,8 +124,8 @@ export default function Home() {
 
         <DemoExamples onSelect={handleDemo} role={role} />
 
-        <footer className="mt-16 pt-8 border-t border-[#e5e5e5]">
-          <p className="text-[10px] font-mono text-[#aaa]">
+        <footer className="mt-16 pt-8 border-t border-[#e5e4df] dark:border-[#2c2c2a]">
+          <p className="text-xs font-mono text-[#aaa] dark:text-[#444440]">
             AccessFlow — accessibility triage for university digital offices
           </p>
         </footer>

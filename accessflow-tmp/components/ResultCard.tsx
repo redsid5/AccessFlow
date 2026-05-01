@@ -10,15 +10,15 @@ const DECISION_CONFIG = {
 }
 
 const PRIORITY_STYLE = {
-  High: 'border-[#111] text-[#111]',
-  Medium: 'border-[#888] text-[#888]',
-  Low: 'border-[#ccc] text-[#aaa]',
+  High: 'border-[#111] dark:border-[#ededea] text-[#111] dark:text-[#ededea]',
+  Medium: 'border-[#888] dark:border-[#666660] text-[#888] dark:text-[#666660]',
+  Low: 'border-[#ccc] dark:border-[#444440] text-[#aaa] dark:text-[#444440]',
 }
 
 const EFFORT_STYLE = {
-  '10 min': 'border-[#111] text-[#111]',
-  '2 hours': 'border-[#888] text-[#888]',
-  'multi-team project': 'border-[#ccc] text-[#aaa]',
+  '10 min': 'border-[#111] dark:border-[#ededea] text-[#111] dark:text-[#ededea]',
+  '2 hours': 'border-[#888] dark:border-[#666660] text-[#888] dark:text-[#666660]',
+  'multi-team project': 'border-[#ccc] dark:border-[#444440] text-[#aaa] dark:text-[#444440]',
 }
 
 const USAGE_LABEL = {
@@ -85,55 +85,57 @@ export function ResultCard({ result, label, role }: {
   }
 
   return (
-    <div className={`border bg-white animate-fade-in transition-opacity ${resolved ? 'opacity-50' : 'border-[#e5e5e5]'}`}>
+    <div className={`border dark:bg-[#1c1c1a] animate-fade-in transition-opacity ${
+      resolved ? 'opacity-50 border-[#e5e4df] dark:border-[#2c2c2a]' : 'border-[#e5e4df] dark:border-[#2c2c2a]'
+    }`}>
 
       {/* Header */}
-      <div className="px-5 py-4 border-b border-[#e5e5e5]">
-        <p className="text-[10px] font-mono uppercase tracking-wider text-[#888] mb-1">Analyzed content</p>
-        <p className="font-semibold text-[#111] text-sm leading-snug break-all">{label}</p>
+      <div className="px-4 sm:px-5 py-4 border-b border-[#e5e4df] dark:border-[#2c2c2a]">
+        <p className="text-xs font-mono uppercase tracking-wider text-[#888] dark:text-[#666660] mb-1">Analyzed content</p>
+        <p className="font-semibold text-[#111] dark:text-[#ededea] text-base leading-snug break-all">{label}</p>
         <div className="flex flex-wrap gap-2 mt-2">
-          <span className={`text-[10px] font-mono px-2 py-1 border ${PRIORITY_STYLE[result.priority]}`}>
+          <span className={`text-xs font-mono px-2 py-1 border ${PRIORITY_STYLE[result.priority]}`}>
             {result.priority} priority
           </span>
-          <span className="text-[10px] font-mono px-2 py-1 border border-[#e5e5e5] text-[#555]">
+          <span className="text-xs font-mono px-2 py-1 border border-[#e5e4df] dark:border-[#2c2c2a] text-[#555] dark:text-[#9e9e98]">
             {result.contentDescription}
           </span>
-          <span className={`text-[10px] font-mono px-2 py-1 border ${EFFORT_STYLE[result.estimatedEffort]}`}>
+          <span className={`text-xs font-mono px-2 py-1 border ${EFFORT_STYLE[result.estimatedEffort]}`}>
             {result.estimatedEffort}
           </span>
-          <span className="text-[10px] font-mono px-2 py-1 border border-[#e5e5e5] text-[#888]">
+          <span className="text-xs font-mono px-2 py-1 border border-[#e5e4df] dark:border-[#2c2c2a] text-[#888] dark:text-[#666660]">
             {USAGE_LABEL[result.usageSignal]}
           </span>
         </div>
       </div>
 
       {/* Decision */}
-      <div className="px-5 py-5 border-b border-[#e5e5e5]">
-        <p className="text-[10px] font-mono uppercase tracking-wider text-[#888] mb-1">Decision</p>
-        <p className="text-3xl font-bold text-[#111] tracking-tight leading-none">
+      <div className="px-4 sm:px-5 py-5 border-b border-[#e5e4df] dark:border-[#2c2c2a]">
+        <p className="text-xs font-mono uppercase tracking-wider text-[#888] dark:text-[#666660] mb-1">Decision</p>
+        <p className="text-3xl sm:text-4xl font-bold text-[#111] dark:text-[#ededea] tracking-tight leading-none">
           <span className="font-mono mr-1.5">{config.marker}</span>{config.label}
         </p>
-        <p className="text-[10px] font-mono text-[#888] mt-2">{result.confidence}% confidence</p>
+        <p className="text-xs font-mono text-[#888] dark:text-[#666660] mt-2">{result.confidence}% confidence</p>
       </div>
 
       {/* Priority Score */}
-      <div className="px-5 py-5 border-b border-[#e5e5e5]">
+      <div className="px-4 sm:px-5 py-5 border-b border-[#e5e4df] dark:border-[#2c2c2a]">
         <div className="flex items-baseline justify-between mb-4">
-          <p className="text-[10px] font-mono uppercase tracking-wider text-[#888]">Priority score</p>
-          <p className="text-2xl font-bold text-[#111] tracking-tight leading-none">
-            {result.priorityScore.total}<span className="text-sm font-normal text-[#888]">/100</span>
+          <p className="text-xs font-mono uppercase tracking-wider text-[#888] dark:text-[#666660]">Priority score</p>
+          <p className="text-2xl font-bold text-[#111] dark:text-[#ededea] tracking-tight leading-none">
+            {result.priorityScore.total}<span className="text-sm font-normal text-[#888] dark:text-[#666660]">/100</span>
           </p>
         </div>
         <div className="space-y-3">
           {SCORE_LABELS.map(({ key, label: scoreLabel }) => (
             <div key={key}>
-              <div className="flex items-center justify-between mb-1">
-                <span className="text-[10px] font-mono text-[#555]">{scoreLabel}</span>
-                <span className="text-[10px] font-mono text-[#888]">{result.priorityScore[key]}/10</span>
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-xs font-mono text-[#555] dark:text-[#9e9e98]">{scoreLabel}</span>
+                <span className="text-xs font-mono text-[#888] dark:text-[#666660]">{result.priorityScore[key]}/10</span>
               </div>
-              <div className="h-1 bg-[#f0f0f0] w-full">
+              <div className="h-1 bg-[#eeeee9] dark:bg-[#252523] w-full">
                 <div
-                  className="h-1 bg-[#111] transition-all duration-500"
+                  className="h-1 bg-[#111] dark:bg-[#ededea] transition-all duration-500"
                   style={{ width: `${result.priorityScore[key] * 10}%` }}
                 />
               </div>
@@ -143,49 +145,51 @@ export function ResultCard({ result, label, role }: {
       </div>
 
       {/* Body */}
-      <div className="px-5 py-5 space-y-5">
+      <div className="px-4 sm:px-5 py-5 space-y-5">
         <div>
-          <p className="text-[10px] font-mono uppercase tracking-wider text-[#888] mb-1.5">Why this decision</p>
-          <p className="text-sm text-[#333] leading-relaxed">{result.why}</p>
+          <p className="text-xs font-mono uppercase tracking-wider text-[#888] dark:text-[#666660] mb-1.5">Why this decision</p>
+          <p className="text-base text-[#333] dark:text-[#c8c8c2] leading-relaxed">{result.why}</p>
         </div>
 
         <div>
-          <p className="text-[10px] font-mono uppercase tracking-wider text-[#888] mb-1.5">Recommended action</p>
-          <p className="text-sm text-[#111] font-medium leading-relaxed">{result.action}</p>
+          <p className="text-xs font-mono uppercase tracking-wider text-[#888] dark:text-[#666660] mb-1.5">Recommended action</p>
+          <p className="text-base text-[#111] dark:text-[#ededea] font-medium leading-relaxed">{result.action}</p>
         </div>
 
         {result.roleNote && (
-          <div className="border border-[#e5e5e5] px-4 py-3">
-            <p className="text-[10px] font-mono uppercase tracking-wider text-[#888] mb-1">For you specifically</p>
-            <p className="text-sm text-[#333]">{result.roleNote}</p>
+          <div className="border border-[#e5e4df] dark:border-[#2c2c2a] px-4 py-3">
+            <p className="text-xs font-mono uppercase tracking-wider text-[#888] dark:text-[#666660] mb-1">For you specifically</p>
+            <p className="text-base text-[#333] dark:text-[#c8c8c2]">{result.roleNote}</p>
           </div>
         )}
 
         <div>
-          <p className="text-[10px] font-mono uppercase tracking-wider text-[#888] mb-1.5">Suggested owner</p>
-          <span className="inline-block border border-[#111] text-[#111] text-xs font-mono px-3 py-1">
+          <p className="text-xs font-mono uppercase tracking-wider text-[#888] dark:text-[#666660] mb-1.5">Suggested owner</p>
+          <span className="inline-block border border-[#111] dark:border-[#ededea] text-[#111] dark:text-[#ededea] text-sm font-mono px-3 py-1">
             {result.owner}
           </span>
         </div>
 
         {result.wcagContext && role === 'staff' && (
           <div>
-            <p className="text-[10px] font-mono uppercase tracking-wider text-[#888] mb-1.5">WCAG context</p>
-            <p className="text-xs text-[#555] font-mono leading-relaxed">{result.wcagContext}</p>
+            <p className="text-xs font-mono uppercase tracking-wider text-[#888] dark:text-[#666660] mb-1.5">WCAG context</p>
+            <p className="text-sm text-[#555] dark:text-[#9e9e98] font-mono leading-relaxed">{result.wcagContext}</p>
           </div>
         )}
 
         {/* Signals */}
         <div>
-          <p className="text-[10px] font-mono uppercase tracking-wider text-[#888] mb-2">Reasoning signals</p>
+          <p className="text-xs font-mono uppercase tracking-wider text-[#888] dark:text-[#666660] mb-2">Reasoning signals</p>
           <div className="flex flex-wrap gap-1.5">
             {SIGNALS.map(s => {
               const active = result.signals[s.key as keyof typeof result.signals]
               return (
                 <span
                   key={s.key}
-                  className={`text-[10px] font-mono px-2 py-1 border ${
-                    active ? 'border-[#111] bg-[#111] text-white' : 'border-[#e5e5e5] text-[#aaa]'
+                  className={`text-xs font-mono px-2 py-1 border ${
+                    active
+                      ? 'border-[#111] dark:border-[#ededea] bg-[#111] dark:bg-[#ededea] text-white dark:text-[#111]'
+                      : 'border-[#e5e4df] dark:border-[#2c2c2a] text-[#aaa] dark:text-[#444440]'
                   }`}
                 >
                   {active ? '+ ' : ''}{s.label}
@@ -197,27 +201,33 @@ export function ResultCard({ result, label, role }: {
       </div>
 
       {/* Action buttons */}
-      <div className="px-5 py-4 border-t border-[#e5e5e5] flex flex-wrap gap-2">
+      <div className="px-4 sm:px-5 py-4 border-t border-[#e5e4df] dark:border-[#2c2c2a] flex flex-wrap gap-2">
         <button
           onClick={() => { setAssigned(true); setTimeout(() => setAssigned(false), 2000) }}
-          className={`text-[10px] font-mono uppercase tracking-wider px-3 py-2 border transition-colors ${
-            assigned ? 'border-[#111] bg-[#111] text-white' : 'border-[#e5e5e5] text-[#555] hover:border-[#111]'
+          className={`text-xs font-mono uppercase tracking-wider px-3 py-2 border transition-colors ${
+            assigned
+              ? 'border-[#111] dark:border-[#ededea] bg-[#111] dark:bg-[#ededea] text-white dark:text-[#111]'
+              : 'border-[#e5e4df] dark:border-[#2c2c2a] text-[#555] dark:text-[#9e9e98] hover:border-[#111] dark:hover:border-[#ededea]'
           }`}
         >
           {assigned ? 'Assigned' : 'Assign owner'}
         </button>
         <button
           onClick={handleExport}
-          className={`text-[10px] font-mono uppercase tracking-wider px-3 py-2 border transition-colors ${
-            copied ? 'border-[#111] bg-[#111] text-white' : 'border-[#e5e5e5] text-[#555] hover:border-[#111]'
+          className={`text-xs font-mono uppercase tracking-wider px-3 py-2 border transition-colors ${
+            copied
+              ? 'border-[#111] dark:border-[#ededea] bg-[#111] dark:bg-[#ededea] text-white dark:text-[#111]'
+              : 'border-[#e5e4df] dark:border-[#2c2c2a] text-[#555] dark:text-[#9e9e98] hover:border-[#111] dark:hover:border-[#ededea]'
           }`}
         >
           {copied ? 'Copied' : 'Export report'}
         </button>
         <button
           onClick={() => setResolved(r => !r)}
-          className={`text-[10px] font-mono uppercase tracking-wider px-3 py-2 border transition-colors ${
-            resolved ? 'border-[#111] bg-[#111] text-white' : 'border-[#e5e5e5] text-[#555] hover:border-[#111]'
+          className={`text-xs font-mono uppercase tracking-wider px-3 py-2 border transition-colors ${
+            resolved
+              ? 'border-[#111] dark:border-[#ededea] bg-[#111] dark:bg-[#ededea] text-white dark:text-[#111]'
+              : 'border-[#e5e4df] dark:border-[#2c2c2a] text-[#555] dark:text-[#9e9e98] hover:border-[#111] dark:hover:border-[#ededea]'
           }`}
         >
           {resolved ? 'Resolved' : 'Mark resolved'}
@@ -225,8 +235,8 @@ export function ResultCard({ result, label, role }: {
       </div>
 
       {/* Disclaimer */}
-      <div className="px-5 py-3 border-t border-[#e5e5e5]">
-        <p className="text-[10px] text-[#aaa] font-mono">
+      <div className="px-4 sm:px-5 py-3 border-t border-[#e5e4df] dark:border-[#2c2c2a]">
+        <p className="text-xs text-[#aaa] dark:text-[#444440] font-mono">
           Supports prioritization. Does not replace a full audit or legal review.
         </p>
       </div>

@@ -14,12 +14,12 @@ const STATUS_LABELS: Record<ItemStatus, string> = {
 }
 
 const STATUS_STYLE: Record<ItemStatus, string> = {
-  new: 'border-[#111] text-[#111]',
-  assigned: 'border-[#888] text-[#888]',
-  'in-progress': 'border-[#888] text-[#888]',
-  fixed: 'border-[#aaa] text-[#aaa]',
-  archived: 'border-[#ccc] text-[#ccc]',
-  exempted: 'border-[#ccc] text-[#ccc]',
+  new: 'border-[#111] dark:border-[#ededea] text-[#111] dark:text-[#ededea]',
+  assigned: 'border-[#888] dark:border-[#666660] text-[#888] dark:text-[#666660]',
+  'in-progress': 'border-[#888] dark:border-[#666660] text-[#888] dark:text-[#666660]',
+  fixed: 'border-[#aaa] dark:border-[#444440] text-[#aaa] dark:text-[#444440]',
+  archived: 'border-[#ccc] dark:border-[#333330] text-[#ccc] dark:text-[#333330]',
+  exempted: 'border-[#ccc] dark:border-[#333330] text-[#ccc] dark:text-[#333330]',
 }
 
 const DECISION_MARKER = { fix: '!', review: '?', delete: '×' }
@@ -40,9 +40,7 @@ export default function QueuePage() {
   const [bulkError, setBulkError] = useState<string | null>(null)
   const fileRef = useRef<HTMLInputElement>(null)
 
-  function reload() {
-    setItems(getQueue())
-  }
+  function reload() { setItems(getQueue()) }
 
   useEffect(() => {
     reload()
@@ -109,24 +107,23 @@ export default function QueuePage() {
   const activeCount = items.filter(i => ['new', 'assigned', 'in-progress'].includes(i.status)).length
 
   return (
-    <main className="min-h-screen px-5 pb-16">
+    <main className="min-h-screen px-4 sm:px-5 pb-16">
       <div className="max-w-[860px] mx-auto">
 
-        {/* Page header */}
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-[#111] tracking-tight">Intake Queue</h1>
-          <p className="text-sm text-[#555] mt-1">
+          <h1 className="text-2xl sm:text-3xl font-bold text-[#111] dark:text-[#ededea] tracking-tight">Intake Queue</h1>
+          <p className="text-base text-[#555] dark:text-[#9e9e98] mt-1">
             {activeCount} active item{activeCount !== 1 ? 's' : ''} · {items.length} total
           </p>
         </div>
 
         {/* Bulk upload */}
-        <div className="border border-[#e5e5e5] p-5 mb-8">
-          <p className="text-[10px] font-mono uppercase tracking-wider text-[#888] mb-3">Bulk PDF triage</p>
+        <div className="border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a] p-4 sm:p-5 mb-8">
+          <p className="text-xs font-mono uppercase tracking-wider text-[#888] dark:text-[#666660] mb-3">Bulk PDF triage</p>
           <div className="flex flex-wrap items-center gap-3">
             <button
               onClick={() => fileRef.current?.click()}
-              className="text-xs font-mono border border-[#e5e5e5] px-3 py-2 hover:border-[#111] transition-colors"
+              className="text-sm font-mono border border-[#e5e4df] dark:border-[#2c2c2a] text-[#555] dark:text-[#9e9e98] px-3 py-2 hover:border-[#111] dark:hover:border-[#ededea] transition-colors"
             >
               {bulkFiles.length > 0 ? `${bulkFiles.length} file${bulkFiles.length > 1 ? 's' : ''} selected` : 'Select PDFs'}
             </button>
@@ -141,7 +138,7 @@ export default function QueuePage() {
             <select
               value={bulkRole}
               onChange={e => setBulkRole(e.target.value as Role)}
-              className="text-xs font-mono border border-[#e5e5e5] px-3 py-2 text-[#111] focus:outline-none focus:border-[#111]"
+              className="text-sm font-mono border border-[#e5e4df] dark:border-[#2c2c2a] bg-white dark:bg-[#1c1c1a] text-[#111] dark:text-[#ededea] px-3 py-2 focus:outline-none focus:border-[#111] dark:focus:border-[#ededea]"
             >
               <option value="staff">Accessibility staff</option>
               <option value="faculty">Faculty</option>
@@ -151,14 +148,14 @@ export default function QueuePage() {
             <button
               onClick={runBulkAnalysis}
               disabled={!bulkFiles.length || !!bulkProgress}
-              className="text-xs font-mono bg-[#111] text-white px-4 py-2 disabled:opacity-30 hover:bg-[#333] transition-colors"
+              className="text-sm font-mono bg-[#111] dark:bg-[#ededea] text-white dark:text-[#111] px-4 py-2 disabled:opacity-30 hover:bg-[#333] dark:hover:bg-white transition-colors"
             >
               {bulkProgress
                 ? `Analyzing ${bulkProgress.done}/${bulkProgress.total}...`
                 : 'Analyze all'}
             </button>
           </div>
-          {bulkError && <p className="text-xs font-mono text-[#888] mt-2">{bulkError}</p>}
+          {bulkError && <p className="text-sm font-mono text-[#888] dark:text-[#666660] mt-2">{bulkError}</p>}
         </div>
 
         {/* Filters */}
@@ -167,20 +164,24 @@ export default function QueuePage() {
             <button
               key={s}
               onClick={() => setFilterStatus(s)}
-              className={`text-[10px] font-mono px-2 py-1 border transition-colors ${
-                filterStatus === s ? 'border-[#111] bg-[#111] text-white' : 'border-[#e5e5e5] text-[#888] hover:border-[#111]'
+              className={`text-xs font-mono px-2 py-1.5 border transition-colors ${
+                filterStatus === s
+                  ? 'border-[#111] dark:border-[#ededea] bg-[#111] dark:bg-[#ededea] text-white dark:text-[#111]'
+                  : 'border-[#e5e4df] dark:border-[#2c2c2a] text-[#888] dark:text-[#666660] hover:border-[#111] dark:hover:border-[#ededea]'
               }`}
             >
               {s === 'all' ? 'All statuses' : STATUS_LABELS[s]}
             </button>
           ))}
-          <span className="text-[#e5e5e5]">|</span>
+          <span className="text-[#e5e4df] dark:text-[#2c2c2a] self-center">|</span>
           {(['all', 'fix', 'review', 'delete'] as const).map(d => (
             <button
               key={d}
               onClick={() => setFilterDecision(d)}
-              className={`text-[10px] font-mono px-2 py-1 border transition-colors ${
-                filterDecision === d ? 'border-[#111] bg-[#111] text-white' : 'border-[#e5e5e5] text-[#888] hover:border-[#111]'
+              className={`text-xs font-mono px-2 py-1.5 border transition-colors ${
+                filterDecision === d
+                  ? 'border-[#111] dark:border-[#ededea] bg-[#111] dark:bg-[#ededea] text-white dark:text-[#111]'
+                  : 'border-[#e5e4df] dark:border-[#2c2c2a] text-[#888] dark:text-[#666660] hover:border-[#111] dark:hover:border-[#ededea]'
               }`}
             >
               {d === 'all' ? 'All decisions' : d === 'fix' ? 'Fix now' : d === 'review' ? 'Review' : 'Delete'}
@@ -188,87 +189,78 @@ export default function QueuePage() {
           ))}
         </div>
 
-        {/* Queue table */}
+        {/* Queue items */}
         {displayed.length === 0 ? (
-          <div className="border border-[#e5e5e5] px-5 py-10 text-center">
-            <p className="text-sm text-[#888] font-mono">No items match this filter.</p>
+          <div className="border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a] px-5 py-10 text-center">
+            <p className="text-base text-[#888] dark:text-[#666660] font-mono">No items match this filter.</p>
             {items.length === 0 && (
-              <p className="text-xs text-[#aaa] font-mono mt-1">
+              <p className="text-sm text-[#aaa] dark:text-[#444440] font-mono mt-1">
                 Analyze a URL or PDF on the{' '}
-                <a href="/" className="underline text-[#555]">Analyze page</a> to add items.
+                <a href="/" className="underline text-[#555] dark:text-[#9e9e98]">Analyze page</a> to add items.
               </p>
             )}
           </div>
         ) : (
           <div className="space-y-px">
             {displayed.map(item => (
-              <div key={item.id} className={`border border-[#e5e5e5] px-4 py-3 ${
+              <div key={item.id} className={`border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a] px-4 py-3 ${
                 ['fixed', 'archived', 'exempted'].includes(item.status) ? 'opacity-50' : ''
               }`}>
                 <div className="flex items-start gap-3 flex-wrap">
-
-                  {/* Decision marker */}
-                  <span className="font-mono text-sm font-bold text-[#111] w-4 shrink-0 mt-0.5">
+                  <span className="font-mono text-base font-bold text-[#111] dark:text-[#ededea] w-4 shrink-0 mt-0.5">
                     {DECISION_MARKER[item.result.decision]}
                   </span>
 
-                  {/* Content info */}
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs font-mono text-[#111] truncate">{item.label}</p>
+                    <p className="text-sm font-mono text-[#111] dark:text-[#ededea] truncate">{item.label}</p>
                     <div className="flex flex-wrap items-center gap-2 mt-1">
-                      <span className="text-[10px] font-mono text-[#888]">{item.result.contentDescription}</span>
-                      <span className="text-[10px] font-mono text-[#aaa]">{item.result.priority} priority</span>
-                      <span className="text-[10px] font-mono text-[#aaa]">{item.result.estimatedEffort}</span>
-                      <span className="text-[10px] font-mono text-[#aaa]">
+                      <span className="text-xs font-mono text-[#888] dark:text-[#666660]">{item.result.contentDescription}</span>
+                      <span className="text-xs font-mono text-[#aaa] dark:text-[#444440]">{item.result.priority} priority</span>
+                      <span className="text-xs font-mono text-[#aaa] dark:text-[#444440]">{item.result.estimatedEffort}</span>
+                      <span className="text-xs font-mono text-[#aaa] dark:text-[#444440]">
                         ${remediationCost(item).toLocaleString()}
                       </span>
                     </div>
                   </div>
 
-                  {/* Controls */}
                   <div className="flex flex-wrap items-center gap-2 shrink-0">
-                    {/* Department */}
                     <select
                       value={item.department || ''}
                       onChange={e => setDepartment(item.id, e.target.value)}
-                      className="text-[10px] font-mono border border-[#e5e5e5] px-2 py-1 text-[#555] focus:outline-none focus:border-[#111] max-w-[120px]"
+                      className="text-xs font-mono border border-[#e5e4df] dark:border-[#2c2c2a] bg-white dark:bg-[#1c1c1a] text-[#555] dark:text-[#9e9e98] px-2 py-1.5 focus:outline-none focus:border-[#111] dark:focus:border-[#ededea] max-w-[120px]"
                     >
                       <option value="">Department</option>
                       {DEPARTMENTS.map(d => <option key={d} value={d}>{d}</option>)}
                     </select>
 
-                    {/* Assigned to */}
                     <input
                       type="text"
                       placeholder="Assign to..."
                       defaultValue={item.assignedTo || ''}
                       onBlur={e => { if (e.target.value) setAssignedTo(item.id, e.target.value) }}
-                      className="text-[10px] font-mono border border-[#e5e5e5] px-2 py-1 text-[#111] placeholder-[#ccc] focus:outline-none focus:border-[#111] w-24"
+                      className="text-xs font-mono border border-[#e5e4df] dark:border-[#2c2c2a] bg-white dark:bg-[#111110] text-[#111] dark:text-[#ededea] placeholder-[#ccc] dark:placeholder-[#444440] px-2 py-1.5 focus:outline-none focus:border-[#111] dark:focus:border-[#ededea] w-24"
                     />
 
-                    {/* Status */}
                     <select
                       value={item.status}
                       onChange={e => setStatus(item.id, e.target.value as ItemStatus)}
-                      className={`text-[10px] font-mono border px-2 py-1 focus:outline-none focus:border-[#111] ${STATUS_STYLE[item.status]}`}
+                      className={`text-xs font-mono border px-2 py-1.5 focus:outline-none focus:border-[#111] dark:focus:border-[#ededea] bg-transparent ${STATUS_STYLE[item.status]}`}
                     >
                       {(Object.keys(STATUS_LABELS) as ItemStatus[]).map(s => (
                         <option key={s} value={s}>{STATUS_LABELS[s]}</option>
                       ))}
                     </select>
 
-                    {/* Remove */}
                     <button
                       onClick={() => remove(item.id)}
-                      className="text-[10px] font-mono text-[#ccc] hover:text-[#111] transition-colors px-1"
+                      className="text-xs font-mono text-[#ccc] dark:text-[#333330] hover:text-[#111] dark:hover:text-[#ededea] transition-colors px-1"
                     >
                       ✕
                     </button>
                   </div>
                 </div>
 
-                {/* Why */}
-                <p className="text-[10px] text-[#888] mt-2 ml-7 leading-relaxed">{item.result.why}</p>
+                <p className="text-xs text-[#888] dark:text-[#666660] mt-2 ml-7 leading-relaxed">{item.result.why}</p>
               </div>
             ))}
           </div>

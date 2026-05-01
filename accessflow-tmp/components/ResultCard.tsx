@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { TriageResult, Role } from '@/lib/types'
+import { TriageResult, Role, PriorityScore } from '@/lib/types'
 
 const DECISION_CONFIG = {
   fix: { label: 'Fix now', marker: '!' },
@@ -28,15 +28,13 @@ const USAGE_LABEL = {
   'unknown': 'Unknown traffic',
 }
 
-const SCORE_LABELS: { key: keyof Omit<typeof dummyScore, 'total'>; label: string }[] = [
+const SCORE_LABELS: { key: keyof Omit<PriorityScore, 'total'>; label: string }[] = [
   { key: 'studentImpact', label: 'Student impact' },
   { key: 'legalRisk', label: 'Legal risk' },
   { key: 'usageFrequency', label: 'Usage frequency' },
   { key: 'contentReplaceability', label: 'Replaceability' },
   { key: 'timeSensitivity', label: 'Time sensitivity' },
 ]
-
-const dummyScore = { studentImpact: 0, legalRisk: 0, usageFrequency: 0, contentReplaceability: 0, timeSensitivity: 0, total: 0 }
 
 const SIGNALS = [
   { key: 'publicFacing', label: 'Public-facing' },
@@ -109,35 +107,38 @@ export function ResultCard({ result, label, role }: {
         </div>
       </div>
 
-      {/* Decision + Priority Score side by side */}
-      <div className="grid grid-cols-2 border-b border-[#e5e5e5]">
-        <div className="px-5 py-5 border-r border-[#e5e5e5]">
-          <p className="text-[10px] font-mono uppercase tracking-wider text-[#888] mb-1">Decision</p>
-          <p className="text-3xl font-bold text-[#111] tracking-tight leading-none">
-            <span className="font-mono mr-1.5">{config.marker}</span>{config.label}
+      {/* Decision */}
+      <div className="px-5 py-5 border-b border-[#e5e5e5]">
+        <p className="text-[10px] font-mono uppercase tracking-wider text-[#888] mb-1">Decision</p>
+        <p className="text-3xl font-bold text-[#111] tracking-tight leading-none">
+          <span className="font-mono mr-1.5">{config.marker}</span>{config.label}
+        </p>
+        <p className="text-[10px] font-mono text-[#888] mt-2">{result.confidence}% confidence</p>
+      </div>
+
+      {/* Priority Score */}
+      <div className="px-5 py-5 border-b border-[#e5e5e5]">
+        <div className="flex items-baseline justify-between mb-4">
+          <p className="text-[10px] font-mono uppercase tracking-wider text-[#888]">Priority score</p>
+          <p className="text-2xl font-bold text-[#111] tracking-tight leading-none">
+            {result.priorityScore.total}<span className="text-sm font-normal text-[#888]">/100</span>
           </p>
-          <p className="text-[10px] font-mono text-[#888] mt-2">{result.confidence}% confidence</p>
         </div>
-        <div className="px-5 py-5">
-          <p className="text-[10px] font-mono uppercase tracking-wider text-[#888] mb-2">Priority score</p>
-          <p className="text-3xl font-bold text-[#111] tracking-tight leading-none mb-3">
-            {result.priorityScore.total}<span className="text-lg font-normal text-[#888]">/100</span>
-          </p>
-          <div className="space-y-1.5">
-            {SCORE_LABELS.map(({ key, label: scoreLabel }) => (
-              <div key={key} className="flex items-center gap-2">
-                <div className="flex-1 h-px bg-[#e5e5e5] relative">
-                  <div
-                    className="h-px bg-[#111] absolute left-0 top-0"
-                    style={{ width: `${result.priorityScore[key] * 10}%` }}
-                  />
-                </div>
-                <span className="text-[10px] font-mono text-[#888] w-28 shrink-0 text-right">
-                  {scoreLabel} {result.priorityScore[key]}/10
-                </span>
+        <div className="space-y-3">
+          {SCORE_LABELS.map(({ key, label: scoreLabel }) => (
+            <div key={key}>
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-[10px] font-mono text-[#555]">{scoreLabel}</span>
+                <span className="text-[10px] font-mono text-[#888]">{result.priorityScore[key]}/10</span>
               </div>
-            ))}
-          </div>
+              <div className="h-1 bg-[#f0f0f0] w-full">
+                <div
+                  className="h-1 bg-[#111] transition-all duration-500"
+                  style={{ width: `${result.priorityScore[key] * 10}%` }}
+                />
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 

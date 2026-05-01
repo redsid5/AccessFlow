@@ -35,3 +35,22 @@ export function getGeminiKey(): string {
   if (!key) throw new Error('GEMINI_API_KEY is not configured on this deployment')
   return key
 }
+
+function isTransient(err: unknown): boolean {
+  const msg = err instanceof Error ? err.message : String(err)
+  return msg.includes('503') || msg.includes('429') || msg.includes('overloaded') || msg.includes('high demand')
+}
+
+export async function withRetry<T>(fn: () => Promise<T>, attempts = 3): Promise<T> {
+  let lastErr: unknown
+  for (let i = 0; i < attempts; i++) {
+    try {
+      return await fn()
+    } catch (err) {
+      lastErr = err
+      if (!isTransient(err) || i === attempts - 1) throw err
+      await new Promise(r => setTimeout(r, 1000 * 2 ** i))
+    }
+  }
+  throw lastErr
+}

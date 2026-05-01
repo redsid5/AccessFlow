@@ -1,6 +1,6 @@
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import { AnalysisInput, TriageResult } from './types'
-import { getGeminiKey, GEMINI_MODEL } from './config'
+import { getGeminiKey, GEMINI_MODEL, withRetry } from './config'
 import { SCORING_WEIGHTS, computePriorityTotal } from './scoring-config'
 
 function getClient() {
@@ -94,7 +94,7 @@ No markdown fences. No keys outside this schema.`
 
 export async function classifyContent(input: AnalysisInput): Promise<TriageResult> {
   const model = getClient().getGenerativeModel({ model: GEMINI_MODEL })
-  const result = await model.generateContent(buildPrompt(input))
+  const result = await withRetry(() => model.generateContent(buildPrompt(input)))
   const text = result.response.text().replace(/```json|```/g, '').trim()
 
   const raw = JSON.parse(text) as Omit<TriageResult, 'priorityScore'> & {

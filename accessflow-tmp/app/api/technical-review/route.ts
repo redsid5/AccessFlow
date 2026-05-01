@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import { TechnicalReview } from '@/lib/types'
-import { getGeminiKey, GEMINI_MODEL, EXTRACT_LIMITS } from '@/lib/config'
+import { getGeminiKey, GEMINI_MODEL, EXTRACT_LIMITS, withRetry } from '@/lib/config'
 
 export const maxDuration = 60
 
@@ -78,7 +78,7 @@ export async function POST(req: NextRequest) {
     const prompt = buildPrompt(body.label, body.contentType, body.textSample, wcagContext)
 
     const model = getClient().getGenerativeModel({ model: GEMINI_MODEL })
-    const result = await model.generateContent(prompt)
+    const result = await withRetry(() => model.generateContent(prompt))
     const text = result.response.text().replace(/```json|```/g, '').trim()
     const review = JSON.parse(text) as TechnicalReview
 

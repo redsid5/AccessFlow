@@ -1,0 +1,110 @@
+[
+  {
+    "id": "accommodation-form",
+    "type": "pdf",
+    "label": "disability-accommodation-request.pdf",
+    "human_decision": "fix",
+    "human_priority": "High",
+    "expected_owner": "Accessibility office + Web team",
+    "notes": "Highest-risk document type — directly blocks students with disabilities from legal entitlements"
+  },
+  {
+    "id": "spring-flyer",
+    "type": "pdf",
+    "label": "Spring 2022 event flyer.pdf",
+    "human_decision": "delete",
+    "human_priority": "Low",
+    "expected_owner": "Department content owner",
+    "notes": "Expired low-value content — remediating this wastes specialist time"
+  },
+  {
+    "id": "tuition-deadlines",
+    "type": "url",
+    "label": "university.edu/tuition-payment-deadlines",
+    "human_decision": "fix",
+    "human_priority": "High",
+    "expected_owner": "Web team",
+    "notes": "Active, time-bound, student-facing — late fees and enrollment loss are real consequences"
+  },
+  {
+    "id": "financial-aid-faq",
+    "type": "url",
+    "label": "university.edu/financial-aid/faq",
+    "human_decision": "fix",
+    "human_priority": "High",
+    "expected_owner": "Web team",
+    "notes": "High-traffic mission-critical page; FAFSA and aid deadlines directly affect enrollment"
+  },
+  {
+    "id": "course-syllabus",
+    "type": "pdf",
+    "label": "HIST101-syllabus-fall2024.pdf",
+    "human_decision": "review",
+    "human_priority": "Medium",
+    "expected_owner": "Document owner",
+    "notes": "Faculty-owned content — impact depends on whether it's the only accessible version of course info"
+  },
+  {
+    "id": "dept-newsletter-2021",
+    "type": "pdf",
+    "label": "chemistry-dept-newsletter-spring2021.pdf",
+    "human_decision": "delete",
+    "human_priority": "Low",
+    "expected_owner": "Department content owner",
+    "notes": "Archived newsletter — no active student need, not mission-critical"
+  },
+  {
+    "id": "housing-application",
+    "type": "pdf",
+    "label": "housing-application-2025.pdf",
+    "human_decision": "fix",
+    "human_priority": "High",
+    "expected_owner": "Accessibility office + Web team",
+    "notes": "Active application form — inaccessible form fields block students from housing"
+  },
+  {
+    "id": "graduation-checklist",
+    "type": "pdf",
+    "label": "graduation-requirements-checklist.pdf",
+    "human_decision": "fix",
+    "human_priority": "High",
+    "expected_owner": "Accessibility office",
+    "notes": "Students rely on this to plan their final semesters — errors have multi-semester consequences"
+  },
+  {
+    "id": "it-acceptable-use",
+    "type": "pdf",
+    "label": "it-acceptable-use-policy.pdf",
+    "human_decision": "review",
+    "human_priority": "Medium",
+    "expected_owner": "Document owner",
+    "notes": "Policy document — student-facing but low interactivity; replace with HTML page is the right long-term call"
+  },
+  {
+    "id": "athletics-recap",
+    "type": "pdf",
+    "label": "football-season-recap-fall2022.pdf",
+    "human_decision": "delete",
+    "human_priority": "Low",
+    "expected_owner": "Department content owner",
+    "notes": "Time-expired promotional content — archiving is sufficient"
+  },
+  {
+    "id": "disability-services-home",
+    "type": "url",
+    "label": "university.edu/disability-services",
+    "human_decision": "fix",
+    "human_priority": "High",
+    "expected_owner": "Accessibility office + Web team",
+    "notes": "The disability services homepage being inaccessible is an acute irony and a legal priority"
+  },
+  {
+    "id": "dept-homepage-unknown",
+    "type": "url",
+    "label": "university.edu/geology/about",
+    "human_decision": "review",
+    "human_priority": "Medium",
+    "expected_owner": "Department content owner",
+    "notes": "Generic department page — ownership and student-impact depend on content; cannot classify without seeing it"
+  }
+]

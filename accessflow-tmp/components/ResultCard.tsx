@@ -34,6 +34,24 @@ const SIGNALS = [
   { key: 'missionCritical', label: 'Mission-critical' },
 ] as const
 
+function buildDraftEmailHref(label: string, result: TriageResult): string {
+  const subject = encodeURIComponent(`Accessibility triage: ${label}`)
+  const body = encodeURIComponent(
+    [
+      `Content: ${label}`,
+      `Decision: ${result.decision === 'fix' ? 'Fix now' : result.decision === 'delete' ? 'Delete / replace' : 'Needs review'}`,
+      `Priority: ${result.priority}`,
+      '',
+      result.why,
+      '',
+      `Recommended action: ${result.action}`,
+      `Suggested owner: ${result.owner}`,
+      `Estimated effort: ${result.estimatedEffort}`,
+    ].join('\n')
+  )
+  return `mailto:?subject=${subject}&body=${body}`
+}
+
 function buildExportText(label: string, result: TriageResult): string {
   return [
     'AccessFlow Triage Report',
@@ -120,6 +138,16 @@ export function ResultCard({ result, label, role }: {
       </div>
 
       <DecisionCard decision={result.decision} confidence={result.confidence} />
+
+      {result.confidence < 70 && (
+        <div className="px-4 sm:px-5 py-3 border-b border-[#e5e4df] dark:border-[#2c2c2a] bg-[#f7f6f2] dark:bg-[#252523]">
+          <p className="text-xs font-mono text-[#555] dark:text-[#9e9e98]">
+            <span className="font-semibold text-[#111] dark:text-[#ededea]">Human review recommended.</span>{' '}
+            Confidence is low — signals may be ambiguous or conflicting. Verify before acting.
+          </p>
+        </div>
+      )}
+
       <PriorityScorePanel score={result.priorityScore} />
 
       {/* Body */}
@@ -180,6 +208,12 @@ export function ResultCard({ result, label, role }: {
       <div className="px-4 sm:px-5 py-4 border-t border-[#e5e4df] dark:border-[#2c2c2a] flex flex-wrap gap-2">
         <ActionButton active={copied} onClick={handleExport} activeLabel="Copied" inactiveLabel="Export report" />
         <ActionButton active={resolved} onClick={() => setResolved(r => !r)} activeLabel="Resolved" inactiveLabel="Mark resolved" />
+        <a
+          href={buildDraftEmailHref(label, result)}
+          className="text-xs font-mono uppercase tracking-wider px-3 py-2 border border-[#e5e4df] dark:border-[#2c2c2a] text-[#555] dark:text-[#9e9e98] hover:border-[#111] dark:hover:border-[#ededea] transition-colors"
+        >
+          Draft email
+        </a>
         <button
           onClick={() => setTraceOpen(o => !o)}
           className="text-xs font-mono uppercase tracking-wider px-3 py-2 border border-[#e5e4df] dark:border-[#2c2c2a] text-[#555] dark:text-[#9e9e98] hover:border-[#111] dark:hover:border-[#ededea] transition-colors"

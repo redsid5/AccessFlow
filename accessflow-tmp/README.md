@@ -83,6 +83,21 @@ For the technical review panel: set role to **Staff**, run any analysis, click *
 
 ---
 
+## Validation
+
+A ground-truth audit set lives in `tests/audit_set.json` — 12 diverse university content samples with human-classified decisions, expected owners, and reasoning notes covering the full range of cases: mission-critical forms, expired flyers, ambiguous policy documents, and high-traffic service pages.
+
+To run it against the live pipeline:
+
+```bash
+npm run dev   # in one terminal
+node tests/audit.mjs
+```
+
+Results write to `tests/audit_results.json`. Any mismatch between system and human decision is flagged with a diagnosis: low-confidence extraction (LLM signal issue) or rule mismatch (policy logic issue). These are fixed differently — the former by improving the prompt, the latter by updating the scoring weights or rule thresholds.
+
+---
+
 ## What it doesn't do
 
 - Not a scanner — it's the decision layer built on top of your existing audit data

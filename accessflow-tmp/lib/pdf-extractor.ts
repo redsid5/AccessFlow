@@ -20,8 +20,13 @@ export async function extractPDF(buffer: Buffer): Promise<{
     }
   }
 
+  const text = textResult.text.trim()
+  if (text.length < 40) {
+    throw new Error('PDF contains no extractable text — likely scanned or image-only')
+  }
+
   return {
-    text: textResult.text.slice(0, 4000),
+    text: text.slice(0, 4000),
     pageCount: infoResult.total,
     metadata: info,
   }

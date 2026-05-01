@@ -14,6 +14,9 @@ export async function scrapeURL(url: string): Promise<{
     headers: { 'User-Agent': 'AccessFlow-Triage-Bot/1.0' },
     signal: AbortSignal.timeout(8000)
   })
+  if (!res.ok) {
+    throw new Error(`URL returned ${res.status} — cannot triage unreachable content`)
+  }
   const html = await res.text()
   const $ = cheerio.load(html)
 

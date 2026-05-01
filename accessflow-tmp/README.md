@@ -1,36 +1,107 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AccessFlow — Access Decision Assistant
 
-## Getting Started
+**Not a scanner. A decision layer.**
 
-First, run the development server:
+Universities already have accessibility scanners (WAVE, axe, Lighthouse, Siteimprove). What they don't have is a tool that tells staff **what to do next** — in plain English, by role, with a clear decision. That's the gap this fills.
+
+---
+
+## What it does
+
+Paste a URL or upload a PDF. Get one decision: **fix it**, **review it**, or **delete it** — with a priority score, ownership routing, effort estimate, and a full WCAG issue breakdown for the accessibility team.
+
+The triage philosophy baked into every decision:
+
+> Remove first → Replace second → Remediate third
+
+This is directly aligned with current DOJ Title II guidance and higher-ed accessibility best practice. Most teams try to fix everything. The right answer is usually to remove or replace first.
+
+---
+
+## Features
+
+**Triage (main page)**
+- URL scraping + PDF upload analysis powered by Gemini 2.5 Flash
+- Role-based output — staff, faculty, admin, student worker each get different language and framing
+- Priority score breakdown across 5 dimensions: student impact, legal risk, usage frequency, replaceability, time sensitivity
+- Effort estimate (10 min / 2 hours / multi-team project) and usage signal (high-traffic / seasonal / archived)
+- Auto-added to intake queue on every real analysis
+
+**Intake Queue (`/queue`)**
+- Status tracking per item: New → Assigned → In Progress → Fixed → Archived → Exempted
+- Assignee and department routing
+- Bulk PDF upload with sequential processing and progress counter
+- Filter by status and decision
+- Remediation cost estimate per item ($150/hr model)
+
+**Portfolio Dashboard (`/dashboard`)**
+- Total items, critical unresolved, resolved this month
+- Cost analysis: total if all fixed, projected savings from deletion, actual spend needed
+- By-decision and by-status distribution
+- Critical unresolved list
+- Department cost ranking
+
+**Technical Review (staff only)**
+- Gated behind passcode — for accessibility team, not general users
+- Per-issue: severity, WCAG criterion, location, plain description, detailed root cause analysis, quick fix, technical fix with code example, owner suggestion
+- 3-tab fix view: Quick fix / Technical fix / Owner
+
+---
+
+## Tech stack
+
+```
+Framework:    Next.js (App Router, Turbopack)
+Language:     TypeScript
+Styling:      Tailwind CSS v4
+AI layer:     Google Gemini 2.5 Flash
+PDF parsing:  pdf-parse v4 (class-based API)
+URL scraping: Cheerio + node-fetch
+Storage:      localStorage (no database required)
+Deployment:   Vercel-ready
+```
+
+---
+
+## Setup
+
+```bash
+git clone https://github.com/redsid5/AccessFlow.git
+cd AccessFlow/accessflow-tmp
+npm install
+```
+
+Create `.env.local`:
+
+```
+GEMINI_API_KEY=your_key_here
+```
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Demo
 
-## Learn More
+Three pre-loaded demo cases work without any API call:
 
-To learn more about Next.js, take a look at the following resources:
+- **Spring 2022 event flyer.pdf** — expired low-value content → Delete, Low priority
+- **disability-accommodation-request.pdf** — mission-critical form → Fix, High priority  
+- **university.edu/tuition-payment-deadlines** — active high-stakes page → Fix, High priority
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+For the Technical Review panel: set role to **Staff**, analyze any URL, click **Unlock** and enter the access code.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## What is intentionally out of scope
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Full WCAG audit reports (use axe-core or WAVE for that)
+- Authentication or user accounts
+- Notifications or workflow automation
+- Legal compliance certification
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This is a decision-support tool. It reduces triage time — it does not replace a full accessibility audit or legal review.

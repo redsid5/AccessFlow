@@ -1,4 +1,4 @@
-import type { PriorityScore } from './types'
+import type { PriorityScore, TriageResult } from './types'
 
 // studentImpact, legalRisk, timeSensitivity weighted ×2 — direct harm and deadline risk matter most
 export const SCORING_WEIGHTS = {
@@ -25,3 +25,45 @@ export function computePriorityTotal(scores: Omit<PriorityScore, 'total'>): numb
 }
 
 export const PRIORITY_THRESHOLDS = { high: 70, medium: 40 } as const
+
+export interface DecisionTrace {
+  rule: string
+  activeSignals: string[]
+  scoreBreakdown: { dimension: string; score: number; weight: number; weighted: number }[]
+  rawTotal: number
+  normalizedScore: number
+  priorityBand: string
+}
+
+export function buildDecisionTrace(result: TriageResult): DecisionTrace {
+  const { signals, priorityScore, decision } = result
+
+  const activeSignals = (Object.keys(signals) as (keyof typeof signals)[])
+    .filter(k => signals[k])
+
+  const scoreBreakdown = [
+    { dimension: 'studentImpact', score: priorityScore.studentImpact, weight: SCORING_WEIGHTS.studentImpact },
+    { dimension: 'legalRisk', score: priorityScore.legalRisk, weight: SCORING_WEIGHTS.legalRisk },
+    { dimension: 'usageFrequency', score: priorityScore.usageFrequency, weight: SCORING_WEIGHTS.usageFrequency },
+    { dimension: 'contentReplaceability', score: priorityScore.contentReplaceability, weight: SCORING_WEIGHTS.contentReplaceability },
+    { dimension: 'timeSensitivity', score: priorityScore.timeSensitivity, weight: SCORING_WEIGHTS.timeSensitivity },
+  ].map(d => ({ ...d, weighted: d.score * d.weight }))
+
+  const rawTotal = scoreBreakdown.reduce((sum, d) => sum + d.weighted, 0)
+
+  const rule =
+    decision === 'fix' && signals.publicFacing && signals.missionCritical
+      ? 'Rule 1 — public-facing + mission-critical + active → fix'
+      : decision === 'delete' && (signals.likelyLowValue || signals.betterAsHTML)
+      ? 'Rule 2 — outdated / low-value / better as HTML → delete'
+      : 'Rule 3 — ownership unclear or value uncertain → review'
+
+  const priorityBand =
+    priorityScore.total >= PRIORITY_THRESHOLDS.high
+      ? `High (score ≥ ${PRIORITY_THRESHOLDS.high})`
+      : priorityScore.total >= PRIORITY_THRESHOLDS.medium
+      ? `Medium (score ≥ ${PRIORITY_THRESHOLDS.medium})`
+      : `Low (score < ${PRIORITY_THRESHOLDS.medium})`
+
+  return { rule, activeSignals, scoreBreakdown, rawTotal, normalizedScore: priorityScore.total, priorityBand }
+}

@@ -13,11 +13,22 @@ Most teams start by trying to fix every issue a scanner flags. That's a trap. Ac
 
 ---
 
+## How it works
+
+The LLM is used for feature extraction only — it outputs 5 numeric subscores (0–10) across student impact, legal risk, usage frequency, replaceability, and time sensitivity. It never makes the final decision.
+
+The decision engine applies those scores through a fixed rule set with explicit weights (student impact ×2, legal risk ×2, time sensitivity ×2). The weighted total is computed server-side. Same input always produces the same output.
+
+Every result card includes a **View trace** panel that shows exactly which rule fired, which signals were active, and how each subscore was weighted to reach the final score. If a decision looks wrong, the trace shows you why.
+
+Ambiguous cases — where signals conflict — route to "Review" by default. The system does not guess.
+
 ## What it does
 
-- **Triage** — URL or PDF → decision card (Remove / Replace / Remediate)
+- **Triage** — URL or PDF → decision card (fix / review / delete)
 - **Queue** — status tracking per item: New → Assigned → In Progress → Fixed → Archived
-- **Decision engine** — deterministic logic based on impact, risk, and usage signals
+- **Decision engine** — rule-based scoring with explicit weights, computed server-side
+- **Decision trace** — collapsible audit panel on every result card
 - **Staff layer** — passcode-gated technical view for WCAG-specific remediation steps
 
 ---

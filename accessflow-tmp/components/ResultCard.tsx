@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { TriageResult, Role } from '@/lib/types'
 import { DecisionCard } from './DecisionCard'
 import { PriorityScorePanel } from './PriorityScorePanel'
+import { buildDecisionTrace } from '@/lib/scoring-config'
 
 const PRIORITY_STYLE: Record<string, string> = {
   High: 'border-[#111] dark:border-[#ededea] text-[#111] dark:text-[#ededea]',
@@ -86,6 +87,8 @@ export function ResultCard({ result, label, role }: {
 }) {
   const [copied, setCopied] = useState(false)
   const [resolved, setResolved] = useState(false)
+  const [traceOpen, setTraceOpen] = useState(false)
+  const trace = traceOpen ? buildDecisionTrace(result) : null
 
   function handleExport() {
     navigator.clipboard.writeText(buildExportText(label, result))
@@ -174,11 +177,47 @@ export function ResultCard({ result, label, role }: {
         </div>
       </div>
 
-      {/* Actions */}
       <div className="px-4 sm:px-5 py-4 border-t border-[#e5e4df] dark:border-[#2c2c2a] flex flex-wrap gap-2">
         <ActionButton active={copied} onClick={handleExport} activeLabel="Copied" inactiveLabel="Export report" />
         <ActionButton active={resolved} onClick={() => setResolved(r => !r)} activeLabel="Resolved" inactiveLabel="Mark resolved" />
+        <button
+          onClick={() => setTraceOpen(o => !o)}
+          className="text-xs font-mono uppercase tracking-wider px-3 py-2 border border-[#e5e4df] dark:border-[#2c2c2a] text-[#555] dark:text-[#9e9e98] hover:border-[#111] dark:hover:border-[#ededea] transition-colors"
+        >
+          {traceOpen ? 'Hide trace' : 'View trace'}
+        </button>
       </div>
+
+      {traceOpen && trace && (
+        <div className="border-t border-[#e5e4df] dark:border-[#2c2c2a] px-4 sm:px-5 py-4 dark:bg-[#111110]">
+          <p className="text-xs font-mono uppercase tracking-wider text-[#888] dark:text-[#666660] mb-3">Decision trace</p>
+          <div className="space-y-3 text-xs font-mono">
+            <div>
+              <span className="text-[#aaa] dark:text-[#444440]">rule </span>
+              <span className="text-[#333] dark:text-[#c8c8c2]">{trace.rule}</span>
+            </div>
+            <div>
+              <span className="text-[#aaa] dark:text-[#444440]">active signals </span>
+              <span className="text-[#333] dark:text-[#c8c8c2]">{trace.activeSignals.join(', ') || 'none'}</span>
+            </div>
+            <div>
+              <p className="text-[#aaa] dark:text-[#444440] mb-1.5">score breakdown</p>
+              <div className="space-y-1 pl-2 border-l border-[#e5e4df] dark:border-[#2c2c2a]">
+                {trace.scoreBreakdown.map(d => (
+                  <div key={d.dimension} className="flex gap-3">
+                    <span className="text-[#aaa] dark:text-[#444440] w-36 shrink-0">{d.dimension}</span>
+                    <span className="text-[#555] dark:text-[#9e9e98]">{d.score}/10 × {d.weight} = {d.weighted}</span>
+                  </div>
+                ))}
+                <div className="flex gap-3 pt-1 border-t border-[#e5e4df] dark:border-[#2c2c2a]">
+                  <span className="text-[#aaa] dark:text-[#444440] w-36 shrink-0">normalized total</span>
+                  <span className="text-[#111] dark:text-[#ededea]">{trace.normalizedScore}/100 → {trace.priorityBand}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="px-4 sm:px-5 py-3 border-t border-[#e5e4df] dark:border-[#2c2c2a]">
         <p className="text-xs text-[#aaa] dark:text-[#444440] font-mono">

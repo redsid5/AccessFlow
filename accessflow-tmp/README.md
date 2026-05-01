@@ -35,9 +35,11 @@ Ambiguous cases — where signals conflict — route to "Review" by default. The
 
 ## Why it exists
 
-- **Backlog reduction** — content removal is a faster way to reduce compliance liability than remediation
-- **Priority-driven** — focuses effort on high-impact journeys: admissions, financial aid, disability services
-- **Ownership** — forces clear handoffs between the central accessibility office and departments
+An inaccessible admissions page isn't a technical error. It's a "Keep Out" sign for any student who relies on a screen reader or keyboard navigation. An unlabeled form field means they can't apply. A broken tab order means they can't reach the Submit button. A missing image description means they can't tell what they're looking at.
+
+Universities know this. What they don't have is a process for deciding where to start. Backlogs run into the hundreds, staff time is limited, and most tools produce issue lists without telling anyone which issues actually block students from doing something critical — applying, enrolling, requesting an accommodation, paying tuition.
+
+AccessFlow is the triage layer that runs before remediation. It identifies which content is a barrier right now, which content should be deleted rather than fixed, and who owns the next step. The April 2026 DOJ Title II deadline is the forcing function. The goal is making sure every student has the same shot at applying and succeeding, regardless of how they access the internet.
 
 ---
 

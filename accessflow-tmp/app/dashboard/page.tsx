@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { getQueue, computeStats, remediationCost, DashboardStats } from '@/lib/queue-store'
+import { DECISION_LABELS } from '@/lib/config'
 import { QueueItem } from '@/lib/types'
 
 function fmt(n: number) {
@@ -132,9 +133,9 @@ export default function DashboardPage() {
               <div className="border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a] p-4 sm:p-5">
                 <p className="text-xs font-mono uppercase tracking-wider text-[#888] dark:text-[#666660] mb-4">By decision</p>
                 <div className="space-y-3">
-                  <Bar value={stats.byDecision.fix} max={stats.total} label="Fix now" />
-                  <Bar value={stats.byDecision.review} max={stats.total} label="Needs review" />
-                  <Bar value={stats.byDecision.delete} max={stats.total} label="Delete / replace" />
+                  <Bar value={stats.byDecision.fix} max={stats.total} label={DECISION_LABELS.fix} />
+                  <Bar value={stats.byDecision.review} max={stats.total} label={DECISION_LABELS.review} />
+                  <Bar value={stats.byDecision.delete} max={stats.total} label={DECISION_LABELS.delete} />
                 </div>
               </div>
               <div className="border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a] p-4 sm:p-5">

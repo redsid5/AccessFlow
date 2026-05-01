@@ -1,5 +1,11 @@
 export const GEMINI_MODEL = 'gemini-2.5-flash'
 
+export const DECISION_LABELS = {
+  fix: 'Fix now',
+  review: 'Needs review',
+  delete: 'Delete / replace',
+} as const
+
 export const STORAGE_KEYS = {
   queue: 'accessflow_queue',
   expertUnlocked: 'accessflow_expert_unlocked',

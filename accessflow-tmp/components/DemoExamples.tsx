@@ -1,6 +1,7 @@
 'use client'
 
 import { DEMO_CASES } from '@/lib/demo-cases'
+import { DECISION_LABELS } from '@/lib/config'
 import { Role, TriageResult } from '@/lib/types'
 
 interface DemoExamplesProps {
@@ -35,7 +36,7 @@ export function DemoExamples({ onSelect, role }: DemoExamplesProps) {
                   ? 'border-[#888] dark:border-[#666660] text-[#888] dark:text-[#666660]'
                   : 'border-[#ccc] dark:border-[#444440] text-[#aaa] dark:text-[#444440]'
               }`}>
-                {demo.result.decision === 'fix' ? 'Fix now' : demo.result.decision === 'delete' ? 'Delete' : 'Review'}
+                {DECISION_LABELS[demo.result.decision]}
               </span>
             </div>
           </button>

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { QueueItem, ItemStatus, Role } from '@/lib/types'
 import { getQueue, updateQueueItem, removeFromQueue, addToQueue, remediationCost } from '@/lib/queue-store'
+import { DECISION_LABELS } from '@/lib/config'
 
 const STATUS_LABELS: Record<ItemStatus, string> = {
   new: 'New',
@@ -182,7 +183,7 @@ export default function QueuePage() {
                   : 'border-[#e5e4df] dark:border-[#2c2c2a] text-[#888] dark:text-[#666660] hover:border-[#111] dark:hover:border-[#ededea]'
               }`}
             >
-              {d === 'all' ? 'All decisions' : d === 'fix' ? 'Fix now' : d === 'review' ? 'Review' : 'Delete'}
+              {d === 'all' ? 'All decisions' : DECISION_LABELS[d]}
             </button>
           ))}
         </div>

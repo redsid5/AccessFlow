@@ -34,6 +34,20 @@ const SIGNALS = [
   { key: 'missionCritical', label: 'Mission-critical' },
 ] as const
 
+function buildImpactLines(result: TriageResult): string[] {
+  if (result.decision !== 'fix' || result.priority !== 'High') return []
+  const lines: string[] = []
+  if (result.signals.missionCritical)
+    lines.push('Students cannot complete this process independently — it creates a direct barrier to a critical university service.')
+  if (result.signals.timeSensitive)
+    lines.push('This content has deadline pressure. An inaccessible page around a deadline means students miss it, not the page.')
+  if (result.signals.studentImpact && !result.signals.missionCritical)
+    lines.push('Students relying on assistive technology are blocked from accessing this content without help from another person.')
+  if (result.signals.publicFacing && result.signals.missionCritical)
+    lines.push('Public-facing mission-critical pages are the highest legal exposure under DOJ Title II — these are the first sites auditors check.')
+  return lines
+}
+
 function buildDraftEmailHref(label: string, result: TriageResult): string {
   const subject = encodeURIComponent(`Accessibility triage: ${label}`)
   const body = encodeURIComponent(
@@ -161,6 +175,22 @@ export function ResultCard({ result, label, role }: {
           <p className="text-xs font-mono uppercase tracking-wider text-[#888] dark:text-[#666660] mb-1.5">Recommended action</p>
           <p className="text-base text-[#111] dark:text-[#ededea] font-medium leading-relaxed">{result.action}</p>
         </div>
+
+        {(() => {
+          const lines = buildImpactLines(result)
+          return lines.length > 0 ? (
+            <div className="border border-[#111] dark:border-[#ededea] px-4 py-3">
+              <p className="text-xs font-mono uppercase tracking-wider text-[#111] dark:text-[#ededea] mb-2">Impact of inaction</p>
+              <ul className="space-y-1.5">
+                {lines.map((line, i) => (
+                  <li key={i} className="text-sm text-[#333] dark:text-[#c8c8c2] leading-relaxed pl-3 border-l-2 border-[#e5e4df] dark:border-[#2c2c2a]">
+                    {line}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null
+        })()}
 
         {result.roleNote && (
           <div className="border border-[#e5e4df] dark:border-[#2c2c2a] px-4 py-3">

@@ -59,14 +59,14 @@ export type IssueSeverity = 'Critical' | 'High' | 'Medium' | 'Low'
 export interface TechnicalIssue {
   id: string
   title: string
-  wcag: string           // e.g. "WCAG 2.1 AA 1.3.1 / 4.1.2"
+  wcag: string
   severity: IssueSeverity
-  location?: string      // e.g. "line 142" or "page 3"
-  problem: string        // plain description of what's broken
-  detailedReason: string // technical root cause, affected users, and real-world impact
-  quickFix: string       // one-line non-technical fix
-  technicalFix: string   // developer-level instruction
-  codeExample?: string   // HTML/CSS snippet
+  location?: string
+  problem: string
+  detailedReason: string
+  quickFix: string
+  technicalFix: string
+  codeExample?: string
   ownerSuggestion: string
 }
 

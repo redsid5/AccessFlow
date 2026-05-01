@@ -49,7 +49,6 @@ function IssueRow({ issue }: { issue: TechnicalIssue }) {
             </div>
           )}
 
-          {/* Fix tabs */}
           <div>
             <div className="flex gap-1 mb-3 border-b border-[#e5e4df] dark:border-[#2c2c2a]">
               {(['quick', 'technical', 'owner'] as FixTab[]).map(t => (

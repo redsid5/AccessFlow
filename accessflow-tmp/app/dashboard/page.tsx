@@ -96,7 +96,6 @@ export default function DashboardPage() {
           </div>
         ) : (
           <>
-            {/* Top stats */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-px mb-px">
               <StatBlock label="Total items" value={stats.total} />
               <StatBlock label="Critical unresolved" value={stats.criticalUnresolved} sub="Fix now / High priority" />
@@ -104,7 +103,6 @@ export default function DashboardPage() {
               <StatBlock label="Remediation cost" value={fmt(costAfterDeletion)} sub="after removing low-value content" />
             </div>
 
-            {/* Cost calculator */}
             <div className="border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a] p-4 sm:p-5 mt-px mb-8">
               <p className="text-xs font-mono uppercase tracking-wider text-[#888] dark:text-[#666660] mb-4">Cost analysis</p>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
@@ -130,7 +128,6 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            {/* By decision + status */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-px mb-px">
               <div className="border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a] p-4 sm:p-5">
                 <p className="text-xs font-mono uppercase tracking-wider text-[#888] dark:text-[#666660] mb-4">By decision</p>
@@ -152,7 +149,6 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            {/* Critical unresolved */}
             {highRiskUnresolved.length > 0 && (
               <div className="border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a] p-4 sm:p-5 mt-px mb-px">
                 <p className="text-xs font-mono uppercase tracking-wider text-[#888] dark:text-[#666660] mb-3">
@@ -178,7 +174,6 @@ export default function DashboardPage() {
               </div>
             )}
 
-            {/* By department */}
             {deptList.length > 0 && (
               <div className="border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a] p-4 sm:p-5 mt-px">
                 <p className="text-xs font-mono uppercase tracking-wider text-[#888] dark:text-[#666660] mb-4">By department</p>

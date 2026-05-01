@@ -2,8 +2,7 @@
 
 import { STORAGE_KEYS } from './config'
 
-// Passcode source: env var in production, fallback for local dev.
-// Set NEXT_PUBLIC_EXPERT_PASSCODE in Vercel environment variables to override.
+// Set NEXT_PUBLIC_EXPERT_PASSCODE in Vercel env to override the default
 const PASSCODE = process.env.NEXT_PUBLIC_EXPERT_PASSCODE ?? '0511'
 
 export function isExpertUnlocked(): boolean {

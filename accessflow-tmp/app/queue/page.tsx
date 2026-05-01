@@ -117,7 +117,6 @@ export default function QueuePage() {
           </p>
         </div>
 
-        {/* Bulk upload */}
         <div className="border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a] p-4 sm:p-5 mb-8">
           <p className="text-xs font-mono uppercase tracking-wider text-[#888] dark:text-[#666660] mb-3">Bulk PDF triage</p>
           <div className="flex flex-wrap items-center gap-3">
@@ -158,7 +157,6 @@ export default function QueuePage() {
           {bulkError && <p className="text-sm font-mono text-[#888] dark:text-[#666660] mt-2">{bulkError}</p>}
         </div>
 
-        {/* Filters */}
         <div className="flex flex-wrap gap-2 mb-5">
           {(['all', 'new', 'assigned', 'in-progress', 'fixed', 'archived', 'exempted'] as const).map(s => (
             <button
@@ -189,7 +187,6 @@ export default function QueuePage() {
           ))}
         </div>
 
-        {/* Queue items */}
         {displayed.length === 0 ? (
           <div className="border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a] px-5 py-10 text-center">
             <p className="text-base text-[#888] dark:text-[#666660] font-mono">No items match this filter.</p>

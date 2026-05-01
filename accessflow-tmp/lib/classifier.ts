@@ -3,8 +3,6 @@ import { AnalysisInput, TriageResult } from './types'
 import { getGeminiKey, GEMINI_MODEL } from './config'
 import { SCORING_WEIGHTS, computePriorityTotal } from './scoring-config'
 
-// Lazy init — not instantiated at module load so missing keys fail at call time,
-// not at import time (which would break the entire serverless function).
 function getClient() {
   return new GoogleGenerativeAI(getGeminiKey())
 }
@@ -103,7 +101,6 @@ export async function classifyContent(input: AnalysisInput): Promise<TriageResul
     priorityScore: Omit<TriageResult['priorityScore'], 'total'>
   }
 
-  // Compute total deterministically — never trust LLM to do arithmetic
   const total = computePriorityTotal(raw.priorityScore)
 
   return {

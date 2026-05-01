@@ -1,6 +1,3 @@
-// Central config — single source of truth for all magic strings and constants.
-// If something appears in more than one file, it belongs here.
-
 export const GEMINI_MODEL = 'gemini-2.5-flash'
 
 export const STORAGE_KEYS = {
@@ -9,10 +6,9 @@ export const STORAGE_KEYS = {
   theme: 'accessflow_theme',
 } as const
 
-// Active item statuses — used in Nav badge count and queue filtering
 export const ACTIVE_STATUSES = ['new', 'assigned', 'in-progress'] as const
 
-export const REMEDIATION_RATE_USD = 150 // $/hr accessibility specialist
+export const REMEDIATION_RATE_USD = 150
 
 export const EFFORT_HOURS = {
   '10 min': 10 / 60,
@@ -20,7 +16,6 @@ export const EFFORT_HOURS = {
   'multi-team project': 20,
 } as const
 
-// Text extract limits sent to the LLM — keeps token cost predictable
 export const EXTRACT_LIMITS = {
   pdf: 4000,
   url: 3000,

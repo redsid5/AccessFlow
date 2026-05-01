@@ -1,41 +1,32 @@
 # AccessFlow
-Accessibility scanners find issues. AccessFlow tells you what to do about them.
+Accessibility scanners tell you what's broken. AccessFlow tells you what to do next.
 
 ---
 
 ## The idea
 
-University accessibility teams don't have a scanning problem. They have a prioritization problem.
+Most accessibility tools create noise. AccessFlow creates a decision layer.
 
-The backlog grows because teams remediate everything the scanner flags — including a 2019 event flyer and a PDF that's been replaced by a web page. The right move, in most cases, is to remove or replace the content entirely. Remediation comes last.
+The workflow is: **Remove first → Replace second → Remediate third.**
 
-> Remove first. Replace second. Remediate third.
-
-AccessFlow enforces that order. Same input, same decision. No ambiguity.
+Most teams start by trying to fix every issue a scanner flags. That's a trap. AccessFlow focuses on triage — identifying content that is high-impact, low-value, or better served as HTML — turning a massive backlog into an actionable queue.
 
 ---
 
 ## What it does
 
-Paste a URL or upload a PDF. You get one decision card:
-
-- **Decision** — fix it, review it, or delete/replace it
-- **Priority score** — weighted across student impact, legal risk, usage, replaceability, and time sensitivity
-- **Effort estimate** — not low/medium/high. Actual time: 10 min, 2 hours, or multi-team project
-- **Suggested owner** — who acts next: Accessibility office, Web team, Department content owner, or Document owner
-- **Plain-language reason** — written for whoever is reading it, not whoever wrote the WCAG criterion
-
-Every result goes into an intake queue. The queue tracks status, assignee, department, and remediation cost. The dashboard shows what it would cost to fix everything versus what you'd save by removing the low-value content first.
-
-Role selector changes the language of every field — not a disclaimer at the bottom. Staff see WCAG context. Faculty see student impact. Admins see who's responsible and whether there's a deadline. Student workers get one sentence and one action.
+- **Triage** — URL or PDF → decision card (Remove / Replace / Remediate)
+- **Queue** — status tracking per item: New → Assigned → In Progress → Fixed → Archived
+- **Decision engine** — deterministic logic based on impact, risk, and usage signals
+- **Staff layer** — passcode-gated technical view for WCAG-specific remediation steps
 
 ---
 
 ## Why it exists
 
-DOJ Title II compliance hits public universities in April 2026. Most teams are looking at hundreds of PDFs and no clear process for deciding what to fix. AccessFlow is the triage layer that runs before remediation starts — it reduces the backlog by identifying what shouldn't be remediated in the first place.
-
-The real cost isn't fixing content. It's spending specialist time on content that should have been deleted two years ago.
+- **Backlog reduction** — content removal is a faster way to reduce compliance liability than remediation
+- **Priority-driven** — focuses effort on high-impact journeys: admissions, financial aid, disability services
+- **Ownership** — forces clear handoffs between the central accessibility office and departments
 
 ---
 
@@ -44,10 +35,8 @@ The real cost isn't fixing content. It's spending specialist time on content tha
 ```
 Next.js (App Router)   TypeScript   Tailwind CSS v4
 Gemini 2.5 Flash       pdf-parse    Cheerio
-localStorage — no database, no auth
+localStorage — demo mode, no backend required
 ```
-
-State lives in localStorage. Intentional. The tool is self-contained for demos and doesn't require infrastructure to evaluate.
 
 ---
 
@@ -69,24 +58,22 @@ GEMINI_API_KEY=your_key_here
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000)
-
 ---
 
-## Demo cases
+## Demo cases (no API key required)
 
-Three cases are built in and work without an API key:
+Three built-in cases demonstrate the triage model end-to-end:
 
-- **Spring 2022 event flyer.pdf** — expired low-value content. Decision: delete. No remediation time required.
-- **disability-accommodation-request.pdf** — highest-priority document type on any campus. Decision: fix immediately or replace with an HTML form.
-- **university.edu/tuition-payment-deadlines** — active, time-bound, student-facing. Decision: fix before the next payment cycle.
+- `Spring 2022 event flyer.pdf` → Remove (expired, low value)
+- `disability-accommodation-request.pdf` → Fix (highest priority document type)
+- `university.edu/tuition-payment-deadlines` → Fix (active, time-sensitive, student-facing)
 
-Run these first. They show the range of decisions and how the reasoning changes by role. For the technical review panel: set role to **Staff**, run any analysis, click **Unlock**.
+For the technical review panel: set role to **Staff**, run any analysis, click **Unlock**.
 
 ---
 
 ## What it doesn't do
 
-No full audit reports — axe-core and WAVE already do that. No authentication, no compliance certification, no ticketing integrations.
-
-This is one tool that does one thing: helps a team decide what to work on next, in what order, and who owns it. The scope is intentional. The value is in the decision, not the feature count.
+- Not a scanner — it's the decision layer built on top of your existing audit data
+- Not a compliance platform — it supports decision-making, it does not replace legal review
+- Not multi-user — state is local by design for the MVP

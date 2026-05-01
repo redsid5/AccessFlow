@@ -5,17 +5,26 @@ import { Role } from '@/lib/types'
 
 export const maxDuration = 60
 
+const VALID_ROLES = new Set<Role>(['staff', 'faculty', 'admin', 'student'])
+const MAX_FILE_BYTES = 10 * 1024 * 1024 // 10 MB
+
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData()
-    const file = formData.get('file') as File
-    const role = (formData.get('role') as Role) || 'staff'
+    const file = formData.get('file')
+    const roleRaw = formData.get('role')
 
-    if (!file) return NextResponse.json({ error: 'No file provided' }, { status: 400 })
-
-    if (!process.env.GEMINI_API_KEY) {
-      return NextResponse.json({ error: 'GEMINI_API_KEY is not configured on this deployment' }, { status: 500 })
+    if (!(file instanceof File)) {
+      return NextResponse.json({ error: 'No file provided' }, { status: 400 })
     }
+    if (file.type !== 'application/pdf') {
+      return NextResponse.json({ error: 'Only PDF files are accepted' }, { status: 400 })
+    }
+    if (file.size > MAX_FILE_BYTES) {
+      return NextResponse.json({ error: 'File exceeds 10 MB limit' }, { status: 400 })
+    }
+
+    const role: Role = VALID_ROLES.has(roleRaw as Role) ? (roleRaw as Role) : 'staff'
 
     const buffer = Buffer.from(await file.arrayBuffer())
     const { text, pageCount, metadata } = await extractPDF(buffer)
@@ -31,13 +40,12 @@ export async function POST(req: NextRequest) {
         title: metadata.Title,
         language: metadata.Language,
         lastModified: metadata.ModDate,
-        ...filenameSignals
-      }
+        ...filenameSignals,
+      },
     })
 
     return NextResponse.json(result)
   } catch (err) {
-    console.error('PDF analysis error:', err)
     const msg = err instanceof Error ? err.message : 'Unknown error'
     return NextResponse.json({ error: msg }, { status: 500 })
   }

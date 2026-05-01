@@ -3,7 +3,8 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { getQueue } from '@/lib/queue-store'
+import { getActiveCount } from '@/lib/queue-store'
+import { STORAGE_KEYS } from '@/lib/config'
 
 export function Nav() {
   const pathname = usePathname()
@@ -14,8 +15,7 @@ export function Nav() {
     setDark(document.documentElement.classList.contains('dark'))
 
     function update() {
-      const items = getQueue()
-      setQueueCount(items.filter(i => ['new', 'assigned', 'in-progress'].includes(i.status)).length)
+      setQueueCount(getActiveCount())
     }
     update()
     window.addEventListener('storage', update)
@@ -29,7 +29,7 @@ export function Nav() {
   function toggleDark() {
     const isDark = document.documentElement.classList.toggle('dark')
     setDark(isDark)
-    try { localStorage.setItem('accessflow_theme', isDark ? 'dark' : 'light') } catch {}
+    try { localStorage.setItem(STORAGE_KEYS.theme, isDark ? 'dark' : 'light') } catch {}
   }
 
   const links = [

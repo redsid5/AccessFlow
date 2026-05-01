@@ -1,13 +1,12 @@
 'use client'
 
 import { QueueItem, ItemStatus, TriageResult, ContentType, Role } from './types'
-
-const STORAGE_KEY = 'accessflow_queue'
+import { STORAGE_KEYS, EFFORT_HOURS, REMEDIATION_RATE_USD, ACTIVE_STATUSES } from './config'
 
 export function getQueue(): QueueItem[] {
   if (typeof window === 'undefined') return []
   try {
-    const raw = localStorage.getItem(STORAGE_KEY)
+    const raw = localStorage.getItem(STORAGE_KEYS.queue)
     return raw ? (JSON.parse(raw) as QueueItem[]) : []
   } catch {
     return []
@@ -15,7 +14,7 @@ export function getQueue(): QueueItem[] {
 }
 
 function saveQueue(items: QueueItem[]): void {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(items))
+  localStorage.setItem(STORAGE_KEYS.queue, JSON.stringify(items))
 }
 
 export function addToQueue(
@@ -34,17 +33,13 @@ export function addToQueue(
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   }
-  const current = getQueue()
-  saveQueue([item, ...current])
+  saveQueue([item, ...getQueue()])
   return item
 }
 
 export function updateQueueItem(id: string, patch: Partial<Omit<QueueItem, 'id' | 'createdAt'>>): void {
-  const current = getQueue()
-  const updated = current.map(item =>
-    item.id === id
-      ? { ...item, ...patch, updatedAt: new Date().toISOString() }
-      : item
+  const updated = getQueue().map(item =>
+    item.id === id ? { ...item, ...patch, updatedAt: new Date().toISOString() } : item
   )
   saveQueue(updated)
 }
@@ -57,16 +52,12 @@ export function clearQueue(): void {
   saveQueue([])
 }
 
-// Cost model: $150/hr accessibility specialist rate
-const EFFORT_HOURS: Record<string, number> = {
-  '10 min': 1,
-  '2 hours': 4,
-  'multi-team project': 20,
+export function getActiveCount(): number {
+  return getQueue().filter(i => (ACTIVE_STATUSES as readonly string[]).includes(i.status)).length
 }
-const HOURLY_RATE = 150
 
 export function remediationCost(item: QueueItem): number {
-  return EFFORT_HOURS[item.result.estimatedEffort] * HOURLY_RATE
+  return EFFORT_HOURS[item.result.estimatedEffort] * REMEDIATION_RATE_USD
 }
 
 export interface DashboardStats {
@@ -81,14 +72,14 @@ export interface DashboardStats {
 }
 
 export function computeStats(items: QueueItem[]): DashboardStats {
-  const now = new Date()
-  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString()
+  const monthStart = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString()
 
   const byDecision = { fix: 0, review: 0, delete: 0 }
   const byStatus: Record<ItemStatus, number> = {
-    new: 0, assigned: 0, 'in-progress': 0, fixed: 0, archived: 0, exempted: 0
+    new: 0, assigned: 0, 'in-progress': 0, fixed: 0, archived: 0, exempted: 0,
   }
   const byPriority = { High: 0, Medium: 0, Low: 0 }
+  const resolved = new Set(['fixed', 'archived', 'exempted'])
   let totalRemediationCost = 0
   let projectedSavings = 0
   let resolvedThisMonth = 0
@@ -100,34 +91,17 @@ export function computeStats(items: QueueItem[]): DashboardStats {
     byPriority[item.result.priority]++
 
     const cost = remediationCost(item)
-
     if (item.result.decision === 'delete') {
       projectedSavings += cost
     } else {
       totalRemediationCost += cost
     }
 
-    if (['fixed', 'archived', 'exempted'].includes(item.status) && item.updatedAt >= monthStart) {
-      resolvedThisMonth++
-    }
-
-    if (
-      item.result.decision === 'fix' &&
-      item.result.priority === 'High' &&
-      !['fixed', 'archived', 'exempted'].includes(item.status)
-    ) {
+    if (resolved.has(item.status) && item.updatedAt >= monthStart) resolvedThisMonth++
+    if (item.result.decision === 'fix' && item.result.priority === 'High' && !resolved.has(item.status)) {
       criticalUnresolved++
     }
   }
 
-  return {
-    total: items.length,
-    byDecision,
-    byStatus,
-    byPriority,
-    totalRemediationCost,
-    projectedSavings,
-    resolvedThisMonth,
-    criticalUnresolved,
-  }
+  return { total: items.length, byDecision, byStatus, byPriority, totalRemediationCost, projectedSavings, resolvedThisMonth, criticalUnresolved }
 }

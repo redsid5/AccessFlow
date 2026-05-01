@@ -1,42 +1,41 @@
 # AccessFlow
-
-Universities already have accessibility scanners. What they don't have is something that tells staff what to actually do about the results.
-
-WAVE and axe will tell you a PDF has 47 issues. They won't tell you whether it's worth fixing. They won't ask if the event it describes already happened two years ago. They won't suggest deleting it instead.
-
-That's the gap this fills.
+Accessibility scanners find issues. AccessFlow tells you what to do about them.
 
 ---
 
 ## The idea
 
-The triage philosophy in higher-ed accessibility — and it's not mine, it comes from DOJ Title II guidance and practitioners at schools like Ohio State and UMKC — is:
+University accessibility teams don't have a scanning problem. They have a prioritization problem.
+
+The backlog grows because teams remediate everything the scanner flags — including a 2019 event flyer and a PDF that's been replaced by a web page. The right move, in most cases, is to remove or replace the content entirely. Remediation comes last.
 
 > Remove first. Replace second. Remediate third.
 
-Most teams do the opposite. They get a scan report, sort by severity, and start fixing. They spend a week remediating a PDF that nobody has clicked in three years. AccessFlow tries to interrupt that pattern.
-
-Paste a URL or upload a PDF. Get one decision: fix it, review it, or delete it. With a reason. With a priority. With a suggested owner. That's it.
+AccessFlow enforces that order. Same input, same decision. No ambiguity.
 
 ---
 
-## Role-based output
+## What it does
 
-The same content reads differently depending on who you are. An accessibility specialist wants WCAG criterion references. A faculty member wants to know how it affects their students. A department admin needs to know who is responsible and whether there's a deadline risk.
+Paste a URL or upload a PDF. You get one decision card:
 
-The role selector changes the language of every field — not just a disclaimer at the bottom. The "why" and "action" fields are rewritten for the audience.
+- **Decision** — fix it, review it, or delete/replace it
+- **Priority score** — weighted across student impact, legal risk, usage, replaceability, and time sensitivity
+- **Effort estimate** — not low/medium/high. Actual time: 10 min, 2 hours, or multi-team project
+- **Suggested owner** — who acts next: Accessibility office, Web team, Department content owner, or Document owner
+- **Plain-language reason** — written for whoever is reading it, not whoever wrote the WCAG criterion
+
+Every result goes into an intake queue. The queue tracks status, assignee, department, and remediation cost. The dashboard shows what it would cost to fix everything versus what you'd save by removing the low-value content first.
+
+Role selector changes the language of every field — not a disclaimer at the bottom. Staff see WCAG context. Faculty see student impact. Admins see who's responsible and whether there's a deadline. Student workers get one sentence and one action.
 
 ---
 
-## What's in it
+## Why it exists
 
-**Main triage** — URL or PDF → one decision with priority score, effort estimate, and usage signal. Results go straight into the queue.
+DOJ Title II compliance hits public universities in April 2026. Most teams are looking at hundreds of PDFs and no clear process for deciding what to fix. AccessFlow is the triage layer that runs before remediation starts — it reduces the backlog by identifying what shouldn't be remediated in the first place.
 
-**Intake queue** — status workflow per item (New → Assigned → In Progress → Fixed → Archived → Exempted). Bulk PDF upload if you have a folder of documents to process. Estimated remediation cost per item.
-
-**Dashboard** — breakdown by decision, status, and priority. Cost analysis: what it would cost to fix everything vs. what you'd save by deleting the low-value items first.
-
-**Technical review** — behind a passcode, for the accessibility team only. Per-issue WCAG breakdown with severity, root cause, quick fix for content owners, and a code snippet for developers. This is the layer for staff who need more than a triage decision.
+The real cost isn't fixing content. It's spending specialist time on content that should have been deleted two years ago.
 
 ---
 
@@ -45,10 +44,10 @@ The role selector changes the language of every field — not just a disclaimer 
 ```
 Next.js (App Router)   TypeScript   Tailwind CSS v4
 Gemini 2.5 Flash       pdf-parse    Cheerio
-localStorage only — no database
+localStorage — no database, no auth
 ```
 
-No auth. No database. State lives in localStorage. It's a decision-support tool, not an enterprise platform.
+State lives in localStorage. Intentional. The tool is self-contained for demos and doesn't require infrastructure to evaluate.
 
 ---
 
@@ -60,7 +59,7 @@ cd AccessFlow/accessflow-tmp
 npm install
 ```
 
-Add a `.env.local`:
+Create `.env.local`:
 
 ```
 GEMINI_API_KEY=your_key_here
@@ -70,24 +69,24 @@ GEMINI_API_KEY=your_key_here
 npm run dev
 ```
 
+Open [http://localhost:3000](http://localhost:3000)
+
 ---
 
-## Trying it without an API key
+## Demo cases
 
-Three demo cases are baked in and work offline:
+Three cases are built in and work without an API key:
 
-- A 2022 event flyer → deletes cleanly, no analysis needed
-- A disability accommodation form → highest priority fix, shows the WCAG breakdown
-- A tuition deadline page → active, high-stakes, time-sensitive
+- **Spring 2022 event flyer.pdf** — expired low-value content. Decision: delete. No remediation time required.
+- **disability-accommodation-request.pdf** — highest-priority document type on any campus. Decision: fix immediately or replace with an HTML form.
+- **university.edu/tuition-payment-deadlines** — active, time-bound, student-facing. Decision: fix before the next payment cycle.
 
-The demo cases are the clearest way to show what the tool actually does. Run them before connecting a real API key.
-
-For the technical review panel: set role to **Staff**, run any analysis, click **Unlock**.
+Run these first. They show the range of decisions and how the reasoning changes by role. For the technical review panel: set role to **Staff**, run any analysis, click **Unlock**.
 
 ---
 
 ## What it doesn't do
 
-No full audit reports — that's what axe-core and WAVE are for. No authentication. No compliance certification. No notifications.
+No full audit reports — axe-core and WAVE already do that. No authentication, no compliance certification, no ticketing integrations.
 
-This is one tool that does one thing: helps a team decide what to work on next. The scope is intentional.
+This is one tool that does one thing: helps a team decide what to work on next, in what order, and who owns it. The scope is intentional. The value is in the decision, not the feature count.

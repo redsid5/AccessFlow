@@ -1,4 +1,4 @@
-# AccessFlow — Claude Code Build Prompt
+# AccessFlow 
 # Copy this entire file into Claude Code (VS Code) to build the MVP
 
 ---

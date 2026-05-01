@@ -27,16 +27,19 @@ export function computePriorityTotal(scores: Omit<PriorityScore, 'total'>): numb
 export const PRIORITY_THRESHOLDS = { high: 70, medium: 40 } as const
 
 export interface DecisionTrace {
+  timestamp: string
+  actor: 'accessflow-pipeline'
   rule: string
   activeSignals: string[]
   scoreBreakdown: { dimension: string; score: number; weight: number; weighted: number }[]
   rawTotal: number
   normalizedScore: number
   priorityBand: string
+  confidenceGated: boolean
 }
 
-export function buildDecisionTrace(result: TriageResult): DecisionTrace {
-  const { signals, priorityScore, decision } = result
+export function buildDecisionTrace(result: TriageResult, timestamp?: string): DecisionTrace {
+  const { signals, priorityScore, decision, confidence } = result
 
   const activeSignals = (Object.keys(signals) as (keyof typeof signals)[])
     .filter(k => signals[k])
@@ -65,5 +68,15 @@ export function buildDecisionTrace(result: TriageResult): DecisionTrace {
       ? `Medium (score ≥ ${PRIORITY_THRESHOLDS.medium})`
       : `Low (score < ${PRIORITY_THRESHOLDS.medium})`
 
-  return { rule, activeSignals, scoreBreakdown, rawTotal, normalizedScore: priorityScore.total, priorityBand }
+  return {
+    timestamp: timestamp ?? new Date().toISOString(),
+    actor: 'accessflow-pipeline',
+    rule,
+    activeSignals,
+    scoreBreakdown,
+    rawTotal,
+    normalizedScore: priorityScore.total,
+    priorityBand,
+    confidenceGated: confidence < 65,
+  }
 }

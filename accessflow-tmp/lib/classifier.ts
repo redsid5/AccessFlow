@@ -111,8 +111,12 @@ export async function classifyContent(input: AnalysisInput): Promise<TriageResul
 
   const confidence = inconsistent ? Math.min(raw.confidence, 64) : raw.confidence
 
+  // Hard safety gate: ambiguous confidence forces review regardless of rule path
+  const decision = confidence < 65 ? 'review' : raw.decision
+
   return {
     ...raw,
+    decision,
     confidence,
     priorityScore: { ...raw.priorityScore, total },
   }

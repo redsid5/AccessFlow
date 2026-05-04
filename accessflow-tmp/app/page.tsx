@@ -3,6 +3,7 @@
 import { useState, useRef } from 'react'
 import { AnalysisV2Result, FixOpportunity } from '@/lib/v2-types'
 import { addFixOpportunities } from '@/lib/v2-queue'
+import { getSortScore } from '@/lib/v2-display'
 import { FixCard } from '@/components/v2/FixCard'
 
 type InputTab = 'url' | 'pdf'
@@ -153,9 +154,11 @@ export default function Home() {
                   </p>
                 </div>
               ) : (
-                result.fixOpportunities.map(fix => (
-                  <FixCard key={fix.id} fix={fix} />
-                ))
+                [...result.fixOpportunities]
+                  .sort((a, b) => getSortScore(b) - getSortScore(a))
+                  .map(fix => (
+                    <FixCard key={fix.id} fix={fix} />
+                  ))
               )}
             </div>
           </div>

@@ -3,35 +3,49 @@
 import { useEffect, useState } from 'react'
 import { FixOpportunity, QueueStatus, PatternBucket } from '@/lib/v2-types'
 import { getQueue, updateStatus, removeFromQueue, groupByBucket, getCompressionStats, QueueGroup } from '@/lib/v2-queue'
+import { getSortScore, getTimeSaved } from '@/lib/v2-display'
 import { FixCard } from '@/components/v2/FixCard'
 
 const BUCKET_LABEL: Record<PatternBucket, string> = {
-  'navigation': 'Navigation',
-  'forms': 'Forms',
-  'buttons-links': 'Buttons & Links',
-  'search': 'Search',
-  'media': 'Media',
-  'document-pdf': 'Documents / PDF',
-  'layout-template': 'Layout & Template',
+  'navigation':     'Navigation',
+  'forms':          'Forms',
+  'buttons-links':  'Buttons & Links',
+  'search':         'Search',
+  'media':          'Media',
+  'document-pdf':   'Documents / PDF',
+  'layout-template':'Layout & Template',
 }
 
 const STATUS_FILTERS: { value: QueueStatus | 'all'; label: string }[] = [
-  { value: 'all', label: 'All' },
-  { value: 'NEW', label: 'New' },
-  { value: 'ASSIGNED', label: 'Assigned' },
-  { value: 'IN_PROGRESS', label: 'In progress' },
-  { value: 'VERIFIED', label: 'Verified' },
-  { value: 'ARCHIVED', label: 'Archived' },
+  { value: 'all',             label: 'All' },
+  { value: 'NEW',             label: 'New' },
+  { value: 'ASSIGNED',        label: 'Assigned' },
+  { value: 'IN_PROGRESS',     label: 'In progress' },
+  { value: 'VERIFIED',        label: 'Verified' },
+  { value: 'ARCHIVED',        label: 'Archived' },
   { value: 'REVIEW_REQUIRED', label: 'Needs review' },
 ]
+
+function groupTimeSaved(fixes: FixOpportunity[]): string {
+  let totalMins = 0
+  for (const fix of fixes) {
+    const label = getTimeSaved(fix)
+    const hMatch = label.match(/([\d.]+)h/)
+    const mMatch = label.match(/(\d+)m/)
+    if (hMatch) totalMins += parseFloat(hMatch[1]) * 60
+    else if (mMatch) totalMins += parseInt(mMatch[1])
+  }
+  if (totalMins <= 0) return ''
+  if (totalMins < 60) return `~${totalMins}m saved`
+  const h = totalMins / 60
+  return `~${Number.isInteger(h) ? h : h.toFixed(1)}h saved`
+}
 
 export default function QueuePage() {
   const [items, setItems] = useState<FixOpportunity[]>([])
   const [filterStatus, setFilterStatus] = useState<QueueStatus | 'all'>('all')
 
-  function reload() {
-    setItems(getQueue())
-  }
+  function reload() { setItems(getQueue()) }
 
   useEffect(() => {
     reload()
@@ -53,7 +67,12 @@ export default function QueuePage() {
     ? items
     : items.filter(f => f.status === filterStatus)
 
-  const groups: QueueGroup[] = groupByBucket(filtered)
+  // Sort within each group by priority score (highest first)
+  const groups: QueueGroup[] = groupByBucket(filtered).map(g => ({
+    ...g,
+    fixes: [...g.fixes].sort((a, b) => getSortScore(b) - getSortScore(a)),
+  }))
+
   const stats = getCompressionStats(items)
 
   return (
@@ -92,9 +111,7 @@ export default function QueuePage() {
         {filtered.length === 0 && (
           <div className="border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a] px-5 py-12 text-center">
             <p className="text-sm font-mono text-[#888] dark:text-[#666660]">
-              {items.length === 0
-                ? 'No items in queue.'
-                : 'No items match this filter.'}
+              {items.length === 0 ? 'No items in queue.' : 'No items match this filter.'}
             </p>
             {items.length === 0 && (
               <p className="text-xs font-mono text-[#aaa] dark:text-[#444440] mt-1">
@@ -106,36 +123,41 @@ export default function QueuePage() {
           </div>
         )}
 
-        {/* Grouped by bucket */}
-        {groups.map(group => (
-          <div key={group.bucket} className="mb-8">
-            <div className="flex items-baseline gap-3 mb-2">
-              <h2 className="text-xs font-mono uppercase tracking-wider text-[#888] dark:text-[#666660]">
-                {BUCKET_LABEL[group.bucket]}
-              </h2>
-              <span className="text-xs font-mono text-[#aaa] dark:text-[#444440]">
-                {group.fixes.length} fix{group.fixes.length !== 1 ? 'es' : ''}
-                {' · '}
-                {group.totalRawIssues} issue{group.totalRawIssues !== 1 ? 's' : ''}
-                {' · '}
-                {group.totalSources} source{group.totalSources !== 1 ? 's' : ''}
-              </span>
+        {/* Grouped by bucket, highest-leverage first within each group */}
+        {groups.map(group => {
+          const saved = groupTimeSaved(group.fixes)
+          return (
+            <div key={group.bucket} className="mb-8">
+              <div className="flex items-baseline gap-3 mb-2 flex-wrap">
+                <h2 className="text-xs font-mono uppercase tracking-wider text-[#888] dark:text-[#666660]">
+                  {BUCKET_LABEL[group.bucket]}
+                </h2>
+                <span className="text-xs font-mono text-[#aaa] dark:text-[#444440]">
+                  {group.fixes.length} fix{group.fixes.length !== 1 ? 'es' : ''}
+                  {' · '}
+                  {group.totalRawIssues} issue{group.totalRawIssues !== 1 ? 's' : ''}
+                  {' · '}
+                  {group.totalSources} source{group.totalSources !== 1 ? 's' : ''}
+                </span>
+                {saved && (
+                  <span className="text-xs font-mono text-[#555] dark:text-[#9e9e98]">{saved}</span>
+                )}
+              </div>
+              <div className="space-y-px">
+                {group.fixes.map(fix => (
+                  <FixCard
+                    key={fix.id}
+                    fix={fix}
+                    showStatus
+                    onStatusChange={handleStatusChange}
+                    onRemove={handleRemove}
+                  />
+                ))}
+              </div>
             </div>
-            <div className="space-y-px">
-              {group.fixes.map(fix => (
-                <FixCard
-                  key={fix.id}
-                  fix={fix}
-                  showStatus
-                  onStatusChange={handleStatusChange}
-                  onRemove={handleRemove}
-                />
-              ))}
-            </div>
-          </div>
-        ))}
+          )
+        })}
       </div>
     </main>
   )
 }
-

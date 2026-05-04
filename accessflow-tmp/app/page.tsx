@@ -77,7 +77,7 @@ export default function Home() {
             AccessFlow
           </h1>
           <p className="text-sm text-[#888] dark:text-[#666660] mt-1">
-            Accessibility backlog triage and compression.
+            Fix once. Clear many. Less repeated work.
           </p>
         </div>
 
@@ -177,21 +177,25 @@ export default function Home() {
 function SummaryBar({ result, queued }: { result: AnalysisV2Result; queued: boolean }) {
   const ratio = result.compressionRatio
   return (
-    <div className="border-t border-b border-[#e5e4df] dark:border-[#2c2c2a] py-3 flex items-center gap-6">
+    <div className="border-t border-b border-[#e5e4df] dark:border-[#2c2c2a] py-3 flex items-center gap-2 flex-wrap">
       <span className="text-xs font-mono text-[#888] dark:text-[#666660]">
-        {result.rawIssues.length} issues
+        {result.rawIssues.length} issues found
       </span>
-      <span className="text-xs font-mono text-[#ccc] dark:text-[#333330]">→</span>
+      <span className="text-xs font-mono text-[#ccc] dark:text-[#333330]">·</span>
       <span className="text-xs font-mono text-[#888] dark:text-[#666660]">
-        {result.fixOpportunities.length} fix{result.fixOpportunities.length !== 1 ? 'es' : ''}
+        {result.fixOpportunities.length} fix{result.fixOpportunities.length !== 1 ? 'es' : ''} needed
       </span>
-      <span className="text-xs font-mono text-[#111] dark:text-[#ededea] font-semibold ml-auto">
-        {ratio.toFixed(1)}:1
+      <span className="text-xs font-mono text-[#ccc] dark:text-[#333330]">·</span>
+      <span className="text-xs font-mono text-[#111] dark:text-[#ededea] font-semibold">
+        {ratio.toFixed(1)}× less work
       </span>
       {queued && (
-        <a href="/queue" className="text-xs font-mono text-[#888] dark:text-[#666660] underline">
-          view queue
-        </a>
+        <>
+          <span className="text-xs font-mono text-[#ccc] dark:text-[#333330]">·</span>
+          <a href="/queue" className="text-xs font-mono text-[#555] dark:text-[#9e9e98] underline">
+            added to queue
+          </a>
+        </>
       )}
     </div>
   )

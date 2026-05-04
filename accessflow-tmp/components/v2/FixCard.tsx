@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { FixOpportunity, QueueStatus } from '@/lib/v2-types'
 import {
-  getEffort, getTimeSaved, getLeverageLabel,
+  getEffort, EFFORT_COPY, getTimeSaved, getLeverageLabel,
   getNextStep, getTimeSavedReason,
 } from '@/lib/v2-display'
 
@@ -19,11 +19,6 @@ const PRIORITY_TEXT: Record<string, string> = {
   low:    'text-[#bbb] dark:text-[#444440]',
 }
 
-const EFFORT_LABEL: Record<string, string> = {
-  small:  'small effort',
-  medium: 'medium effort',
-  large:  'large effort',
-}
 
 const BUCKET_LABEL: Record<string, string> = {
   'navigation':     'Navigation',
@@ -117,29 +112,29 @@ export function FixCard({ fix, onStatusChange, onRemove, showStatus = false }: F
           </span>
         )}
         {timeSaved && (
-          <span className="text-xs font-mono text-[#555] dark:text-[#9e9e98]">{timeSaved}</span>
+          <span className="text-xs font-mono text-[#555] dark:text-[#9e9e98]">Work saved: {timeSaved}</span>
         )}
-        <span className="text-xs font-mono text-[#aaa] dark:text-[#444440]">{EFFORT_LABEL[effort]}</span>
+        <span className="text-xs font-mono text-[#aaa] dark:text-[#444440]">{EFFORT_COPY[effort]}</span>
       </div>
 
       {/* ── Next step ──────────────────────────────────────────── */}
       <div className="px-4 pb-3 border-t border-[#e5e4df] dark:border-[#2c2c2a] pt-3">
-        <p className="text-xs font-mono text-[#888] dark:text-[#666660] mb-0.5">Next step</p>
-        <p className="text-sm text-[#111] dark:text-[#ededea]">{nextStep}</p>
-        <p className="text-xs text-[#888] dark:text-[#666660] mt-1">
-          Owner: {fix.owner.team} · {fix.owner.role}
+        <p className="text-xs font-mono text-[#888] dark:text-[#666660] mb-1">Next step</p>
+        <p className="text-sm text-[#111] dark:text-[#ededea] leading-relaxed">{nextStep}</p>
+        <p className="text-xs text-[#888] dark:text-[#666660] mt-1.5">
+          {fix.owner.team} · {fix.owner.role}
         </p>
       </div>
 
       {/* ── Why this saves time ────────────────────────────────── */}
-      <div className="px-4 py-2.5 border-t border-[#e5e4df] dark:border-[#2c2c2a]">
-        <p className="text-xs text-[#888] dark:text-[#666660] leading-relaxed">{saveReason}</p>
+      <div className="px-4 py-2.5 border-t border-[#e5e4df] dark:border-[#2c2c2a] bg-[#fafaf8] dark:bg-[#161614]">
+        <p className="text-xs text-[#666] dark:text-[#7a7a74] leading-relaxed">{saveReason}</p>
       </div>
 
       {/* ── Accordions ─────────────────────────────────────────── */}
       <div className="border-t border-[#e5e4df] dark:border-[#2c2c2a]">
         <AccordionRow
-          label="Decision rationale"
+          label="Why this decision"
           open={openSection === 'why'}
           onToggle={() => toggle('why')}
         >
@@ -158,7 +153,7 @@ export function FixCard({ fix, onStatusChange, onRemove, showStatus = false }: F
         </AccordionRow>
 
         <AccordionRow
-          label={`Affected sources (${fix.affectedSourceCount})`}
+          label={`Pages affected (${fix.affectedSourceCount})`}
           open={openSection === 'sources'}
           onToggle={() => toggle('sources')}
         >
@@ -190,7 +185,7 @@ export function FixCard({ fix, onStatusChange, onRemove, showStatus = false }: F
         </AccordionRow>
 
         <AccordionRow
-          label="Scope & audit trace"
+          label="Scope & decision trace"
           open={openSection === 'trace'}
           onToggle={() => toggle('trace')}
         >

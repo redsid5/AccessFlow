@@ -60,23 +60,16 @@ export default function QueuePage() {
     <main className="min-h-screen px-4 sm:px-5 pb-20">
       <div className="max-w-[860px] mx-auto">
 
-        <div className="pt-12 pb-6">
-          <h1 className="text-3xl sm:text-4xl font-bold text-[#111] dark:text-[#ededea] tracking-tight">
+        <div className="pt-10 pb-5 flex items-baseline gap-4 flex-wrap">
+          <h1 className="text-2xl font-semibold text-[#111] dark:text-[#ededea] tracking-tight">
             Fix Queue
           </h1>
-          <p className="text-base text-[#555] dark:text-[#9e9e98] mt-2">
-            {items.length} consolidated fix{items.length !== 1 ? 's' : ''} from {stats.rawIssues} raw issues
-          </p>
+          {items.length > 0 && (
+            <span className="text-xs font-mono text-[#888] dark:text-[#666660]">
+              {stats.rawIssues} issues → {stats.consolidatedFixes} fix{stats.consolidatedFixes !== 1 ? 'es' : ''} · {stats.compressionRatio.toFixed(1)}:1
+            </span>
+          )}
         </div>
-
-        {/* Compression stats */}
-        {items.length > 0 && (
-          <div className="border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a] px-4 py-3 mb-6 flex flex-wrap gap-6">
-            <Stat label="Raw issues" value={stats.rawIssues.toString()} />
-            <Stat label="Consolidated fixes" value={stats.consolidatedFixes.toString()} />
-            <Stat label="Compression ratio" value={`${stats.compressionRatio.toFixed(1)}:1`} />
-          </div>
-        )}
 
         {/* Status filter */}
         <div className="flex flex-wrap gap-1.5 mb-6">
@@ -146,11 +139,3 @@ export default function QueuePage() {
   )
 }
 
-function Stat({ label, value }: { label: string; value: string }) {
-  return (
-    <div>
-      <p className="text-xs font-mono text-[#888] dark:text-[#666660]">{label}</p>
-      <p className="text-xl font-bold text-[#111] dark:text-[#ededea]">{value}</p>
-    </div>
-  )
-}

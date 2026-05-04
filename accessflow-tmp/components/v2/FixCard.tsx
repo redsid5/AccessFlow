@@ -5,14 +5,14 @@ import { FixOpportunity, QueueStatus } from '@/lib/v2-types'
 
 const DECISION_STYLE: Record<string, string> = {
   FIX: 'bg-[#111] dark:bg-[#ededea] text-white dark:text-[#111]',
-  REVIEW: 'bg-[#f5f4ef] dark:bg-[#2c2c2a] text-[#555] dark:text-[#9e9e98] border border-[#e5e4df] dark:border-[#3c3c3a]',
-  DELETE: 'bg-[#f5f4ef] dark:bg-[#2c2c2a] text-[#888] dark:text-[#666660] border border-[#e5e4df] dark:border-[#3c3c3a]',
+  REVIEW: 'border border-[#bbb] dark:border-[#444440] text-[#555] dark:text-[#9e9e98]',
+  DELETE: 'border border-[#bbb] dark:border-[#444440] text-[#888] dark:text-[#666660]',
 }
 
-const PRIORITY_DOT: Record<string, string> = {
-  high: 'bg-[#111] dark:bg-[#ededea]',
-  medium: 'bg-[#aaa] dark:bg-[#555550]',
-  low: 'bg-[#ddd] dark:bg-[#333330]',
+const PRIORITY_TEXT: Record<string, string> = {
+  high: 'text-[#111] dark:text-[#ededea]',
+  medium: 'text-[#888] dark:text-[#666660]',
+  low: 'text-[#bbb] dark:text-[#444440]',
 }
 
 const BUCKET_LABEL: Record<string, string> = {
@@ -57,11 +57,10 @@ export function FixCard({ fix, onStatusChange, onRemove, showStatus = false }: F
         </span>
 
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className={`w-2 h-2 rounded-full shrink-0 mt-0.5 ${PRIORITY_DOT[fix.priority]}`} />
-            <p className="text-sm font-semibold text-[#111] dark:text-[#ededea] leading-snug">{fix.title}</p>
-          </div>
+          <p className="text-sm font-semibold text-[#111] dark:text-[#ededea] leading-snug">{fix.title}</p>
           <p className="text-xs text-[#888] dark:text-[#666660] font-mono mt-0.5">
+            <span className={PRIORITY_TEXT[fix.priority]}>{fix.priority}</span>
+            {' · '}
             {BUCKET_LABEL[fix.patternBucket] ?? fix.patternBucket}
             {' · '}
             {fix.rawIssueCount} issue{fix.rawIssueCount !== 1 ? 's' : ''} → 1 fix

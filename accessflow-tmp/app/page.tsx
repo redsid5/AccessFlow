@@ -71,12 +71,12 @@ export default function Home() {
     <main className="min-h-screen px-4 sm:px-5 pb-20">
       <div className="max-w-[720px] mx-auto">
 
-        <div className="pt-12 pb-8">
-          <h1 className="text-3xl sm:text-4xl font-bold text-[#111] dark:text-[#ededea] tracking-tight">
+        <div className="pt-10 pb-7">
+          <h1 className="text-2xl font-semibold text-[#111] dark:text-[#ededea] tracking-tight">
             AccessFlow
           </h1>
-          <p className="text-base text-[#555] dark:text-[#9e9e98] mt-2">
-            Compress accessibility backlogs into the smallest set of engineering fixes.
+          <p className="text-sm text-[#888] dark:text-[#666660] mt-1">
+            Accessibility backlog triage and compression.
           </p>
         </div>
 
@@ -174,25 +174,21 @@ export default function Home() {
 function SummaryBar({ result, queued }: { result: AnalysisV2Result; queued: boolean }) {
   const ratio = result.compressionRatio
   return (
-    <div className="border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a] px-4 py-3 flex flex-wrap items-center gap-4">
-      <div>
-        <p className="text-xs font-mono text-[#888] dark:text-[#666660]">Raw issues</p>
-        <p className="text-xl font-bold text-[#111] dark:text-[#ededea]">{result.rawIssues.length}</p>
-      </div>
-      <div className="text-[#ccc] dark:text-[#333330] font-mono text-lg">→</div>
-      <div>
-        <p className="text-xs font-mono text-[#888] dark:text-[#666660]">Consolidated fixes</p>
-        <p className="text-xl font-bold text-[#111] dark:text-[#ededea]">{result.fixOpportunities.length}</p>
-      </div>
-      <div className="ml-auto text-right">
-        <p className="text-xs font-mono text-[#888] dark:text-[#666660]">Compression ratio</p>
-        <p className="text-xl font-bold text-[#111] dark:text-[#ededea]">{ratio.toFixed(1)}:1</p>
-      </div>
+    <div className="border-t border-b border-[#e5e4df] dark:border-[#2c2c2a] py-3 flex items-center gap-6">
+      <span className="text-xs font-mono text-[#888] dark:text-[#666660]">
+        {result.rawIssues.length} issues
+      </span>
+      <span className="text-xs font-mono text-[#ccc] dark:text-[#333330]">→</span>
+      <span className="text-xs font-mono text-[#888] dark:text-[#666660]">
+        {result.fixOpportunities.length} fix{result.fixOpportunities.length !== 1 ? 'es' : ''}
+      </span>
+      <span className="text-xs font-mono text-[#111] dark:text-[#ededea] font-semibold ml-auto">
+        {ratio.toFixed(1)}:1
+      </span>
       {queued && (
-        <p className="w-full text-xs font-mono text-[#888] dark:text-[#666660]">
-          Added to queue →{' '}
-          <a href="/queue" className="underline text-[#111] dark:text-[#ededea]">view queue</a>
-        </p>
+        <a href="/queue" className="text-xs font-mono text-[#888] dark:text-[#666660] underline">
+          view queue
+        </a>
       )}
     </div>
   )

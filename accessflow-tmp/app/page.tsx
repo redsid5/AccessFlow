@@ -1,135 +1,208 @@
 'use client'
 
-import { useState } from 'react'
-import { Header } from '@/components/Header'
-import { RoleSelector } from '@/components/RoleSelector'
-import { InputCard } from '@/components/InputCard'
-import { ResultCard } from '@/components/ResultCard'
-import { DemoExamples } from '@/components/DemoExamples'
-import { TechnicalReview } from '@/components/TechnicalReview'
-import { Role, TriageResult, ContentType } from '@/lib/types'
-import { addToQueue } from '@/lib/queue-store'
+import { useState, useRef } from 'react'
+import { AnalysisV2Result, FixOpportunity } from '@/lib/v2-types'
+import { addFixOpportunities } from '@/lib/v2-queue'
+import { FixCard } from '@/components/v2/FixCard'
 
-interface ResultState {
-  label: string
-  type: ContentType
-  result: TriageResult
-  textSample?: string
-}
+type InputTab = 'url' | 'pdf'
 
 export default function Home() {
-  const [role, setRole] = useState<Role>('staff')
+  const [tab, setTab] = useState<InputTab>('url')
+  const [url, setUrl] = useState('')
+  const [file, setFile] = useState<File | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [resultState, setResultState] = useState<ResultState | null>(null)
-  const [addedToQueue, setAddedToQueue] = useState(false)
+  const [result, setResult] = useState<AnalysisV2Result | null>(null)
+  const [queued, setQueued] = useState(false)
+  const fileRef = useRef<HTMLInputElement>(null)
 
-  function queueResult(label: string, type: ContentType, result: TriageResult) {
-    addToQueue(label, type, role, result)
-    window.dispatchEvent(new Event('accessflow:queue-updated'))
-    setAddedToQueue(true)
-    setTimeout(() => setAddedToQueue(false), 3000)
-  }
-
-  async function handleURL(url: string) {
+  async function analyze() {
     setLoading(true)
     setError(null)
-    setResultState(null)
-    setAddedToQueue(false)
+    setResult(null)
+    setQueued(false)
+
     try {
-      const res = await fetch('/api/analyze-url', {
+      let body: Record<string, string>
+
+      if (tab === 'url') {
+        if (!url.startsWith('http')) {
+          setError('Enter a full URL starting with http:// or https://')
+          return
+        }
+        body = { url }
+      } else {
+        if (!file) {
+          setError('Select a PDF file first')
+          return
+        }
+        const text = await readFileAsText(file)
+        body = { pdfText: text, sourceTitle: file.name, sourceId: file.name }
+      }
+
+      const res = await fetch('/api/v2/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url, role }),
+        body: JSON.stringify(body),
       })
-      if (!res.ok) throw new Error((await res.json()).error || 'Analysis failed')
-      const result: TriageResult = await res.json()
-      setResultState({ label: url, type: 'url', result, textSample: url })
-      queueResult(url, 'url', result)
+
+      if (!res.ok) {
+        const err = await res.json()
+        throw new Error(err.error || 'Analysis failed')
+      }
+
+      const data: AnalysisV2Result = await res.json()
+      setResult(data)
+
+      if (data.fixOpportunities.length > 0) {
+        addFixOpportunities(data.fixOpportunities)
+        window.dispatchEvent(new Event('accessflow:queue-updated'))
+        setQueued(true)
+      }
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Something went wrong')
     } finally {
       setLoading(false)
     }
-  }
-
-  async function handlePDF(file: File) {
-    setLoading(true)
-    setError(null)
-    setResultState(null)
-    setAddedToQueue(false)
-    try {
-      const form = new FormData()
-      form.append('file', file)
-      form.append('role', role)
-      const res = await fetch('/api/analyze-pdf', {
-        method: 'POST',
-        body: form,
-      })
-      if (!res.ok) throw new Error((await res.json()).error || 'Analysis failed')
-      const result: TriageResult = await res.json()
-      setResultState({ label: file.name, type: 'pdf', result, textSample: file.name })
-      queueResult(file.name, 'pdf', result)
-    } catch (e) {
-      setError(e instanceof Error ? e.message : 'Something went wrong')
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  function handleDemo(label: string, result: TriageResult) {
-    setError(null)
-    setResultState({ label, type: 'pdf', result })
   }
 
   return (
-    <main className="min-h-screen px-4 sm:px-5 pb-16">
-      <div className="max-w-[680px] mx-auto">
-        <Header />
-        <RoleSelector value={role} onChange={setRole} />
-        <InputCard onSubmitURL={handleURL} onSubmitPDF={handlePDF} loading={loading} />
+    <main className="min-h-screen px-4 sm:px-5 pb-20">
+      <div className="max-w-[720px] mx-auto">
 
-        {loading && (
-          <p className="mt-6 text-base font-mono text-[#888] dark:text-[#666660]">Analyzing...</p>
-        )}
+        <div className="pt-12 pb-8">
+          <h1 className="text-3xl sm:text-4xl font-bold text-[#111] dark:text-[#ededea] tracking-tight">
+            AccessFlow
+          </h1>
+          <p className="text-base text-[#555] dark:text-[#9e9e98] mt-2">
+            Compress accessibility backlogs into the smallest set of engineering fixes.
+          </p>
+        </div>
+
+        {/* Input tabs */}
+        <div className="flex gap-0 mb-4">
+          {(['url', 'pdf'] as const).map(t => (
+            <button
+              key={t}
+              onClick={() => { setTab(t); setError(null) }}
+              className={`text-xs font-mono px-4 py-2.5 border transition-colors ${
+                tab === t
+                  ? 'border-[#111] dark:border-[#ededea] bg-[#111] dark:bg-[#ededea] text-white dark:text-[#111]'
+                  : 'border-[#e5e4df] dark:border-[#2c2c2a] text-[#888] dark:text-[#666660] hover:border-[#111] dark:hover:border-[#ededea] -ml-px'
+              }`}
+            >
+              {t === 'url' ? 'URL' : 'PDF'}
+            </button>
+          ))}
+        </div>
+
+        {/* Input area */}
+        <div className="border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a] p-4 sm:p-5">
+          {tab === 'url' ? (
+            <input
+              type="url"
+              value={url}
+              onChange={e => setUrl(e.target.value)}
+              onKeyDown={e => e.key === 'Enter' && analyze()}
+              placeholder="https://university.edu/page"
+              className="w-full text-sm font-mono bg-transparent text-[#111] dark:text-[#ededea] placeholder-[#ccc] dark:placeholder-[#444440] focus:outline-none"
+            />
+          ) : (
+            <div>
+              <button
+                onClick={() => fileRef.current?.click()}
+                className="text-sm font-mono text-[#555] dark:text-[#9e9e98] hover:text-[#111] dark:hover:text-[#ededea] transition-colors"
+              >
+                {file ? file.name : 'Click to select a PDF →'}
+              </button>
+              <input
+                ref={fileRef}
+                type="file"
+                accept="application/pdf"
+                className="hidden"
+                onChange={e => setFile(e.target.files?.[0] ?? null)}
+              />
+            </div>
+          )}
+        </div>
+
+        <button
+          onClick={analyze}
+          disabled={loading}
+          className="mt-3 w-full text-sm font-mono bg-[#111] dark:bg-[#ededea] text-white dark:text-[#111] py-3 px-4 disabled:opacity-40 hover:bg-[#333] dark:hover:bg-white transition-colors"
+        >
+          {loading ? 'Analyzing…' : 'Analyze'}
+        </button>
 
         {error && (
-          <div className="mt-6 border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a] px-4 py-3">
+          <div className="mt-5 border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a] px-4 py-3">
             <p className="text-xs font-mono text-[#888] dark:text-[#666660]">Error</p>
-            <p className="text-base text-[#111] dark:text-[#ededea] mt-1">{error}</p>
+            <p className="text-sm text-[#111] dark:text-[#ededea] mt-1">{error}</p>
           </div>
         )}
 
-        {resultState && !loading && (
+        {result && !loading && (
           <div className="mt-8">
-            {addedToQueue && (
-              <p className="text-xs font-mono text-[#888] dark:text-[#666660] mb-3">
-                Added to queue →{' '}
-                <a href="/queue" className="underline text-[#111] dark:text-[#ededea]">view queue</a>
-              </p>
-            )}
-            <ResultCard result={resultState.result} label={resultState.label} role={role} />
-            {role === 'staff' && resultState.textSample && (
-              <div className="mt-4">
-                <TechnicalReview
-                  label={resultState.label}
-                  contentType={resultState.type}
-                  textSample={resultState.textSample}
-                  wcagContext={resultState.result.wcagContext}
-                />
-              </div>
-            )}
+            <SummaryBar result={result} queued={queued} />
+            <div className="mt-4 space-y-px">
+              {result.fixOpportunities.length === 0 ? (
+                <div className="border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a] px-5 py-8 text-center">
+                  <p className="text-sm font-mono text-[#888] dark:text-[#666660]">
+                    No accessibility issues detected.
+                  </p>
+                </div>
+              ) : (
+                result.fixOpportunities.map(fix => (
+                  <FixCard key={fix.id} fix={fix} />
+                ))
+              )}
+            </div>
           </div>
         )}
-
-        <DemoExamples onSelect={handleDemo} role={role} />
 
         <footer className="mt-16 pt-8 border-t border-[#e5e4df] dark:border-[#2c2c2a]">
           <p className="text-xs font-mono text-[#aaa] dark:text-[#444440]">
-            AccessFlow — accessibility triage for university digital offices
+            AccessFlow — accessibility backlog compression for university digital offices
           </p>
         </footer>
       </div>
     </main>
   )
+}
+
+function SummaryBar({ result, queued }: { result: AnalysisV2Result; queued: boolean }) {
+  const ratio = result.compressionRatio
+  return (
+    <div className="border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a] px-4 py-3 flex flex-wrap items-center gap-4">
+      <div>
+        <p className="text-xs font-mono text-[#888] dark:text-[#666660]">Raw issues</p>
+        <p className="text-xl font-bold text-[#111] dark:text-[#ededea]">{result.rawIssues.length}</p>
+      </div>
+      <div className="text-[#ccc] dark:text-[#333330] font-mono text-lg">→</div>
+      <div>
+        <p className="text-xs font-mono text-[#888] dark:text-[#666660]">Consolidated fixes</p>
+        <p className="text-xl font-bold text-[#111] dark:text-[#ededea]">{result.fixOpportunities.length}</p>
+      </div>
+      <div className="ml-auto text-right">
+        <p className="text-xs font-mono text-[#888] dark:text-[#666660]">Compression ratio</p>
+        <p className="text-xl font-bold text-[#111] dark:text-[#ededea]">{ratio.toFixed(1)}:1</p>
+      </div>
+      {queued && (
+        <p className="w-full text-xs font-mono text-[#888] dark:text-[#666660]">
+          Added to queue →{' '}
+          <a href="/queue" className="underline text-[#111] dark:text-[#ededea]">view queue</a>
+        </p>
+      )}
+    </div>
+  )
+}
+
+async function readFileAsText(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = () => resolve(reader.result as string)
+    reader.onerror = () => reject(new Error('Could not read file'))
+    reader.readAsText(file)
+  })
 }

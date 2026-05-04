@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { getActiveCount } from '@/lib/queue-store'
+import { getQueue } from '@/lib/v2-queue'
 import { STORAGE_KEYS } from '@/lib/config'
 
 export function Nav() {
@@ -15,7 +15,10 @@ export function Nav() {
     setDark(document.documentElement.classList.contains('dark'))
 
     function update() {
-      setQueueCount(getActiveCount())
+      const active = getQueue().filter(f =>
+        ['NEW', 'ASSIGNED', 'IN_PROGRESS'].includes(f.status)
+      ).length
+      setQueueCount(active)
     }
     update()
     window.addEventListener('storage', update)
@@ -35,7 +38,6 @@ export function Nav() {
   const links = [
     { href: '/', label: 'Analyze' },
     { href: '/queue', label: queueCount > 0 ? `Queue (${queueCount})` : 'Queue' },
-    { href: '/dashboard', label: 'Dashboard' },
   ]
 
   return (

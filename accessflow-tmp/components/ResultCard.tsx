@@ -156,8 +156,8 @@ export function ResultCard({ result, label, role }: {
       {result.confidence < 70 && (
         <div className="px-4 sm:px-5 py-3 border-b border-[#e5e4df] dark:border-[#2c2c2a] bg-[#f7f6f2] dark:bg-[#252523]">
           <p className="text-xs font-mono text-[#555] dark:text-[#9e9e98]">
-            <span className="font-semibold text-[#111] dark:text-[#ededea]">Human review recommended.</span>{' '}
-            Confidence is low — signals may be ambiguous or conflicting. Verify before acting.
+            <span className="font-semibold text-[#111] dark:text-[#ededea]">Manual review required.</span>{' '}
+            Extraction accuracy below threshold — signals may be incomplete or conflicting. Verify before acting.
           </p>
         </div>
       )}
@@ -214,7 +214,7 @@ export function ResultCard({ result, label, role }: {
         )}
 
         <div>
-          <p className="text-xs font-mono uppercase tracking-wider text-[#888] dark:text-[#666660] mb-2">Reasoning signals</p>
+          <p className="text-xs font-mono uppercase tracking-wider text-[#888] dark:text-[#666660] mb-2">Triage signals</p>
           <div className="flex flex-wrap gap-1.5">
             {SIGNALS.map(s => {
               const active = result.signals[s.key]
@@ -248,7 +248,7 @@ export function ResultCard({ result, label, role }: {
           onClick={() => setTraceOpen(o => !o)}
           className="text-xs font-mono uppercase tracking-wider px-3 py-2 border border-[#e5e4df] dark:border-[#2c2c2a] text-[#555] dark:text-[#9e9e98] hover:border-[#111] dark:hover:border-[#ededea] transition-colors"
         >
-          {traceOpen ? 'Hide trace' : 'View trace'}
+          {traceOpen ? 'Hide audit' : 'Decision audit'}
         </button>
       </div>
 

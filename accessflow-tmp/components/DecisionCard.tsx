@@ -19,7 +19,7 @@ export function DecisionCard({ decision, confidence }: DecisionCardProps) {
       <p className="text-3xl sm:text-4xl font-bold text-[#111] dark:text-[#ededea] tracking-tight leading-none">
         <span className="font-mono mr-1.5">{marker}</span>{label}
       </p>
-      <p className="text-xs font-mono text-[#888] dark:text-[#666660] mt-2">{confidence}% confidence</p>
+      <p className="text-xs font-mono text-[#888] dark:text-[#666660] mt-2">{confidence}% extraction accuracy</p>
     </div>
   )
 }

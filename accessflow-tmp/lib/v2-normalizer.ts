@@ -4,7 +4,7 @@ import { classifyPatternBucket, normalizeCanonicalKey } from './v2-pattern'
 import { inferScope, contradictsScope } from './v2-scope'
 import { getGeminiKey, withRetry, GEMINI_MODEL, EXTRACT_LIMITS } from './config'
 
-interface LLMRawIssue {
+interface ExtractedIssue {
   canonicalKey: string
   wcagCode?: string
   severity: string
@@ -153,7 +153,7 @@ Identify all distinct accessibility patterns present. Output 3-10 issues maximum
   return enriched
 }
 
-function parseRawIssues(raw: string): LLMRawIssue[] {
+function parseRawIssues(raw: string): ExtractedIssue[] {
   try {
     const cleaned = raw
       .replace(/^```json\s*/i, '')
@@ -170,7 +170,7 @@ function parseRawIssues(raw: string): LLMRawIssue[] {
 }
 
 function normalizeOne(
-  raw: LLMRawIssue,
+  raw: ExtractedIssue,
   idx: number,
   sourceId: string,
   sourceTitle: string,

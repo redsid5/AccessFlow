@@ -63,7 +63,7 @@ export function inferScope(issue: NormalizedIssue, allIssues: NormalizedIssue[])
     }
   }
 
-  // If LLM already inferred a higher-confidence scope, trust it if confidence > 0.8
+  // If extraction already inferred a higher-confidence scope, defer to it when confidence > 0.8
   const llmScope = issue.scopeInference
   if (llmScope.confidence > 0.8 && llmScope.likelihood !== likelihood) {
     if (llmScope.likelihood === 'global' && score >= 20) {

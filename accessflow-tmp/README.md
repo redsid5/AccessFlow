@@ -1,45 +1,57 @@
 # AccessFlow
+
 Accessibility scanners tell you what's broken. AccessFlow tells you what to do next.
 
 ---
 
-## The idea
-
-Most accessibility tools create noise. AccessFlow creates a decision layer.
-
-The workflow is: **Remove first → Replace second → Remediate third.**
-
-Most teams start by trying to fix every issue a scanner flags. That's a trap. AccessFlow focuses on triage — identifying content that is high-impact, low-value, or better served as HTML — turning a massive backlog into an actionable queue.
-
----
-
-## How it works
-
-The LLM is used for feature extraction only — it outputs 5 numeric subscores (0–10) across student impact, legal risk, usage frequency, replaceability, and time sensitivity. It never makes the final decision.
-
-The decision engine applies those scores through a fixed rule set with explicit weights (student impact ×2, legal risk ×2, time sensitivity ×2). The weighted total is computed server-side. Same input always produces the same output.
-
-Every result card includes a **View trace** panel that shows exactly which rule fired, which signals were active, and how each subscore was weighted to reach the final score. If a decision looks wrong, the trace shows you why.
-
-Ambiguous cases — where signals conflict — route to "Review" by default. The system does not guess.
-
 ## What it does
 
-- **Triage** — URL or PDF → decision card (fix / review / delete)
-- **Queue** — status tracking per item: New → Assigned → In Progress → Fixed → Archived
-- **Decision engine** — rule-based scoring with explicit weights, computed server-side
-- **Decision trace** — collapsible audit panel on every result card
-- **Staff layer** — passcode-gated technical view for WCAG-specific remediation steps
+AccessFlow is a backlog compression and triage pipeline for university accessibility programs. It converts raw accessibility issues into a prioritized queue of engineering fixes — each fix mapped to an owner, a location, and a verification checklist.
+
+The pipeline follows three stages:
+
+```
+Input source → Feature extraction → Deterministic triage → Actionable queue
+```
+
+1. **Input source** — Submit a URL or PDF document
+2. **Feature extraction** — Content is parsed and scored across five dimensions: student impact, legal risk, usage frequency, replaceability, and time sensitivity (each 0–10)
+3. **Deterministic triage** — A fixed rule engine applies explicit weights to those scores and outputs one of three decisions: Fix / Review / Delete. Same input always produces the same output.
+4. **Actionable queue** — Each decision includes an owner, a recommended action, and a full decision audit showing exactly which rule fired and which signals were active
 
 ---
 
 ## Why it exists
 
-An inaccessible admissions page isn't a technical error. It's a "Keep Out" sign for any student who relies on a screen reader or keyboard navigation. An unlabeled form field means they can't apply. A broken tab order means they can't reach the Submit button. A missing image description means they can't tell what they're looking at.
+Universities managing Title II compliance backlogs face a prioritization problem, not a detection problem. Scanners already produce the issue list. What's missing is a process for deciding which issues block students from doing something critical — applying, enrolling, requesting an accommodation — and which issues are low-value content that should be removed rather than fixed.
 
-Universities know this. What they don't have is a process for deciding where to start. Backlogs run into the hundreds, staff time is limited, and most tools produce issue lists without telling anyone which issues actually block students from doing something critical — applying, enrolling, requesting an accommodation, paying tuition.
+AccessFlow is the triage layer that runs before remediation. It reduces a backlog of hundreds of issues into a short queue of discrete engineering tasks.
 
-AccessFlow is the triage layer that runs before remediation. It identifies which content is a barrier right now, which content should be deleted rather than fixed, and who owns the next step. The April 2026 DOJ Title II deadline is the forcing function. The goal is making sure every student has the same shot at applying and succeeding, regardless of how they access the internet.
+---
+
+## Backlog compression (V2)
+
+V2 introduces pattern-level clustering. Issues are grouped by canonical pattern key and scope, then compressed into a single `FixOpportunity` per cluster. A nav keyboard trap on 12 pages becomes one fix in the shared header component — not 12 separate tickets.
+
+The north-star metric is **Backlog Compression Ratio** = raw issues / consolidated fixes.
+
+---
+
+## Decision engine
+
+The triage rules are deterministic and documented:
+
+| Rule | Condition | Output |
+|------|-----------|--------|
+| 1 | Legal risk ≥ 8 | FIX / high |
+| 2 | Low-value content + replaceability ≥ 7 | DELETE / low |
+| 3 | Extraction accuracy < 60% | REVIEW / medium |
+| 4 | Scope confidence < 60% | REVIEW / medium |
+| 4b | Mission-critical or 3+ repeated instances | FIX / medium–high |
+| 4c | Low-value content (fallback) | DELETE / low |
+| Default | None of the above | FIX / medium |
+
+Every result includes a **Decision Audit** panel showing the rule path, active signals, and score breakdown.
 
 ---
 
@@ -47,9 +59,15 @@ AccessFlow is the triage layer that runs before remediation. It identifies which
 
 ```
 Next.js (App Router)   TypeScript   Tailwind CSS v4
-Gemini 2.5 Flash       pdf-parse    Cheerio
-localStorage — demo mode, no backend required
+pdf-parse              Cheerio      Vitest
+localStorage — no backend required for demo
 ```
+
+---
+
+## Technical architecture
+
+Feature extraction uses Gemini 2.5 Flash as a structured data parser. It is invoked once per source to produce numeric subscores; it does not make triage decisions. The decision engine, scoring weights, and rule thresholds are all server-side TypeScript. Changing risk policy means editing a config file and running the test suite — not adjusting a prompt.
 
 ---
 
@@ -73,35 +91,18 @@ npm run dev
 
 ---
 
-## Demo cases (no API key required)
-
-Three built-in cases demonstrate the triage model end-to-end:
-
-- `Spring 2022 event flyer.pdf` → Remove (expired, low value)
-- `disability-accommodation-request.pdf` → Fix (highest priority document type)
-- `university.edu/tuition-payment-deadlines` → Fix (active, time-sensitive, student-facing)
-
-For the technical review panel: set role to **Staff**, run any analysis, click **Unlock**.
-
----
-
-## Validation
-
-A ground-truth audit set lives in `tests/audit_set.json` — 12 diverse university content samples with human-classified decisions, expected owners, and reasoning notes covering the full range of cases: mission-critical forms, expired flyers, ambiguous policy documents, and high-traffic service pages.
-
-To run it against the live pipeline:
+## Tests
 
 ```bash
-npm run dev   # in one terminal
-node tests/audit.mjs
+npm test
 ```
 
-Results write to `tests/audit_results.json`. Any mismatch between system and human decision is flagged with a diagnosis: low-confidence extraction (LLM signal issue) or rule mismatch (policy logic issue). These are fixed differently — the former by improving the prompt, the latter by updating the scoring weights or rule thresholds.
+41 unit tests cover the full decision engine and cluster logic with no external dependencies. Tests use static input fixtures — no network calls, no API key required.
 
 ---
 
 ## What it doesn't do
 
-- Not a scanner — it's the decision layer built on top of your existing audit data
+- Not a scanner — it is the decision layer built on top of existing audit data
 - Not a compliance platform — it supports decision-making, it does not replace legal review
-- Not multi-user — state is local by design for the MVP
+- Not multi-user — state is local by design for the demo build

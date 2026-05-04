@@ -12,7 +12,7 @@ export const SCORING_WEIGHTS = {
 const WEIGHT_SUM = Object.values(SCORING_WEIGHTS).reduce((a, b) => a + b, 0)
 const SUBSCORE_MAX = 10
 
-// LLM provides the 5 subscores; we compute the total so it's never hallucinated
+// Subscores are provided by the extraction step; total is computed server-side so the pipeline owns the final number
 export function computePriorityTotal(scores: Omit<PriorityScore, 'total'>): number {
   const raw =
     scores.studentImpact * SCORING_WEIGHTS.studentImpact +

@@ -104,7 +104,7 @@ export async function classifyContent(input: AnalysisInput): Promise<TriageResul
   const total = computePriorityTotal(raw.priorityScore)
 
   // Signal consistency check: if the decision doesn't align with the active signals,
-  // the LLM may have contradicted itself — cap confidence so the UI flags it for review.
+  // cap extraction accuracy so the pipeline flags it for human review.
   const inconsistent =
     (raw.decision === 'fix' && !raw.signals.missionCritical && !raw.signals.studentImpact && !raw.signals.timeSensitive) ||
     (raw.decision === 'delete' && !raw.signals.likelyLowValue && !raw.signals.betterAsHTML)

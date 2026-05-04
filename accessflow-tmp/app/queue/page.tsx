@@ -99,7 +99,7 @@ export default function QueuePage() {
               className={`text-xs font-mono px-2.5 py-1.5 border transition-colors ${
                 filterStatus === f.value
                   ? 'border-[#111] dark:border-[#ededea] bg-[#111] dark:bg-[#ededea] text-white dark:text-[#111]'
-                  : 'border-[#e5e4df] dark:border-[#536878] text-[#888] dark:text-[#666660] hover:border-[#111] dark:hover:border-[#ededea]'
+                  : 'border-[#e5e4df] dark:border-[#2c2c2a] text-[#888] dark:text-[#666660] hover:border-[#111] dark:hover:border-[#ededea]'
               }`}
             >
               {f.label}
@@ -109,7 +109,7 @@ export default function QueuePage() {
 
         {/* Empty state */}
         {filtered.length === 0 && (
-          <div className="border border-[#e5e4df] dark:border-[#536878] dark:bg-[#3a4d59] px-5 py-12 text-center">
+          <div className="border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a] px-5 py-12 text-center">
             <p className="text-sm font-mono text-[#888] dark:text-[#666660]">
               {items.length === 0 ? 'No items in queue.' : 'No items match this filter.'}
             </p>

@@ -41,7 +41,7 @@ export function Nav() {
   ]
 
   return (
-    <nav className="border-b border-[#e5e4df] dark:border-[#536878] mb-8 sm:mb-10">
+    <nav className="border-b border-[#e5e4df] dark:border-[#2c2c2a] mb-8 sm:mb-10">
       <div className="max-w-[860px] mx-auto px-4 sm:px-5 flex items-center justify-between">
         <div className="flex items-center gap-0.5">
           {links.map(link => (

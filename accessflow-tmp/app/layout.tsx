@@ -33,7 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body
-        className="bg-[#F9F6EE] dark:bg-[#425561] text-[#111110] dark:text-[#ededea] antialiased"
+        className="bg-[#F9F6EE] dark:bg-[#111110] text-[#111110] dark:text-[#ededea] antialiased"
         suppressHydrationWarning
       >
         <Nav />

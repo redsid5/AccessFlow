@@ -104,7 +104,7 @@ function ActionButton({ active, onClick, activeLabel, inactiveLabel }: ActionBut
       className={`text-xs font-mono uppercase tracking-wider px-3 py-2 border transition-colors ${
         active
           ? 'border-[#111] dark:border-[#ededea] bg-[#111] dark:bg-[#ededea] text-white dark:text-[#111]'
-          : 'border-[#e5e4df] dark:border-[#536878] text-[#555] dark:text-[#9e9e98] hover:border-[#111] dark:hover:border-[#ededea]'
+          : 'border-[#e5e4df] dark:border-[#2c2c2a] text-[#555] dark:text-[#9e9e98] hover:border-[#111] dark:hover:border-[#ededea]'
       }`}
     >
       {active ? activeLabel : inactiveLabel}
@@ -129,23 +129,23 @@ export function ResultCard({ result, label, role }: {
   }
 
   return (
-    <div className={`border dark:bg-[#3a4d59] animate-fade-in transition-opacity border-[#e5e4df] dark:border-[#536878] ${resolved ? 'opacity-50' : ''}`}>
+    <div className={`border dark:bg-[#1c1c1a] animate-fade-in transition-opacity border-[#e5e4df] dark:border-[#2c2c2a] ${resolved ? 'opacity-50' : ''}`}>
 
       {/* Header */}
-      <div className="px-4 sm:px-5 py-4 border-b border-[#e5e4df] dark:border-[#536878]">
+      <div className="px-4 sm:px-5 py-4 border-b border-[#e5e4df] dark:border-[#2c2c2a]">
         <p className="text-xs font-mono uppercase tracking-wider text-[#888] dark:text-[#666660] mb-1">Analyzed content</p>
         <p className="font-semibold text-[#111] dark:text-[#ededea] text-base leading-snug break-all">{label}</p>
         <div className="flex flex-wrap gap-2 mt-2">
           <span className={`text-xs font-mono px-2 py-1 border ${PRIORITY_STYLE[result.priority]}`}>
             {result.priority} priority
           </span>
-          <span className="text-xs font-mono px-2 py-1 border border-[#e5e4df] dark:border-[#536878] text-[#555] dark:text-[#9e9e98]">
+          <span className="text-xs font-mono px-2 py-1 border border-[#e5e4df] dark:border-[#2c2c2a] text-[#555] dark:text-[#9e9e98]">
             {result.contentDescription}
           </span>
           <span className={`text-xs font-mono px-2 py-1 border ${EFFORT_STYLE[result.estimatedEffort]}`}>
             {result.estimatedEffort}
           </span>
-          <span className="text-xs font-mono px-2 py-1 border border-[#e5e4df] dark:border-[#536878] text-[#888] dark:text-[#666660]">
+          <span className="text-xs font-mono px-2 py-1 border border-[#e5e4df] dark:border-[#2c2c2a] text-[#888] dark:text-[#666660]">
             {USAGE_LABEL[result.usageSignal]}
           </span>
         </div>
@@ -154,7 +154,7 @@ export function ResultCard({ result, label, role }: {
       <DecisionCard decision={result.decision} confidence={result.confidence} />
 
       {result.confidence < 70 && (
-        <div className="px-4 sm:px-5 py-3 border-b border-[#e5e4df] dark:border-[#536878] bg-[#F9F6EE] dark:bg-[#4d6373]">
+        <div className="px-4 sm:px-5 py-3 border-b border-[#e5e4df] dark:border-[#2c2c2a] bg-[#F9F6EE] dark:bg-[#252523]">
           <p className="text-xs font-mono text-[#555] dark:text-[#9e9e98]">
             <span className="font-semibold text-[#111] dark:text-[#ededea]">Manual review required.</span>{' '}
             Extraction accuracy below threshold â€” signals may be incomplete or conflicting. Verify before acting.
@@ -183,7 +183,7 @@ export function ResultCard({ result, label, role }: {
               <p className="text-xs font-mono uppercase tracking-wider text-[#111] dark:text-[#ededea] mb-2">Impact of inaction</p>
               <ul className="space-y-1.5">
                 {lines.map((line, i) => (
-                  <li key={i} className="text-sm text-[#333] dark:text-[#c8c8c2] leading-relaxed pl-3 border-l-2 border-[#e5e4df] dark:border-[#536878]">
+                  <li key={i} className="text-sm text-[#333] dark:text-[#c8c8c2] leading-relaxed pl-3 border-l-2 border-[#e5e4df] dark:border-[#2c2c2a]">
                     {line}
                   </li>
                 ))}
@@ -193,7 +193,7 @@ export function ResultCard({ result, label, role }: {
         })()}
 
         {result.roleNote && (
-          <div className="border border-[#e5e4df] dark:border-[#536878] px-4 py-3">
+          <div className="border border-[#e5e4df] dark:border-[#2c2c2a] px-4 py-3">
             <p className="text-xs font-mono uppercase tracking-wider text-[#888] dark:text-[#666660] mb-1">For you specifically</p>
             <p className="text-base text-[#333] dark:text-[#c8c8c2]">{result.roleNote}</p>
           </div>
@@ -224,7 +224,7 @@ export function ResultCard({ result, label, role }: {
                   className={`text-xs font-mono px-2 py-1 border ${
                     active
                       ? 'border-[#111] dark:border-[#ededea] bg-[#111] dark:bg-[#ededea] text-white dark:text-[#111]'
-                      : 'border-[#e5e4df] dark:border-[#536878] text-[#aaa] dark:text-[#444440]'
+                      : 'border-[#e5e4df] dark:border-[#2c2c2a] text-[#aaa] dark:text-[#444440]'
                   }`}
                 >
                   {active ? '+ ' : ''}{s.label}
@@ -235,25 +235,25 @@ export function ResultCard({ result, label, role }: {
         </div>
       </div>
 
-      <div className="px-4 sm:px-5 py-4 border-t border-[#e5e4df] dark:border-[#536878] flex flex-wrap gap-2">
+      <div className="px-4 sm:px-5 py-4 border-t border-[#e5e4df] dark:border-[#2c2c2a] flex flex-wrap gap-2">
         <ActionButton active={copied} onClick={handleExport} activeLabel="Copied" inactiveLabel="Export report" />
         <ActionButton active={resolved} onClick={() => setResolved(r => !r)} activeLabel="Resolved" inactiveLabel="Mark resolved" />
         <a
           href={buildDraftEmailHref(label, result)}
-          className="text-xs font-mono uppercase tracking-wider px-3 py-2 border border-[#e5e4df] dark:border-[#536878] text-[#555] dark:text-[#9e9e98] hover:border-[#111] dark:hover:border-[#ededea] transition-colors"
+          className="text-xs font-mono uppercase tracking-wider px-3 py-2 border border-[#e5e4df] dark:border-[#2c2c2a] text-[#555] dark:text-[#9e9e98] hover:border-[#111] dark:hover:border-[#ededea] transition-colors"
         >
           Draft email
         </a>
         <button
           onClick={() => setTraceOpen(o => !o)}
-          className="text-xs font-mono uppercase tracking-wider px-3 py-2 border border-[#e5e4df] dark:border-[#536878] text-[#555] dark:text-[#9e9e98] hover:border-[#111] dark:hover:border-[#ededea] transition-colors"
+          className="text-xs font-mono uppercase tracking-wider px-3 py-2 border border-[#e5e4df] dark:border-[#2c2c2a] text-[#555] dark:text-[#9e9e98] hover:border-[#111] dark:hover:border-[#ededea] transition-colors"
         >
           {traceOpen ? 'Hide audit' : 'Decision audit'}
         </button>
       </div>
 
       {traceOpen && trace && (
-        <div className="border-t border-[#e5e4df] dark:border-[#536878] px-4 sm:px-5 py-4 dark:bg-[#425561]">
+        <div className="border-t border-[#e5e4df] dark:border-[#2c2c2a] px-4 sm:px-5 py-4 dark:bg-[#111110]">
           <p className="text-xs font-mono uppercase tracking-wider text-[#888] dark:text-[#666660] mb-3">Decision trace</p>
           <div className="space-y-3 text-xs font-mono">
             <div>
@@ -266,14 +266,14 @@ export function ResultCard({ result, label, role }: {
             </div>
             <div>
               <p className="text-[#aaa] dark:text-[#444440] mb-1.5">score breakdown</p>
-              <div className="space-y-1 pl-2 border-l border-[#e5e4df] dark:border-[#536878]">
+              <div className="space-y-1 pl-2 border-l border-[#e5e4df] dark:border-[#2c2c2a]">
                 {trace.scoreBreakdown.map(d => (
                   <div key={d.dimension} className="flex gap-3">
                     <span className="text-[#aaa] dark:text-[#444440] w-36 shrink-0">{d.dimension}</span>
                     <span className="text-[#555] dark:text-[#9e9e98]">{d.score}/10 Ã— {d.weight} = {d.weighted}</span>
                   </div>
                 ))}
-                <div className="flex gap-3 pt-1 border-t border-[#e5e4df] dark:border-[#536878]">
+                <div className="flex gap-3 pt-1 border-t border-[#e5e4df] dark:border-[#2c2c2a]">
                   <span className="text-[#aaa] dark:text-[#444440] w-36 shrink-0">normalized total</span>
                   <span className="text-[#111] dark:text-[#ededea]">{trace.normalizedScore}/100 â†’ {trace.priorityBand}</span>
                 </div>
@@ -283,7 +283,7 @@ export function ResultCard({ result, label, role }: {
         </div>
       )}
 
-      <div className="px-4 sm:px-5 py-3 border-t border-[#e5e4df] dark:border-[#536878]">
+      <div className="px-4 sm:px-5 py-3 border-t border-[#e5e4df] dark:border-[#2c2c2a]">
         <p className="text-xs text-[#aaa] dark:text-[#444440] font-mono">
           Supports prioritization. Does not replace a full audit or legal review.
         </p>

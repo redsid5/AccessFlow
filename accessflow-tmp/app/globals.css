@@ -21,7 +21,7 @@ body {
 }
 
 .dark body {
-  background: #425561;
+  background: #111110;
   color: #ededea;
 }
 
@@ -33,12 +33,12 @@ body {
 /* Form elements don't auto-invert in dark mode */
 .dark input,
 .dark textarea {
-  background: #3a4d59;
+  background: #111110;
   color: #ededea;
 }
 
 .dark select {
-  background: #3a4d59;
+  background: #1c1c1a;
   color: #ededea;
 }
 

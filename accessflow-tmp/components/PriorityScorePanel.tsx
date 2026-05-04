@@ -14,7 +14,7 @@ interface PriorityScorePanelProps {
 
 export function PriorityScorePanel({ score }: PriorityScorePanelProps) {
   return (
-    <div className="px-4 sm:px-5 py-5 border-b border-[#e5e4df] dark:border-[#536878]">
+    <div className="px-4 sm:px-5 py-5 border-b border-[#e5e4df] dark:border-[#2c2c2a]">
       <div className="flex items-baseline justify-between mb-4">
         <p className="text-xs font-mono uppercase tracking-wider text-[#888] dark:text-[#666660]">Priority score</p>
         <p className="text-2xl font-bold text-[#111] dark:text-[#ededea] tracking-tight leading-none">
@@ -28,7 +28,7 @@ export function PriorityScorePanel({ score }: PriorityScorePanelProps) {
               <span className="text-xs font-mono text-[#555] dark:text-[#9e9e98]">{label}</span>
               <span className="text-xs font-mono text-[#888] dark:text-[#666660]">{score[key]}/10</span>
             </div>
-            <div className="h-1 bg-[#EBE8E0] dark:bg-[#4d6373] w-full">
+            <div className="h-1 bg-[#EBE8E0] dark:bg-[#252523] w-full">
               <div
                 className="h-1 bg-[#111] dark:bg-[#ededea] transition-all duration-500"
                 style={{ width: `${score[key] * 10}%` }}

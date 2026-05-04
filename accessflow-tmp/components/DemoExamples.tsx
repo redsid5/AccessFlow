@@ -20,7 +20,7 @@ export function DemoExamples({ onSelect, role }: DemoExamplesProps) {
           <button
             key={demo.id}
             onClick={() => onSelect(demo.label, demo.result)}
-            className="w-full text-left border border-[#e5e4df] dark:border-[#536878] dark:bg-[#3a4d59] px-4 py-3 hover:border-[#111] dark:hover:border-[#ededea] transition-colors group"
+            className="w-full text-left border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a] px-4 py-3 hover:border-[#111] dark:hover:border-[#ededea] transition-colors group"
           >
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">

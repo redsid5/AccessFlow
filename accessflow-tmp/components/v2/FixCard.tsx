@@ -60,7 +60,7 @@ export function FixCard({ fix, onStatusChange, onRemove, showStatus = false }: F
   const saveReason = getTimeSavedReason(fix)
 
   return (
-    <div className="border border-[#e5e4df] dark:border-[#536878] dark:bg-[#3a4d59]">
+    <div className="border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a]">
 
       {/* â”€â”€ Header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <div className="px-4 pt-3 pb-2 flex items-start gap-3 flex-wrap">
@@ -85,7 +85,7 @@ export function FixCard({ fix, onStatusChange, onRemove, showStatus = false }: F
           <select
             value={fix.status}
             onChange={e => onStatusChange(fix.id, e.target.value as QueueStatus)}
-            className="text-xs font-mono border border-[#e5e4df] dark:border-[#536878] bg-white dark:bg-[#3a4d59] text-[#555] dark:text-[#9e9e98] px-2 py-1.5 focus:outline-none focus:border-[#111] dark:focus:border-[#ededea]"
+            className="text-xs font-mono border border-[#e5e4df] dark:border-[#2c2c2a] bg-white dark:bg-[#1c1c1a] text-[#555] dark:text-[#9e9e98] px-2 py-1.5 focus:outline-none focus:border-[#111] dark:focus:border-[#ededea]"
           >
             {STATUS_OPTIONS.map(o => (
               <option key={o.value} value={o.value}>{o.label}</option>
@@ -97,7 +97,7 @@ export function FixCard({ fix, onStatusChange, onRemove, showStatus = false }: F
           <button
             onClick={() => onRemove(fix.id)}
             aria-label="Remove fix"
-            className="text-xs font-mono text-[#ccc] dark:text-[#4a6070] hover:text-[#111] dark:hover:text-[#ededea] transition-colors px-1 shrink-0"
+            className="text-xs font-mono text-[#ccc] dark:text-[#333330] hover:text-[#111] dark:hover:text-[#ededea] transition-colors px-1 shrink-0"
           >
             âœ•
           </button>
@@ -118,7 +118,7 @@ export function FixCard({ fix, onStatusChange, onRemove, showStatus = false }: F
       </div>
 
       {/* â”€â”€ Next step â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
-      <div className="px-4 pb-3 border-t border-[#e5e4df] dark:border-[#536878] pt-3">
+      <div className="px-4 pb-3 border-t border-[#e5e4df] dark:border-[#2c2c2a] pt-3">
         <p className="text-xs font-mono text-[#888] dark:text-[#666660] mb-1">Next step</p>
         <p className="text-sm text-[#111] dark:text-[#ededea] leading-relaxed">{nextStep}</p>
         <p className="text-xs text-[#888] dark:text-[#666660] mt-1.5">
@@ -127,12 +127,12 @@ export function FixCard({ fix, onStatusChange, onRemove, showStatus = false }: F
       </div>
 
       {/* â”€â”€ Why this saves time â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
-      <div className="px-4 py-2.5 border-t border-[#e5e4df] dark:border-[#536878] bg-[#F5F2EA] dark:bg-[#364855]">
+      <div className="px-4 py-2.5 border-t border-[#e5e4df] dark:border-[#2c2c2a] bg-[#F5F2EA] dark:bg-[#161614]">
         <p className="text-xs text-[#666] dark:text-[#7a7a74] leading-relaxed">{saveReason}</p>
       </div>
 
       {/* â”€â”€ Accordions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
-      <div className="border-t border-[#e5e4df] dark:border-[#536878]">
+      <div className="border-t border-[#e5e4df] dark:border-[#2c2c2a]">
         <AccordionRow
           label="Why this decision"
           open={openSection === 'why'}
@@ -217,7 +217,7 @@ function AccordionRow({
   children: React.ReactNode
 }) {
   return (
-    <div className="border-b border-[#e5e4df] dark:border-[#536878] last:border-b-0">
+    <div className="border-b border-[#e5e4df] dark:border-[#2c2c2a] last:border-b-0">
       <button
         onClick={onToggle}
         className="w-full flex items-center justify-between px-4 py-2.5 text-xs font-mono text-[#888] dark:text-[#666660] hover:text-[#111] dark:hover:text-[#ededea] transition-colors text-left"

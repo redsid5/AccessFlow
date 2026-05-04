@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useRef } from 'react'
 import { AnalysisV2Result, FixOpportunity } from '@/lib/v2-types'
@@ -90,7 +90,7 @@ export default function Home() {
               className={`text-xs font-mono px-4 py-2.5 border transition-colors ${
                 tab === t
                   ? 'border-[#111] dark:border-[#ededea] bg-[#111] dark:bg-[#ededea] text-white dark:text-[#111]'
-                  : 'border-[#e5e4df] dark:border-[#2c2c2a] text-[#888] dark:text-[#666660] hover:border-[#111] dark:hover:border-[#ededea] -ml-px'
+                  : 'border-[#e5e4df] dark:border-[#536878] text-[#888] dark:text-[#666660] hover:border-[#111] dark:hover:border-[#ededea] -ml-px'
               }`}
             >
               {t === 'url' ? 'URL' : 'PDF'}
@@ -99,7 +99,7 @@ export default function Home() {
         </div>
 
         {/* Input area */}
-        <div className="border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a] p-4 sm:p-5">
+        <div className="border border-[#e5e4df] dark:border-[#536878] dark:bg-[#3a4d59] p-4 sm:p-5">
           {tab === 'url' ? (
             <input
               type="url"
@@ -115,7 +115,7 @@ export default function Home() {
                 onClick={() => fileRef.current?.click()}
                 className="text-sm font-mono text-[#555] dark:text-[#9e9e98] hover:text-[#111] dark:hover:text-[#ededea] transition-colors"
               >
-                {file ? file.name : 'Click to select a PDF →'}
+                {file ? file.name : 'Click to select a PDF â†’'}
               </button>
               <input
                 ref={fileRef}
@@ -133,11 +133,11 @@ export default function Home() {
           disabled={loading}
           className="mt-3 w-full text-sm font-mono bg-[#111] dark:bg-[#ededea] text-white dark:text-[#111] py-3 px-4 disabled:opacity-40 hover:bg-[#333] dark:hover:bg-white transition-colors"
         >
-          {loading ? 'Analyzing…' : 'Analyze'}
+          {loading ? 'Analyzingâ€¦' : 'Analyze'}
         </button>
 
         {error && (
-          <div className="mt-5 border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a] px-4 py-3">
+          <div className="mt-5 border border-[#e5e4df] dark:border-[#536878] dark:bg-[#3a4d59] px-4 py-3">
             <p className="text-xs font-mono text-[#888] dark:text-[#666660]">Error</p>
             <p className="text-sm text-[#111] dark:text-[#ededea] mt-1">{error}</p>
           </div>
@@ -148,7 +148,7 @@ export default function Home() {
             <SummaryBar result={result} queued={queued} />
             <div className="mt-4 space-y-px">
               {result.fixOpportunities.length === 0 ? (
-                <div className="border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a] px-5 py-8 text-center">
+                <div className="border border-[#e5e4df] dark:border-[#536878] dark:bg-[#3a4d59] px-5 py-8 text-center">
                   <p className="text-sm font-mono text-[#888] dark:text-[#666660]">
                     No accessibility issues detected.
                   </p>
@@ -164,9 +164,9 @@ export default function Home() {
           </div>
         )}
 
-        <footer className="mt-16 pt-8 border-t border-[#e5e4df] dark:border-[#2c2c2a]">
+        <footer className="mt-16 pt-8 border-t border-[#e5e4df] dark:border-[#536878]">
           <p className="text-xs font-mono text-[#aaa] dark:text-[#444440]">
-            AccessFlow — accessibility backlog compression for university digital offices
+            AccessFlow â€” accessibility backlog compression for university digital offices
           </p>
         </footer>
       </div>
@@ -177,21 +177,21 @@ export default function Home() {
 function SummaryBar({ result, queued }: { result: AnalysisV2Result; queued: boolean }) {
   const ratio = result.compressionRatio
   return (
-    <div className="border-t border-b border-[#e5e4df] dark:border-[#2c2c2a] py-3 flex items-center gap-2 flex-wrap">
+    <div className="border-t border-b border-[#e5e4df] dark:border-[#536878] py-3 flex items-center gap-2 flex-wrap">
       <span className="text-xs font-mono text-[#888] dark:text-[#666660]">
         {result.rawIssues.length} issues found
       </span>
-      <span className="text-xs font-mono text-[#ccc] dark:text-[#333330]">·</span>
+      <span className="text-xs font-mono text-[#ccc] dark:text-[#4a6070]">Â·</span>
       <span className="text-xs font-mono text-[#888] dark:text-[#666660]">
         {result.fixOpportunities.length} fix{result.fixOpportunities.length !== 1 ? 'es' : ''} needed
       </span>
-      <span className="text-xs font-mono text-[#ccc] dark:text-[#333330]">·</span>
+      <span className="text-xs font-mono text-[#ccc] dark:text-[#4a6070]">Â·</span>
       <span className="text-xs font-mono text-[#111] dark:text-[#ededea] font-semibold">
-        {ratio.toFixed(1)}× less work
+        {ratio.toFixed(1)}Ã— less work
       </span>
       {queued && (
         <>
-          <span className="text-xs font-mono text-[#ccc] dark:text-[#333330]">·</span>
+          <span className="text-xs font-mono text-[#ccc] dark:text-[#4a6070]">Â·</span>
           <a href="/queue" className="text-xs font-mono text-[#555] dark:text-[#9e9e98] underline">
             added to queue
           </a>

@@ -1,4 +1,4 @@
-@import "tailwindcss";
+﻿@import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -12,7 +12,7 @@
 }
 
 body {
-  background: #f7f6f2;
+  background: #F9F6EE;
   color: #111110;
   font-size: 15px;
   font-family: var(--font-sans, "DM Sans", system-ui, sans-serif);
@@ -21,7 +21,7 @@ body {
 }
 
 .dark body {
-  background: #111110;
+  background: #425561;
   color: #ededea;
 }
 
@@ -33,12 +33,12 @@ body {
 /* Form elements don't auto-invert in dark mode */
 .dark input,
 .dark textarea {
-  background: #111110;
+  background: #3a4d59;
   color: #ededea;
 }
 
 .dark select {
-  background: #1c1c1a;
+  background: #3a4d59;
   color: #ededea;
 }
 

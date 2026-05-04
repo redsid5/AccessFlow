@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+﻿import type { Metadata } from 'next'
 import { DM_Sans, IBM_Plex_Mono } from 'next/font/google'
 import { Nav } from '@/components/Nav'
 import './globals.css'
@@ -16,7 +16,7 @@ const ibmPlexMono = IBM_Plex_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'AccessFlow — Access Decision Assistant',
+  title: 'AccessFlow â€” Access Decision Assistant',
   description: 'Accessibility triage for university digital accessibility offices. Not a scanner. A decision layer.',
   viewport: 'width=device-width, initial-scale=1',
 }
@@ -33,7 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body
-        className="bg-[#f7f6f2] dark:bg-[#111110] text-[#111110] dark:text-[#ededea] antialiased"
+        className="bg-[#F9F6EE] dark:bg-[#425561] text-[#111110] dark:text-[#ededea] antialiased"
         suppressHydrationWarning
       >
         <Nav />

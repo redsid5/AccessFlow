@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useEffect, useState } from 'react'
 import { FixOpportunity, QueueStatus, PatternBucket } from '@/lib/v2-types'
@@ -85,7 +85,7 @@ export default function QueuePage() {
           </h1>
           {items.length > 0 && (
             <span className="text-xs font-mono text-[#888] dark:text-[#666660]">
-              {stats.rawIssues} issues → {stats.consolidatedFixes} fix{stats.consolidatedFixes !== 1 ? 'es' : ''} · {stats.compressionRatio.toFixed(1)}:1
+              {stats.rawIssues} issues â†’ {stats.consolidatedFixes} fix{stats.consolidatedFixes !== 1 ? 'es' : ''} Â· {stats.compressionRatio.toFixed(1)}:1
             </span>
           )}
         </div>
@@ -99,7 +99,7 @@ export default function QueuePage() {
               className={`text-xs font-mono px-2.5 py-1.5 border transition-colors ${
                 filterStatus === f.value
                   ? 'border-[#111] dark:border-[#ededea] bg-[#111] dark:bg-[#ededea] text-white dark:text-[#111]'
-                  : 'border-[#e5e4df] dark:border-[#2c2c2a] text-[#888] dark:text-[#666660] hover:border-[#111] dark:hover:border-[#ededea]'
+                  : 'border-[#e5e4df] dark:border-[#536878] text-[#888] dark:text-[#666660] hover:border-[#111] dark:hover:border-[#ededea]'
               }`}
             >
               {f.label}
@@ -109,7 +109,7 @@ export default function QueuePage() {
 
         {/* Empty state */}
         {filtered.length === 0 && (
-          <div className="border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a] px-5 py-12 text-center">
+          <div className="border border-[#e5e4df] dark:border-[#536878] dark:bg-[#3a4d59] px-5 py-12 text-center">
             <p className="text-sm font-mono text-[#888] dark:text-[#666660]">
               {items.length === 0 ? 'No items in queue.' : 'No items match this filter.'}
             </p>
@@ -134,9 +134,9 @@ export default function QueuePage() {
                 </h2>
                 <span className="text-xs font-mono text-[#aaa] dark:text-[#444440]">
                   {group.fixes.length} fix{group.fixes.length !== 1 ? 'es' : ''}
-                  {' · '}
+                  {' Â· '}
                   {group.totalRawIssues} issue{group.totalRawIssues !== 1 ? 's' : ''}
-                  {' · '}
+                  {' Â· '}
                   {group.totalSources} source{group.totalSources !== 1 ? 's' : ''}
                 </span>
                 {saved && (

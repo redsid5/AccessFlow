@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
 import { FixOpportunity, QueueStatus } from '@/lib/v2-types'
@@ -60,9 +60,9 @@ export function FixCard({ fix, onStatusChange, onRemove, showStatus = false }: F
   const saveReason = getTimeSavedReason(fix)
 
   return (
-    <div className="border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a]">
+    <div className="border border-[#e5e4df] dark:border-[#536878] dark:bg-[#3a4d59]">
 
-      {/* ── Header ─────────────────────────────────────────────── */}
+      {/* â”€â”€ Header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <div className="px-4 pt-3 pb-2 flex items-start gap-3 flex-wrap">
         <span className={`text-xs font-mono px-2 py-0.5 shrink-0 mt-0.5 ${DECISION_STYLE[fix.decision]}`}>
           {fix.decision}
@@ -72,11 +72,11 @@ export function FixCard({ fix, onStatusChange, onRemove, showStatus = false }: F
           <p className="text-sm font-semibold text-[#111] dark:text-[#ededea] leading-snug">{fix.title}</p>
           <p className="text-xs font-mono text-[#888] dark:text-[#666660] mt-0.5">
             <span className={PRIORITY_TEXT[fix.priority]}>{fix.priority}</span>
-            {' · '}
+            {' Â· '}
             {BUCKET_LABEL[fix.patternBucket] ?? fix.patternBucket}
-            {' · '}
-            {fix.rawIssueCount} issue{fix.rawIssueCount !== 1 ? 's' : ''} → 1 fix
-            {' · '}
+            {' Â· '}
+            {fix.rawIssueCount} issue{fix.rawIssueCount !== 1 ? 's' : ''} â†’ 1 fix
+            {' Â· '}
             {fix.affectedSourceCount} source{fix.affectedSourceCount !== 1 ? 's' : ''}
           </p>
         </div>
@@ -85,7 +85,7 @@ export function FixCard({ fix, onStatusChange, onRemove, showStatus = false }: F
           <select
             value={fix.status}
             onChange={e => onStatusChange(fix.id, e.target.value as QueueStatus)}
-            className="text-xs font-mono border border-[#e5e4df] dark:border-[#2c2c2a] bg-white dark:bg-[#1c1c1a] text-[#555] dark:text-[#9e9e98] px-2 py-1.5 focus:outline-none focus:border-[#111] dark:focus:border-[#ededea]"
+            className="text-xs font-mono border border-[#e5e4df] dark:border-[#536878] bg-white dark:bg-[#3a4d59] text-[#555] dark:text-[#9e9e98] px-2 py-1.5 focus:outline-none focus:border-[#111] dark:focus:border-[#ededea]"
           >
             {STATUS_OPTIONS.map(o => (
               <option key={o.value} value={o.value}>{o.label}</option>
@@ -97,14 +97,14 @@ export function FixCard({ fix, onStatusChange, onRemove, showStatus = false }: F
           <button
             onClick={() => onRemove(fix.id)}
             aria-label="Remove fix"
-            className="text-xs font-mono text-[#ccc] dark:text-[#333330] hover:text-[#111] dark:hover:text-[#ededea] transition-colors px-1 shrink-0"
+            className="text-xs font-mono text-[#ccc] dark:text-[#4a6070] hover:text-[#111] dark:hover:text-[#ededea] transition-colors px-1 shrink-0"
           >
-            ✕
+            âœ•
           </button>
         )}
       </div>
 
-      {/* ── Value strip ────────────────────────────────────────── */}
+      {/* â”€â”€ Value strip â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
       <div className="px-4 pb-3 flex flex-wrap items-center gap-x-3 gap-y-1">
         {leverage && (
           <span className="text-xs font-mono text-[#111] dark:text-[#ededea] border border-[#111] dark:border-[#ededea] px-1.5 py-0.5">
@@ -117,22 +117,22 @@ export function FixCard({ fix, onStatusChange, onRemove, showStatus = false }: F
         <span className="text-xs font-mono text-[#aaa] dark:text-[#444440]">{EFFORT_COPY[effort]}</span>
       </div>
 
-      {/* ── Next step ──────────────────────────────────────────── */}
-      <div className="px-4 pb-3 border-t border-[#e5e4df] dark:border-[#2c2c2a] pt-3">
+      {/* â”€â”€ Next step â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      <div className="px-4 pb-3 border-t border-[#e5e4df] dark:border-[#536878] pt-3">
         <p className="text-xs font-mono text-[#888] dark:text-[#666660] mb-1">Next step</p>
         <p className="text-sm text-[#111] dark:text-[#ededea] leading-relaxed">{nextStep}</p>
         <p className="text-xs text-[#888] dark:text-[#666660] mt-1.5">
-          {fix.owner.team} · {fix.owner.role}
+          {fix.owner.team} Â· {fix.owner.role}
         </p>
       </div>
 
-      {/* ── Why this saves time ────────────────────────────────── */}
-      <div className="px-4 py-2.5 border-t border-[#e5e4df] dark:border-[#2c2c2a] bg-[#fafaf8] dark:bg-[#161614]">
+      {/* â”€â”€ Why this saves time â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      <div className="px-4 py-2.5 border-t border-[#e5e4df] dark:border-[#536878] bg-[#F5F2EA] dark:bg-[#364855]">
         <p className="text-xs text-[#666] dark:text-[#7a7a74] leading-relaxed">{saveReason}</p>
       </div>
 
-      {/* ── Accordions ─────────────────────────────────────────── */}
-      <div className="border-t border-[#e5e4df] dark:border-[#2c2c2a]">
+      {/* â”€â”€ Accordions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      <div className="border-t border-[#e5e4df] dark:border-[#536878]">
         <AccordionRow
           label="Why this decision"
           open={openSection === 'why'}
@@ -177,7 +177,7 @@ export function FixCard({ fix, onStatusChange, onRemove, showStatus = false }: F
           <ul className="space-y-1.5">
             {fix.verificationChecklist.map((item, i) => (
               <li key={i} className="flex items-start gap-2">
-                <span className="text-xs font-mono text-[#aaa] dark:text-[#444440] shrink-0 mt-0.5">☐</span>
+                <span className="text-xs font-mono text-[#aaa] dark:text-[#444440] shrink-0 mt-0.5">â˜</span>
                 <span className="text-xs text-[#555] dark:text-[#9e9e98]">{item}</span>
               </li>
             ))}
@@ -192,14 +192,14 @@ export function FixCard({ fix, onStatusChange, onRemove, showStatus = false }: F
           <div className="space-y-1.5">
             <p className="text-xs font-mono text-[#555] dark:text-[#9e9e98]">
               Scope: <strong>{fix.scope.likelihood}</strong>
-              {' · '}
+              {' Â· '}
               {(fix.scope.confidence * 100).toFixed(0)}% extraction accuracy
             </p>
             {fix.decisionTrace.scopeReasons.map((r, i) => (
               <p key={i} className="text-xs text-[#888] dark:text-[#666660]">{r}</p>
             ))}
             <p className="text-xs font-mono text-[#aaa] dark:text-[#444440]">
-              {fix.rawIssueCount} issues compressed into 1 fix · ratio {fix.compressionRatio}:1
+              {fix.rawIssueCount} issues compressed into 1 fix Â· ratio {fix.compressionRatio}:1
             </p>
           </div>
         </AccordionRow>
@@ -217,13 +217,13 @@ function AccordionRow({
   children: React.ReactNode
 }) {
   return (
-    <div className="border-b border-[#e5e4df] dark:border-[#2c2c2a] last:border-b-0">
+    <div className="border-b border-[#e5e4df] dark:border-[#536878] last:border-b-0">
       <button
         onClick={onToggle}
         className="w-full flex items-center justify-between px-4 py-2.5 text-xs font-mono text-[#888] dark:text-[#666660] hover:text-[#111] dark:hover:text-[#ededea] transition-colors text-left"
       >
         <span>{label}</span>
-        <span className="ml-2 select-none">{open ? '−' : '+'}</span>
+        <span className="ml-2 select-none">{open ? 'âˆ’' : '+'}</span>
       </button>
       {open && (
         <div className="px-4 pb-3">

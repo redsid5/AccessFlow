@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { Role } from '@/lib/types'
 
@@ -28,7 +28,7 @@ export function RoleSelector({ value, onChange }: RoleSelectorProps) {
             className={`text-left px-3 py-3 border transition-colors ${
               value === role.value
                 ? 'border-[#111] dark:border-[#ededea] bg-[#111] dark:bg-[#ededea] text-white dark:text-[#111]'
-                : 'border-[#e5e4df] dark:border-[#2c2c2a] text-[#111] dark:text-[#ededea] hover:border-[#111] dark:hover:border-[#ededea]'
+                : 'border-[#e5e4df] dark:border-[#536878] text-[#111] dark:text-[#ededea] hover:border-[#111] dark:hover:border-[#ededea]'
             }`}
           >
             <span className="block font-medium text-sm leading-tight">{role.label}</span>

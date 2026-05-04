@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { DEMO_CASES } from '@/lib/demo-cases'
 import { DECISION_LABELS } from '@/lib/config'
@@ -13,14 +13,14 @@ export function DemoExamples({ onSelect, role }: DemoExamplesProps) {
   return (
     <div className="mt-8">
       <p className="text-xs font-mono uppercase tracking-wider text-[#888] dark:text-[#666660] mb-3">
-        Demo examples — no API key needed
+        Demo examples â€” no API key needed
       </p>
       <div className="space-y-2">
         {DEMO_CASES.map(demo => (
           <button
             key={demo.id}
             onClick={() => onSelect(demo.label, demo.result)}
-            className="w-full text-left border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a] px-4 py-3 hover:border-[#111] dark:hover:border-[#ededea] transition-colors group"
+            className="w-full text-left border border-[#e5e4df] dark:border-[#536878] dark:bg-[#3a4d59] px-4 py-3 hover:border-[#111] dark:hover:border-[#ededea] transition-colors group"
           >
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">

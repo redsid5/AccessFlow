@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -41,7 +41,7 @@ export function Nav() {
   ]
 
   return (
-    <nav className="border-b border-[#e5e4df] dark:border-[#2c2c2a] mb-8 sm:mb-10">
+    <nav className="border-b border-[#e5e4df] dark:border-[#536878] mb-8 sm:mb-10">
       <div className="max-w-[860px] mx-auto px-4 sm:px-5 flex items-center justify-between">
         <div className="flex items-center gap-0.5">
           {links.map(link => (
@@ -63,7 +63,7 @@ export function Nav() {
           aria-label="Toggle dark mode"
           className="text-base text-[#888] dark:text-[#666660] hover:text-[#111] dark:hover:text-[#ededea] transition-colors px-2 py-3 leading-none"
         >
-          {dark ? '☀' : '☾'}
+          {dark ? 'â˜€' : 'â˜¾'}
         </button>
       </div>
     </nav>

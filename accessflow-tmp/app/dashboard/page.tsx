@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useEffect, useState } from 'react'
 import { getQueue, computeStats, remediationCost, DashboardStats } from '@/lib/queue-store'
@@ -11,7 +11,7 @@ function fmt(n: number) {
 
 function StatBlock({ label, value, sub }: { label: string; value: string | number; sub?: string }) {
   return (
-    <div className="border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a] px-4 sm:px-5 py-4">
+    <div className="border border-[#e5e4df] dark:border-[#536878] dark:bg-[#3a4d59] px-4 sm:px-5 py-4">
       <p className="text-xs font-mono uppercase tracking-wider text-[#888] dark:text-[#666660] mb-1">{label}</p>
       <p className="text-3xl font-bold text-[#111] dark:text-[#ededea] tracking-tight leading-none">{value}</p>
       {sub && <p className="text-xs font-mono text-[#888] dark:text-[#666660] mt-1">{sub}</p>}
@@ -24,7 +24,7 @@ function Bar({ value, max, label }: { value: number; max: number; label: string 
   return (
     <div className="flex items-center gap-3">
       <span className="text-xs font-mono text-[#888] dark:text-[#666660] w-28 shrink-0 text-right">{label}</span>
-      <div className="flex-1 h-1 bg-[#eeeee9] dark:bg-[#252523]">
+      <div className="flex-1 h-1 bg-[#EBE8E0] dark:bg-[#4d6373]">
         <div className="h-1 bg-[#111] dark:bg-[#ededea] transition-all duration-500" style={{ width: `${pct}%` }} />
       </div>
       <span className="text-xs font-mono text-[#555] dark:text-[#9e9e98] w-8 shrink-0">{value}</span>
@@ -83,12 +83,12 @@ export default function DashboardPage() {
         <div className="mb-8">
           <h1 className="text-2xl sm:text-3xl font-bold text-[#111] dark:text-[#ededea] tracking-tight">Portfolio Dashboard</h1>
           <p className="text-base text-[#555] dark:text-[#9e9e98] mt-1">
-            {stats.total} items analyzed · {stats.resolvedThisMonth} resolved this month
+            {stats.total} items analyzed Â· {stats.resolvedThisMonth} resolved this month
           </p>
         </div>
 
         {stats.total === 0 ? (
-          <div className="border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a] px-5 py-10 text-center">
+          <div className="border border-[#e5e4df] dark:border-[#536878] dark:bg-[#3a4d59] px-5 py-10 text-center">
             <p className="text-base text-[#888] dark:text-[#666660] font-mono">No data yet.</p>
             <p className="text-sm text-[#aaa] dark:text-[#444440] font-mono mt-1">
               Analyze content on the{' '}
@@ -104,7 +104,7 @@ export default function DashboardPage() {
               <StatBlock label="Remediation cost" value={fmt(costAfterDeletion)} sub="after removing low-value content" />
             </div>
 
-            <div className="border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a] p-4 sm:p-5 mt-px mb-8">
+            <div className="border border-[#e5e4df] dark:border-[#536878] dark:bg-[#3a4d59] p-4 sm:p-5 mt-px mb-8">
               <p className="text-xs font-mono uppercase tracking-wider text-[#888] dark:text-[#666660] mb-4">Cost analysis</p>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
                 <div>
@@ -123,14 +123,14 @@ export default function DashboardPage() {
                   <p className="text-xs font-mono text-[#aaa] dark:text-[#444440] mt-1">
                     {totalCostIfAllFixed > 0
                       ? `${Math.round((stats.projectedSavings / totalCostIfAllFixed) * 100)}% reduction`
-                      : '—'}
+                      : 'â€”'}
                   </p>
                 </div>
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-px mb-px">
-              <div className="border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a] p-4 sm:p-5">
+              <div className="border border-[#e5e4df] dark:border-[#536878] dark:bg-[#3a4d59] p-4 sm:p-5">
                 <p className="text-xs font-mono uppercase tracking-wider text-[#888] dark:text-[#666660] mb-4">By decision</p>
                 <div className="space-y-3">
                   <Bar value={stats.byDecision.fix} max={stats.total} label={DECISION_LABELS.fix} />
@@ -138,7 +138,7 @@ export default function DashboardPage() {
                   <Bar value={stats.byDecision.delete} max={stats.total} label={DECISION_LABELS.delete} />
                 </div>
               </div>
-              <div className="border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a] p-4 sm:p-5">
+              <div className="border border-[#e5e4df] dark:border-[#536878] dark:bg-[#3a4d59] p-4 sm:p-5">
                 <p className="text-xs font-mono uppercase tracking-wider text-[#888] dark:text-[#666660] mb-4">By status</p>
                 <div className="space-y-3">
                   {(Object.entries(stats.byStatus) as [string, number][])
@@ -151,9 +151,9 @@ export default function DashboardPage() {
             </div>
 
             {highRiskUnresolved.length > 0 && (
-              <div className="border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a] p-4 sm:p-5 mt-px mb-px">
+              <div className="border border-[#e5e4df] dark:border-[#536878] dark:bg-[#3a4d59] p-4 sm:p-5 mt-px mb-px">
                 <p className="text-xs font-mono uppercase tracking-wider text-[#888] dark:text-[#666660] mb-3">
-                  Critical — unresolved ({highRiskUnresolved.length})
+                  Critical â€” unresolved ({highRiskUnresolved.length})
                 </p>
                 <div className="space-y-3">
                   {highRiskUnresolved.slice(0, 5).map(item => (
@@ -167,7 +167,7 @@ export default function DashboardPage() {
                   ))}
                   {highRiskUnresolved.length > 5 && (
                     <p className="text-xs font-mono text-[#aaa] dark:text-[#444440]">
-                      +{highRiskUnresolved.length - 5} more →{' '}
+                      +{highRiskUnresolved.length - 5} more â†’{' '}
                       <a href="/queue" className="underline text-[#555] dark:text-[#9e9e98]">view queue</a>
                     </p>
                   )}
@@ -176,13 +176,13 @@ export default function DashboardPage() {
             )}
 
             {deptList.length > 0 && (
-              <div className="border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a] p-4 sm:p-5 mt-px">
+              <div className="border border-[#e5e4df] dark:border-[#536878] dark:bg-[#3a4d59] p-4 sm:p-5 mt-px">
                 <p className="text-xs font-mono uppercase tracking-wider text-[#888] dark:text-[#666660] mb-4">By department</p>
                 <div className="space-y-3">
                   {deptList.map(([dept, d]) => (
                     <div key={dept} className="flex items-center gap-3">
                       <span className="text-xs font-mono text-[#888] dark:text-[#666660] w-28 shrink-0 text-right truncate">{dept}</span>
-                      <div className="flex-1 h-1 bg-[#eeeee9] dark:bg-[#252523]">
+                      <div className="flex-1 h-1 bg-[#EBE8E0] dark:bg-[#4d6373]">
                         <div
                           className="h-1 bg-[#111] dark:bg-[#ededea]"
                           style={{ width: `${(d.cost / maxDeptCost) * 100}%` }}

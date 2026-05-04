@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useRef, useState } from 'react'
 
@@ -34,8 +34,8 @@ export function InputCard({ onSubmitURL, onSubmitPDF, loading }: InputCardProps)
   }
 
   return (
-    <div className="border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a]">
-      <div className="flex border-b border-[#e5e4df] dark:border-[#2c2c2a]">
+    <div className="border border-[#e5e4df] dark:border-[#536878] dark:bg-[#3a4d59]">
+      <div className="flex border-b border-[#e5e4df] dark:border-[#536878]">
         {(['url', 'pdf'] as Tab[]).map(t => (
           <button
             key={t}
@@ -62,7 +62,7 @@ export function InputCard({ onSubmitURL, onSubmitPDF, loading }: InputCardProps)
               value={url}
               onChange={e => setUrl(e.target.value)}
               placeholder="https://university.edu/financial-aid"
-              className="w-full border border-[#e5e4df] dark:border-[#2c2c2a] bg-white dark:bg-[#111110] px-3 py-3 text-base text-[#111] dark:text-[#ededea] font-mono placeholder-[#ccc] dark:placeholder-[#444440] focus:outline-none focus:border-[#111] dark:focus:border-[#ededea] transition-colors"
+              className="w-full border border-[#e5e4df] dark:border-[#536878] bg-white dark:bg-[#425561] px-3 py-3 text-base text-[#111] dark:text-[#ededea] font-mono placeholder-[#ccc] dark:placeholder-[#444440] focus:outline-none focus:border-[#111] dark:focus:border-[#ededea] transition-colors"
               disabled={loading}
             />
           </div>
@@ -74,8 +74,8 @@ export function InputCard({ onSubmitURL, onSubmitPDF, loading }: InputCardProps)
             <div
               className={`border border-dashed transition-colors cursor-pointer ${
                 dragOver
-                  ? 'border-[#111] dark:border-[#ededea] bg-[#f0efe9] dark:bg-[#252523]'
-                  : 'border-[#ccc] dark:border-[#2c2c2a] hover:border-[#999] dark:hover:border-[#444440]'
+                  ? 'border-[#111] dark:border-[#ededea] bg-[#F3F0E8] dark:bg-[#4d6373]'
+                  : 'border-[#ccc] dark:border-[#536878] hover:border-[#999] dark:hover:border-[#444440]'
               }`}
               onClick={() => fileRef.current?.click()}
               onDragOver={e => { e.preventDefault(); setDragOver(true) }}

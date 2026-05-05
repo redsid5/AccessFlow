@@ -79,15 +79,20 @@ export default function QueuePage() {
     <main className="min-h-screen px-4 sm:px-5 pb-20">
       <div className="max-w-[860px] mx-auto">
 
-        <div className="pt-10 pb-5 flex items-baseline gap-4 flex-wrap">
-          <h1 className="text-2xl font-semibold text-[#111] dark:text-[#ededea] tracking-tight">
-            Fix Queue
-          </h1>
-          {items.length > 0 && (
-            <span className="text-xs font-mono text-[#888] dark:text-[#666660]">
-              {stats.rawIssues} issues â†’ {stats.consolidatedFixes} fix{stats.consolidatedFixes !== 1 ? 'es' : ''} Â· {stats.compressionRatio.toFixed(1)}:1
-            </span>
-          )}
+        <div className="pt-10 pb-5">
+          <div className="flex items-baseline gap-4 flex-wrap">
+            <h1 className="text-2xl font-semibold text-[#111] dark:text-[#ededea] tracking-tight">
+              Fix Queue
+            </h1>
+            {items.length > 0 && (
+              <span className="text-xs font-mono text-[#888] dark:text-[#666660]">
+                {stats.rawIssues} issues â†’ {stats.consolidatedFixes} fix{stats.consolidatedFixes !== 1 ? ‘es’ : ‘’} Â· {stats.compressionRatio.toFixed(1)}:1
+              </span>
+            )}
+          </div>
+          <p className="text-xs font-mono text-[#aaa] dark:text-[#444440] mt-1.5">
+            Fixes are grouped by pattern and sorted by leverage. Analyze a page to add items.
+          </p>
         </div>
 
         {/* Status filter */}

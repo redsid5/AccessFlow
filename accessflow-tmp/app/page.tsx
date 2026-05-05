@@ -83,6 +83,8 @@ export default function Home() {
             Paste a URL or PDF — we detect repeated accessibility patterns and consolidate them into fewer, higher-value fixes.
           </p>
           <div className="flex items-center gap-2 mt-3 flex-wrap">
+            <span className="text-xs font-mono text-[#888] dark:text-[#666660]">180 issues → 42 fixes</span>
+            <span className="text-xs font-mono text-[#e5e4df] dark:text-[#2c2c2a]">·</span>
             <span className="text-xs font-mono text-[#ccc] dark:text-[#333330]">Pattern-based, not just a scanner</span>
             <span className="text-xs font-mono text-[#e5e4df] dark:text-[#2c2c2a]">·</span>
             <span className="text-xs font-mono text-[#ccc] dark:text-[#333330]">~2 min per page</span>

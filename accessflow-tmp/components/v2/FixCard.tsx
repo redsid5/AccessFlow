@@ -62,7 +62,7 @@ export function FixCard({ fix, onStatusChange, onRemove, showStatus = false }: F
   return (
     <div className="border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a]">
 
-      {/* â”€â”€ Header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      {/* â"€â"€ Header â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */}
       <div className="px-4 pt-3 pb-2 flex items-start gap-3 flex-wrap">
         <span className={`text-xs font-mono px-2 py-0.5 shrink-0 mt-0.5 ${DECISION_STYLE[fix.decision]}`}>
           {fix.decision}
@@ -75,7 +75,7 @@ export function FixCard({ fix, onStatusChange, onRemove, showStatus = false }: F
             {' · '}
             {BUCKET_LABEL[fix.patternBucket] ?? fix.patternBucket}
             {' · '}
-            {fix.rawIssueCount} issue{fix.rawIssueCount !== 1 ? ‘s’ : ‘’} → 1 fix
+            {fix.rawIssueCount} issue{fix.rawIssueCount !== 1 ? 's' : ''} → 1 fix
             {' · '}
             {fix.affectedSourceCount} source{fix.affectedSourceCount !== 1 ? 's' : ''}
           </p>
@@ -104,7 +104,7 @@ export function FixCard({ fix, onStatusChange, onRemove, showStatus = false }: F
         )}
       </div>
 
-      {/* â”€â”€ Value strip â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      {/* â"€â"€ Value strip â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */}
       <div className="px-4 pb-3 flex flex-wrap items-center gap-x-3 gap-y-1">
         {leverage && (
           <span className="text-xs font-mono text-[#111] dark:text-[#ededea] border border-[#111] dark:border-[#ededea] px-1.5 py-0.5">
@@ -117,7 +117,7 @@ export function FixCard({ fix, onStatusChange, onRemove, showStatus = false }: F
         <span className="text-xs font-mono text-[#aaa] dark:text-[#444440]">{EFFORT_COPY[effort]}</span>
       </div>
 
-      {/* â”€â”€ Next step â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      {/* â"€â"€ Next step â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */}
       <div className="px-4 pb-3 border-t border-[#e5e4df] dark:border-[#2c2c2a] pt-3">
         <p className="text-xs font-mono text-[#888] dark:text-[#666660] mb-1">Next step</p>
         <p className="text-sm text-[#111] dark:text-[#ededea] leading-relaxed">{nextStep}</p>
@@ -126,12 +126,12 @@ export function FixCard({ fix, onStatusChange, onRemove, showStatus = false }: F
         </p>
       </div>
 
-      {/* â”€â”€ Why this saves time â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      {/* â"€â"€ Why this saves time â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */}
       <div className="px-4 py-2.5 border-t border-[#e5e4df] dark:border-[#2c2c2a] bg-[#F5F2EA] dark:bg-[#161614]">
         <p className="text-xs text-[#666] dark:text-[#7a7a74] leading-relaxed">{saveReason}</p>
       </div>
 
-      {/* â”€â”€ Accordions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+      {/* â"€â"€ Accordions â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */}
       <div className="border-t border-[#e5e4df] dark:border-[#2c2c2a]">
         <AccordionRow
           label="Why this decision"
@@ -223,7 +223,7 @@ function AccordionRow({
         className="w-full flex items-center justify-between px-4 py-2.5 text-xs font-mono text-[#888] dark:text-[#666660] hover:text-[#111] dark:hover:text-[#ededea] transition-colors text-left"
       >
         <span>{label}</span>
-        <span className="ml-2 select-none">{open ? 'âˆ’' : '+'}</span>
+        <span className="ml-2 select-none">{open ? 'âˆ'' : '+'}</span>
       </button>
       {open && (
         <div className="px-4 pb-3">

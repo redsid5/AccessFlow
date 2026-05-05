@@ -13,7 +13,7 @@ export function DemoExamples({ onSelect, role }: DemoExamplesProps) {
   return (
     <div className="mt-8">
       <p className="text-xs font-mono uppercase tracking-wider text-[#888] dark:text-[#666660] mb-3">
-        Demo examples â€” no API key needed
+        Demo examples â€" no API key needed
       </p>
       <div className="space-y-2">
         {DEMO_CASES.map(demo => (

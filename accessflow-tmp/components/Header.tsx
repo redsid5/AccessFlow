@@ -16,16 +16,16 @@
       </h1>
 
       <p className="mt-3 text-base text-[#555] dark:text-[#9e9e98] leading-relaxed max-w-lg">
-        Paste a URL or upload a PDF. Get one clear decision â€” fix it, review it, or remove it.
+        Paste a URL or upload a PDF. Get one clear decision â€" fix it, review it, or remove it.
         Designed for campus staff with no WCAG expertise required.
       </p>
 
       <div className="mt-5 inline-flex items-center gap-2 bg-[#111] dark:bg-[#1c1c1a] dark:border dark:border-[#2c2c2a] px-4 py-2.5 font-mono text-sm flex-wrap">
         <span className="text-[#666] dark:text-[#555550]">Triage order:</span>
         <span className="text-white dark:text-[#ededea] font-medium">1. Remove</span>
-        <span className="text-[#444] dark:text-[#444440]">â†’</span>
+        <span className="text-[#444] dark:text-[#444440]">â†'</span>
         <span className="text-white dark:text-[#ededea] font-medium">2. Replace</span>
-        <span className="text-[#444] dark:text-[#444440]">â†’</span>
+        <span className="text-[#444] dark:text-[#444440]">â†'</span>
         <span className="text-white dark:text-[#ededea] font-medium">3. Remediate</span>
       </div>
     </header>

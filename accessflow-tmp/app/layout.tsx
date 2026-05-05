@@ -16,7 +16,7 @@ const ibmPlexMono = IBM_Plex_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'AccessFlow â€” Access Decision Assistant',
+  title: 'AccessFlow â€" Access Decision Assistant',
   description: 'Accessibility triage for university digital accessibility offices. Not a scanner. A decision layer.',
   viewport: 'width=device-width, initial-scale=1',
 }

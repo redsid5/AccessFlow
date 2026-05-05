@@ -38,13 +38,13 @@ function buildImpactLines(result: TriageResult): string[] {
   if (result.decision !== 'fix' || result.priority !== 'High') return []
   const lines: string[] = []
   if (result.signals.missionCritical)
-    lines.push('Students cannot complete this process independently â€” it creates a direct barrier to a critical university service.')
+    lines.push('Students cannot complete this process independently â€" it creates a direct barrier to a critical university service.')
   if (result.signals.timeSensitive)
     lines.push('This content has deadline pressure. An inaccessible page around a deadline means students miss it, not the page.')
   if (result.signals.studentImpact && !result.signals.missionCritical)
     lines.push('Students relying on assistive technology are blocked from accessing this content without help from another person.')
   if (result.signals.publicFacing && result.signals.missionCritical)
-    lines.push('Public-facing mission-critical pages are the highest legal exposure under DOJ Title II â€” these are the first sites auditors check.')
+    lines.push('Public-facing mission-critical pages are the highest legal exposure under DOJ Title II â€" these are the first sites auditors check.')
   return lines
 }
 
@@ -157,7 +157,7 @@ export function ResultCard({ result, label, role }: {
         <div className="px-4 sm:px-5 py-3 border-b border-[#e5e4df] dark:border-[#2c2c2a] bg-[#F9F6EE] dark:bg-[#252523]">
           <p className="text-xs font-mono text-[#555] dark:text-[#9e9e98]">
             <span className="font-semibold text-[#111] dark:text-[#ededea]">Manual review required.</span>{' '}
-            Extraction accuracy below threshold â€” signals may be incomplete or conflicting. Verify before acting.
+            Extraction accuracy below threshold â€" signals may be incomplete or conflicting. Verify before acting.
           </p>
         </div>
       )}
@@ -275,7 +275,7 @@ export function ResultCard({ result, label, role }: {
                 ))}
                 <div className="flex gap-3 pt-1 border-t border-[#e5e4df] dark:border-[#2c2c2a]">
                   <span className="text-[#aaa] dark:text-[#444440] w-36 shrink-0">normalized total</span>
-                  <span className="text-[#111] dark:text-[#ededea]">{trace.normalizedScore}/100 â†’ {trace.priorityBand}</span>
+                  <span className="text-[#111] dark:text-[#ededea]">{trace.normalizedScore}/100 â†' {trace.priorityBand}</span>
                 </div>
               </div>
             </div>

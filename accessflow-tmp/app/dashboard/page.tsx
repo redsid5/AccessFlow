@@ -123,7 +123,7 @@ export default function DashboardPage() {
                   <p className="text-xs font-mono text-[#aaa] dark:text-[#444440] mt-1">
                     {totalCostIfAllFixed > 0
                       ? `${Math.round((stats.projectedSavings / totalCostIfAllFixed) * 100)}% reduction`
-                      : 'â€”'}
+                      : 'â€"'}
                   </p>
                 </div>
               </div>
@@ -153,7 +153,7 @@ export default function DashboardPage() {
             {highRiskUnresolved.length > 0 && (
               <div className="border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a] p-4 sm:p-5 mt-px mb-px">
                 <p className="text-xs font-mono uppercase tracking-wider text-[#888] dark:text-[#666660] mb-3">
-                  Critical â€” unresolved ({highRiskUnresolved.length})
+                  Critical â€" unresolved ({highRiskUnresolved.length})
                 </p>
                 <div className="space-y-3">
                   {highRiskUnresolved.slice(0, 5).map(item => (
@@ -167,7 +167,7 @@ export default function DashboardPage() {
                   ))}
                   {highRiskUnresolved.length > 5 && (
                     <p className="text-xs font-mono text-[#aaa] dark:text-[#444440]">
-                      +{highRiskUnresolved.length - 5} more â†’{' '}
+                      +{highRiskUnresolved.length - 5} more â†'{' '}
                       <a href="/queue" className="underline text-[#555] dark:text-[#9e9e98]">view queue</a>
                     </p>
                   )}

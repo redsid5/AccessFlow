@@ -131,7 +131,7 @@ export default function Home() {
                 onClick={() => fileRef.current?.click()}
                 className="text-sm font-mono text-[#555] dark:text-[#9e9e98] hover:text-[#111] dark:hover:text-[#ededea] transition-colors"
               >
-                {file ? file.name : 'Click to select a PDF â†’'}
+                {file ? file.name : 'Click to select a PDF â†''}
               </button>
               <input
                 ref={fileRef}
@@ -186,7 +186,7 @@ export default function Home() {
 
         <footer className="mt-16 pt-8 border-t border-[#e5e4df] dark:border-[#2c2c2a]">
           <p className="text-xs font-mono text-[#aaa] dark:text-[#444440]">
-            AccessFlow â€” accessibility backlog compression for university digital offices
+            AccessFlow â€" accessibility backlog compression for university digital offices
           </p>
         </footer>
       </div>

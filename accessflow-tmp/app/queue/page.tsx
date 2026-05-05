@@ -86,7 +86,7 @@ export default function QueuePage() {
             </h1>
             {items.length > 0 && (
               <span className="text-xs font-mono text-[#888] dark:text-[#666660]">
-                {stats.rawIssues} issues &rarr; {stats.consolidatedFixes} fix{stats.consolidatedFixes !== 1 ? ‘es’ : ‘’} &middot; {stats.compressionRatio.toFixed(1)}:1
+                {stats.rawIssues} issues → {stats.consolidatedFixes} fix{stats.consolidatedFixes !== 1 ? ‘es’ : ‘’} · {stats.compressionRatio.toFixed(1)}:1
               </span>
             )}
           </div>

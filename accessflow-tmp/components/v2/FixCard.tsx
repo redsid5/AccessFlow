@@ -75,7 +75,7 @@ export function FixCard({ fix, onStatusChange, onRemove, showStatus = false }: F
             {' · '}
             {BUCKET_LABEL[fix.patternBucket] ?? fix.patternBucket}
             {' · '}
-            {fix.rawIssueCount} issue{fix.rawIssueCount !== 1 ? ‘s’ : ‘’} &rarr; 1 fix
+            {fix.rawIssueCount} issue{fix.rawIssueCount !== 1 ? ‘s’ : ‘’} → 1 fix
             {' · '}
             {fix.affectedSourceCount} source{fix.affectedSourceCount !== 1 ? 's' : ''}
           </p>

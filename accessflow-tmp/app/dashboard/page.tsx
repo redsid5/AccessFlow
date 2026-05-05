@@ -83,7 +83,7 @@ export default function DashboardPage() {
         <div className="mb-8">
           <h1 className="text-2xl sm:text-3xl font-bold text-[#111] dark:text-[#ededea] tracking-tight">Portfolio Dashboard</h1>
           <p className="text-base text-[#555] dark:text-[#9e9e98] mt-1">
-            {stats.total} items analyzed Â· {stats.resolvedThisMonth} resolved this month
+            {stats.total} items analyzed · {stats.resolvedThisMonth} resolved this month
           </p>
         </div>
 

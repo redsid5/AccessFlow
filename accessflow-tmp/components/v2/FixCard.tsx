@@ -72,11 +72,11 @@ export function FixCard({ fix, onStatusChange, onRemove, showStatus = false }: F
           <p className="text-sm font-semibold text-[#111] dark:text-[#ededea] leading-snug">{fix.title}</p>
           <p className="text-xs font-mono text-[#888] dark:text-[#666660] mt-0.5">
             <span className={PRIORITY_TEXT[fix.priority]}>{fix.priority}</span>
-            {' Â· '}
+            {' · '}
             {BUCKET_LABEL[fix.patternBucket] ?? fix.patternBucket}
-            {' Â· '}
-            {fix.rawIssueCount} issue{fix.rawIssueCount !== 1 ? 's' : ''} â†’ 1 fix
-            {' Â· '}
+            {' · '}
+            {fix.rawIssueCount} issue{fix.rawIssueCount !== 1 ? ‘s’ : ‘’} &rarr; 1 fix
+            {' · '}
             {fix.affectedSourceCount} source{fix.affectedSourceCount !== 1 ? 's' : ''}
           </p>
         </div>
@@ -122,7 +122,7 @@ export function FixCard({ fix, onStatusChange, onRemove, showStatus = false }: F
         <p className="text-xs font-mono text-[#888] dark:text-[#666660] mb-1">Next step</p>
         <p className="text-sm text-[#111] dark:text-[#ededea] leading-relaxed">{nextStep}</p>
         <p className="text-xs text-[#888] dark:text-[#666660] mt-1.5">
-          {fix.owner.team} Â· {fix.owner.role}
+          {fix.owner.team} · {fix.owner.role}
         </p>
       </div>
 
@@ -192,14 +192,14 @@ export function FixCard({ fix, onStatusChange, onRemove, showStatus = false }: F
           <div className="space-y-1.5">
             <p className="text-xs font-mono text-[#555] dark:text-[#9e9e98]">
               Scope: <strong>{fix.scope.likelihood}</strong>
-              {' Â· '}
+              {' · '}
               {(fix.scope.confidence * 100).toFixed(0)}% extraction accuracy
             </p>
             {fix.decisionTrace.scopeReasons.map((r, i) => (
               <p key={i} className="text-xs text-[#888] dark:text-[#666660]">{r}</p>
             ))}
             <p className="text-xs font-mono text-[#aaa] dark:text-[#444440]">
-              {fix.rawIssueCount} issues compressed into 1 fix Â· ratio {fix.compressionRatio}:1
+              {fix.rawIssueCount} issues compressed into 1 fix · ratio {fix.compressionRatio}:1
             </p>
           </div>
         </AccordionRow>

@@ -86,7 +86,7 @@ export default function QueuePage() {
             </h1>
             {items.length > 0 && (
               <span className="text-xs font-mono text-[#888] dark:text-[#666660]">
-                {stats.rawIssues} issues â†’ {stats.consolidatedFixes} fix{stats.consolidatedFixes !== 1 ? ‘es’ : ‘’} Â· {stats.compressionRatio.toFixed(1)}:1
+                {stats.rawIssues} issues &rarr; {stats.consolidatedFixes} fix{stats.consolidatedFixes !== 1 ? ‘es’ : ‘’} &middot; {stats.compressionRatio.toFixed(1)}:1
               </span>
             )}
           </div>
@@ -138,9 +138,9 @@ export default function QueuePage() {
                 </h2>
                 <span className="text-xs font-mono text-[#aaa] dark:text-[#444440]">
                   {group.fixes.length} fix{group.fixes.length !== 1 ? 'es' : ''}
-                  {' Â· '}
+                  {' · '}
                   {group.totalRawIssues} issue{group.totalRawIssues !== 1 ? 's' : ''}
-                  {' Â· '}
+                  {' · '}
                   {group.totalSources} source{group.totalSources !== 1 ? 's' : ''}
                 </span>
                 {saved && (

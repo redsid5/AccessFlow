@@ -157,7 +157,7 @@ export function TechnicalReview({ label, contentType, textSample, wcagContext }:
             <p className="text-xs font-mono uppercase tracking-wider text-[#888] dark:text-[#666660]">Technical Review</p>
             <p className="text-base text-[#555] dark:text-[#9e9e98] mt-1">
               WCAG issue list, severity, fix recommendations, and code examples.
-              {!unlocked && <span className="font-mono text-[#aaa] dark:text-[#444440]"> Â· Expert access required.</span>}
+              {!unlocked && <span className="font-mono text-[#aaa] dark:text-[#444440]"> · Expert access required.</span>}
             </p>
           </div>
           {unlocked ? (
@@ -230,7 +230,7 @@ export function TechnicalReview({ label, contentType, textSample, wcagContext }:
       <div className="px-4 sm:px-5 py-4 border-b border-[#e5e4df] dark:border-[#2c2c2a] flex items-start justify-between gap-3">
         <div>
           <p className="text-xs font-mono uppercase tracking-wider text-[#888] dark:text-[#666660] mb-1">
-            Technical Review Â· {review.scanConfidence}% scan confidence
+            Technical Review · {review.scanConfidence}% scan confidence
           </p>
           <p className="text-base text-[#333] dark:text-[#c8c8c2] leading-relaxed">{review.summary}</p>
         </div>

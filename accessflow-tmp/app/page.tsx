@@ -145,12 +145,14 @@ export default function Home() {
         <button
           onClick={analyze}
           disabled={loading}
+          title="Starts pattern analysis — takes about 2 minutes per page."
           className="mt-3 w-full text-sm font-mono bg-[#111] dark:bg-[#ededea] text-white dark:text-[#111] py-3 px-4 disabled:opacity-40 hover:bg-[#333] dark:hover:bg-white transition-colors"
         >
           {loading ? 'Analyzing…' : 'Analyze'}
         </button>
 
         {!result && !loading && <SamplePanel />}
+        {!result && !loading && <FAQAccordion />}
 
         {error && (
           <div className="mt-5 border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a] px-4 py-3">
@@ -227,24 +229,43 @@ function SamplePanel() {
   )
 }
 
+function FAQAccordion() {
+  const [open, setOpen] = useState(false)
+  return (
+    <div className="mt-3">
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="text-xs font-mono text-[#aaa] dark:text-[#444440] hover:text-[#555] dark:hover:text-[#9e9e98] transition-colors"
+      >
+        {open ? '↑ hide' : '↓ What happens after I click Analyze?'}
+      </button>
+      {open && (
+        <div className="mt-2 border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a] px-4 py-3 animate-fade-in">
+          <p className="text-sm text-[#333] dark:text-[#c8c8c2] leading-relaxed">
+            We scan the page or PDF for repeated accessibility patterns, group issues by shared component or template, estimate work saved, and add the fixes to your queue.
+          </p>
+        </div>
+      )}
+    </div>
+  )
+}
+
 function SummaryBar({ result, queued }: { result: AnalysisV2Result; queued: boolean }) {
   const ratio = result.compressionRatio
+  const n = result.rawIssues.length
+  const m = result.fixOpportunities.length
   return (
     <div className="border-t border-b border-[#e5e4df] dark:border-[#2c2c2a] py-3 flex items-center gap-2 flex-wrap">
       <span className="text-xs font-mono text-[#888] dark:text-[#666660]">
-        {result.rawIssues.length} issues found
+        {n} issue{n !== 1 ? 's' : ''} → {m} fix{m !== 1 ? 'es' : ''}
       </span>
-      <span className="text-xs font-mono text-[#ccc] dark:text-[#333330]">Â·</span>
-      <span className="text-xs font-mono text-[#888] dark:text-[#666660]">
-        {result.fixOpportunities.length} fix{result.fixOpportunities.length !== 1 ? 'es' : ''} needed
-      </span>
-      <span className="text-xs font-mono text-[#ccc] dark:text-[#333330]">Â·</span>
+      <span className="text-xs font-mono text-[#ccc] dark:text-[#333330]">·</span>
       <span className="text-xs font-mono text-[#111] dark:text-[#ededea] font-semibold">
-        {ratio.toFixed(1)}Ã— less work
+        {ratio.toFixed(1)}× less work
       </span>
       {queued && (
         <>
-          <span className="text-xs font-mono text-[#ccc] dark:text-[#333330]">Â·</span>
+          <span className="text-xs font-mono text-[#ccc] dark:text-[#333330]">·</span>
           <a href="/queue" className="text-xs font-mono text-[#555] dark:text-[#9e9e98] underline">
             added to queue
           </a>

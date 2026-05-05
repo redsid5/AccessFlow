@@ -116,13 +116,12 @@ export default function QueuePage() {
         {filtered.length === 0 && (
           <div className="border border-[#e5e4df] dark:border-[#2c2c2a] dark:bg-[#1c1c1a] px-5 py-12 text-center">
             <p className="text-sm font-mono text-[#888] dark:text-[#666660]">
-              {items.length === 0 ? 'No items in queue.' : 'No items match this filter.'}
+              {items.length === 0 ? 'No analyses yet.' : 'No items match this filter.'}
             </p>
             {items.length === 0 && (
               <p className="text-xs font-mono text-[#aaa] dark:text-[#444440] mt-1">
-                Analyze a URL or PDF on the{' '}
-                <a href="/" className="underline text-[#555] dark:text-[#9e9e98]">Analyze page</a>
-                {' '}to populate the queue.
+                <a href="/" className="underline text-[#555] dark:text-[#9e9e98]">Paste a URL or upload a PDF</a>
+                {' '}to start building your queue.
               </p>
             )}
           </div>

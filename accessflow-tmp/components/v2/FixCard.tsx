@@ -223,7 +223,7 @@ function AccordionRow({
         className="w-full flex items-center justify-between px-4 py-2.5 text-xs font-mono text-[#888] dark:text-[#666660] hover:text-[#111] dark:hover:text-[#ededea] transition-colors text-left"
       >
         <span>{label}</span>
-        <span className="ml-2 select-none">{open ? 'âˆ'' : '+'}</span>
+        <span className="ml-2 select-none">{open ? '-' : '+'}</span>
       </button>
       {open && (
         <div className="px-4 pb-3">

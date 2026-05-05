@@ -131,7 +131,7 @@ export default function Home() {
                 onClick={() => fileRef.current?.click()}
                 className="text-sm font-mono text-[#555] dark:text-[#9e9e98] hover:text-[#111] dark:hover:text-[#ededea] transition-colors"
               >
-                {file ? file.name : 'Click to select a PDF â†''}
+                {file ? file.name : 'Click to select a PDF →'}
               </button>
               <input
                 ref={fileRef}
